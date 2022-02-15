@@ -1,6 +1,6 @@
-# Aplicación de Plantilla de IW
+# ForgeMeals
 
-Debes buscar todos los lugares donde aparece la palabra "plantilla" (incluido este párrafo) y reemplazar las ocurrencias, y el contexto circundante, por valores que tengan sentido en tu aplicación. Por ejemplo, este párrafo deberías eliminarlo de tu proyecto.
+Con ForgeMeals podrás encontrar las mejores recetas y comprar los ingredientes relativos a ellas con un solo click. Además podrás publicar recetas propias y mucho más!
 
 
 
