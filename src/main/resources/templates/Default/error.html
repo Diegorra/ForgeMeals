@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="fragments/head :: header" />
-    <title th:text="|IW: Error ${status}|">IW: Error</title>
+    <title th:text="|IW: Error ${status}|">Error</title>
 </head>
 
 <body>
@@ -18,7 +18,8 @@
 
             <div th:unless="${application.debug}">
                 <img th:src="|https://http.cat/${status}|" alt="gato ilustrando problema" />
-                <p>Los administradores están informados. Puedes volver a intentar hacer lo que estabas haciendo de otra forma, o esperar a que solucionen el problema.</p>
+                <p>Los administradores están informados. Puedes volver a intentar hacer lo que estabas haciendo de otra
+                    forma, o esperar a que solucionen el problema.</p>
             </div>
             <div th:if="${application.debug}">
                 <p>Ha pasado algo feo. Mira el log del servidor para saber más detalles.</p>
@@ -51,7 +52,9 @@
                     </tr>
                     <tr>
                         <td>Traza</td>
-                        <td><pre th:text="${trace}" /></td>
+                        <td>
+                            <pre th:text="${trace}" />
+                        </td>
                     </tr>
                 </table>
 
@@ -59,7 +62,7 @@
                 <table class="errTable">
                     <tr th:each="v: ${session}">
                         <td><span class="errKey" th:text="${v.key}"></span>
-                            <td th:text="${v.value}">
+                        <td th:text="${v.value}">
                 </table>
 
                 <h4>Variables definidas en parámetros</h4>
