@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragments/head :: header" />
+    <title>Contacts</title>
+</head>
+
+<body>
+    <header th:replace="fragments/nav.html :: nav"></header>
+
+    <div class = "container">
+        <h2 class="pb-4 border-bottom">Contact</h2>
+    <!--TODO-->
+        <div class="row g-5 py-3 row-cols-1 row-cols-lg-3">
+            <div class="col">
+                <!--icono-->
+                <h2>Contacto</h2>
+                <p>@Correo</p>
+                <p>@Telefono</p>
+            </div>
+
+            <div class="col">
+                <!--icono-->
+                <h2>Dirección</h2>
+                <p>@Dirección</p>
+            </div>
+
+            <div class="col">
+                <!--icono-->
+                <h2>Horario</h2>
+                <p>@Horario</p>
+            </div>
+        </div>
+    </div>
+    <!--Consulta: https://getbootstrap.com/docs/5.1/examples/features/-->
+    <th:block th:replace="fragments/footer.html :: footer" />
+</body>
+
+</html>

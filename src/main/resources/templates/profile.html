@@ -9,6 +9,31 @@
 <body>
     <header th:replace="fragments/nav.html :: nav"></header>
     <!--TODO-->
+    <main class="container">
+        <div class="d-flex align-items-center p-3 my-3 text-black bg-gray rounded shadow-sm">
+              <div class="lh-1">
+                  <!--UserIcon-->
+                  <h1 class="h7 mb-1 text-black lh-1">NombreUsuario</h1>
+                  <small>UserId</small>
+              </div>
+        </div>
+
+        <div class="nav-scroller bg-body shadow-sm">
+              <nav class="nav nav-underline" aria-label="opcion">
+                  <a class="nav-link link-dark" href="#">Mis recetas </a>
+                  <a class="nav-link" href="#">Recetas favoritas</a>
+                  <a class="nav-link" href="#">Carrito</a>
+              </nav>
+        </div>
+        
+        <!--For de Recetas-->
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+              <h1 class = "text"> ... </h1>
+        </div>
+        
+    </main>
+    
+       
     <!--Consulta:https://getbootstrap.com/docs/5.1/examples/offcanvas-navbar/-->
     <th:block th:replace="fragments/footer.html :: footer" />
 </body>
