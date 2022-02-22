@@ -3,43 +3,49 @@
 
 <head>
     <th:block th:replace="fragments/head :: header" />
-    <title>Document</title>
+    <title>ForgeMeals-Publica tu receta</title>
 </head>
 
-<body class="d-flex flex-column h-100">
-
+<body class="d-flex flex-column h-100" >
+<h1 style="align-self: center; margin-top: 20px;">Publica tu receta</h1>
 <div class="container"  style="display: flex; justify-content: center; position: fixed; left: 0; right:0; top: 10vh; bottom:0;">
-<div class="card bg-light" style="border-radius: 15px;">
+<div class="card bg-light" style="border-radius: 15px; height: fit-content; width:800px;">
     <form method="post" th:action="@{/addRecipe}">
-        <div class="mb-3">
-            <label for="name" class="form-label">Nombre receta:</label>
-            <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Nombre receta"/>
-        </div>
-        <div class="mb-3" >
-            <label class="form-label">Ingredientes:</label>
-            <ul id="il">
-                <div id="ing">
-                    <input type="text" class="form-control" placeholder="Introducir Ingredientes" />
-                    <span class="input-group-addon"></span>
-                    <input type="number" min="0" max="5000" class="form-control" placeholder="Introducir Cantidad" />
-                    <hr class="my-4">
-                </div>
-            </ul>
-            <div>
-                <button type = "button" class="btn btn-primary" id="ai">+ Añadir Ingrediente</button>
-                <button type = "button" class="btn btn-primary"  id="ei" disabled>- Eliminar Ingrediente</button>
+
+        <div style="margin:20px">
+
+            <div class="mb-3" style="margin-left: 10px;">
+                <label for="name" class="form-label">Nombre receta:</label>
+                <input type="text" class="form-control"  style="width: auto;" id="name" aria-describedby="nameHelp" placeholder="Nombre receta"/>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Ingredientes:</label>
+                <ul id="il">
+                    <div id="ing">
+                        <input type="text" class="form-control" placeholder="Introducir Ingredientes" />
+                        <span class="input-group-addon"></span>
+                        <input type="number" min="0" max="5000" class="form-control" placeholder="Introducir Cantidad" />
+                        <hr class="my-4" style="width: 95%;">
+                    </div>
+                </ul>
+                <div>
+                    <button type = "button" class="btn btn-primary" id="ai">+ Añadir Ingrediente</button>
+                    <button type = "button" class="btn btn-primary"  id="ei" disabled>- Eliminar Ingrediente</button>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Describe la receta:</label>
+                <textarea class="container" placeholder="Descripción de la receta"  id="description"></textarea>
+                
+            </div>
+            <div class="mb-3">
+                <label for="src" class="form-label">Sube la imagen de la receta:</label>
+                <input type="file" accept="image/png, image/jpeg" class="form-control" id="src">
+            </div>
+            <button type="submit" class="btn btn-primary">Subir</button>
+            <a href="/"> <button type="button" onclick="" class="btn btn-primary" style="background-color:white;color:black;border-color: black;">Cancelar</button> </a>
+            
         </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Describe la receta:</label>
-            <textarea class="container" placeholder="Descripción de la receta"  id="description"></textarea>
-            <!--<input type="password" class="form-control" id="description">-->
-        </div>
-        <div class="mb-3">
-            <label for="src" class="form-label">Sube la imagen de la receta:</label>
-            <input type="file" accept="image/png, image/jpeg" class="form-control" id="src">
-        </div>
-        <button type="submit" class="btn btn-primary">Subir</button>
     </form>
 </div>
 </div>
@@ -56,6 +62,7 @@
         but1.disabled = false;
         let con = document.getElementById("il");
         con.append(document.getElementById("ing").cloneNode(true));
+        
     }
     function e_ing(){
 
