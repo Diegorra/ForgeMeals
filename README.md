@@ -2,6 +2,13 @@
 
 Con ForgeMeals podrás encontrar las mejores recetas y comprar los ingredientes relativos a ellas con un solo click. Además podrás publicar recetas propias y mucho más!
 
+### Vistas
+* Index-> Hace de landing page, desde ella el usuario puede ver recetas, hacer loggin/registrarse y en caso de estar loggeado acceder a funcionalidad adicional [index](https://localhost:8080/)
+* Profile->
+* Checkout->
+* Settings->
+* WeekPlan->
+* Upload Recipe->
 
 
 ### Reference Documentation
