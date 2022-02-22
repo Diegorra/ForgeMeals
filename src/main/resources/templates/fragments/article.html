@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Recipe article - rest is empty</title>
+   
+    
+</head>
+
+<body>
+    <div th:fragment="card" class="card" style="width: 15.5cm; height: fit-content;border-style: hidden ;">
+        <div class="card mb-3" style="border-style: hidden; height: fit-content;">
+            <div class="row g-0">
+        
+                <div class="col-md-6">
+                    <div class="card-body" style="border-style:hidden ;">
+                         <h5 class="card-title">Receta</h5>
+            
+                        <ul>
+                            <!--Se haria un for con los ingredientes-->
+                            <p>Ingrediente</p>
+                        </ul>
+
+                        <label>Cant.</label>
+                        <input type="number" min="0" max="5000" class="form-control" placeholder="1" style="font-size: 12; width: auto;"> 
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="https://www.lavanguardia.com/files/article_main_microformat/files/fp/uploads/2020/09/09/5f58b1bb6d322.r_d.627-418-0.jpeg" class="img-fluid rounded-start" style="margin-top: 20px;border-style:solid;">
+                        <p style="text-align: right;margin: 10px;">Precio: 4.99€</p>
+                </div>
+             </div>
+        </div>
+    </div>
+</body>
+

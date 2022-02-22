@@ -8,7 +8,7 @@
 
 <body class="d-flex flex-column h-100" >
 <h1 style="align-self: center; margin-top: 20px;">Publica tu receta</h1>
-<div class="container"  style="display: flex; justify-content: center; position: fixed; left: 0; right:0; top: 10vh; bottom:0;">
+<div class="container"  style="display: flex; justify-content: center; left: 0; right:0; top: 10vh; bottom:0">
 <div class="card bg-light" style="border-radius: 15px; height: fit-content; width:800px;">
     <form method="post" th:action="@{/addRecipe}">
 
@@ -54,19 +54,20 @@
 </html>
 
 <script>
+            let con = document.getElementById("il");
+
     let but = document.getElementById("ai");
     let but1 = document.getElementById("ei");
     but.onclick = a_ing;
     but1.onclick = e_ing;
     function a_ing(){
         but1.disabled = false;
-        let con = document.getElementById("il");
+        
         con.append(document.getElementById("ing").cloneNode(true));
         
     }
     function e_ing(){
 
-        let con = document.getElementById("il");
         con.removeChild(con.lastElementChild);
 
         if(document.querySelectorAll("#ing").length === 1)

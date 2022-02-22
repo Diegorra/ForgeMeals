@@ -29,8 +29,12 @@ public class RootController {
     @GetMapping("/addRecipe")
     public String newRecipe(Model model){return "/Forms/recipeForm";}
 
+    @GetMapping("/checkout")
+    public String checkout(Model model){return "checkout";}
+
 	@GetMapping("/")
     public String index(Model model) {
         return "index";
     }
+
 }
