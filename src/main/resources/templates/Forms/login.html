@@ -6,19 +6,22 @@
     <title>Login</title>
 </head>
 
-<body class="d-flex flex-column h-100">
-    <div>
-        <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
+<body class="d-flex flex-column h-100 bg">
+    <a href="/" >
+        <button type="button" onclick="" class="btn btn-light btn-circle btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
             </svg>
-        </a>
-    </div>
+        </button>
+    </a>
     <main class="flex-shrink-0">
         <div class="container"  style="display: flex; justify-content: center; position: fixed; left: 0; right:0; top: 10vh; bottom:0;">
             <div class="card bg-light" style="border-radius: 15px; width: max(35%, 250px); height: 40vh;">
                 <article class="card-body mx-auto"  >
+
+                        <h2 class="fcard-title mt-3 text-center">Please sign in</h2>
+                        <hr/>
                     <form class="form-signin" method="post" th:action="@{/login}" style="width: max(35%, 250px)">
-                        <h2 class="form-signin-heading">Please sign in</h2>
                         <p>
                             <label for="username" class="visually-hidden">Username</label>
                             <input type="text" id="username" name="username" class="form-control" placeholder="Username"
@@ -32,9 +35,7 @@
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                     </form>
                     <article class="card-body mx-auto" style="max-width: 400px;">
-                        <h5 class="card-title mt-3 text-center">Don't you have an account?
-                            <h5 class="card-title mt-3 text-center"> <a th:action="@{/register}" href="/register"> Register </a></h5>
-                        </h5>
+                            <p class="card-title mt-3 text-center">Don't you have an account?<a th:action="@{/register}" href="/register"> Register </a></p>
                     </article>
                 </article>
             </div>
