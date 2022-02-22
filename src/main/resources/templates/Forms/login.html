@@ -8,27 +8,33 @@
 
 <body class="d-flex flex-column h-100">
     <header th:replace="fragments/nav.html :: nav"></header>
-
-    <main class="flex-shrink-0">
-        <div class="container">
-            <form class="form-signin" method="post" th:action="@{/login}">
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <p>
-                    <label for="username" class="visually-hidden">Username</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username"
-                        required="required">
-                </p>
-                <p>
-                    <label for="password" class="visually-hidden">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                        required="required">
-                </p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            </form>
+    <div class="container">
+        <div class="card bg-light">
+            <article class="card-body mx-auto"  style="display: flex; flex-direction: column; align-items: center;">
+                <form class="form-signin" method="post" th:action="@{/login}" style="width: max(35%, 250px)">
+                    <h2 class="form-signin-heading">Please sign in</h2>
+                    <p>
+                        <label for="username" class="visually-hidden">Username</label>
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                            required="required">
+                    </p>
+                    <p>
+                        <label for="password" class="visually-hidden">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                            required="required">
+                    </p>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                </form>
+            </article>
         </div>
-    </main>
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h5 class="card-title mt-3 text-center">Don't you have an account?
+                <h5 class="card-title mt-3 text-center"> <a th:action="@{/register}" href="/register"> Register </a></h5>
+            </h5>
+        </article>
+    </div>
 
-    <a href="/register" th:href="@{/register}">¿Todavía no tienes cuenta? Registrate aquí.</a>
+
 
     <th:block th:replace="fragments/footer.html :: footer" />
 </body>
