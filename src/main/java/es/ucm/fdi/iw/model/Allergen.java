@@ -1,7 +1,8 @@
 package es.ucm.fdi.iw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Allergen {
-    List<String> allergen;
+    ArrayList<String> allergen;
 }

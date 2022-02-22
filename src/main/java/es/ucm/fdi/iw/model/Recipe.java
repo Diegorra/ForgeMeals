@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ public class Recipe {
     private Long user;
     private String name;
     private String src;
-    private List<Long> recipeIngredient;
+    private ArrayList<Long> recipeIngredient;
     private String description;
 
 

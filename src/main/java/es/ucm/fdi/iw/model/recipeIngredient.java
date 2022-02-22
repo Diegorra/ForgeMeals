@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class recipeIngredient {
     private Long id;
     private Long ingredient;
     private Float cuantity;
-    private List<Allergen> allergen;
+    private ArrayList<Allergen> allergen;
 
     public void setId(Long id) {
         this.id = id;
