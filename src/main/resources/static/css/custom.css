@@ -1,7 +1,6 @@
 /* usa este fichero para personalizar tus vistas */
 .bg {
-    height: 100vh;
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(../image/bg.jpg);
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://wallpaper.dog/large/20398905.jpg);
 }
 .iwthumb {
     height: 32px;
