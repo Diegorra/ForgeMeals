@@ -1,5 +1,8 @@
 package es.ucm.fdi.iw.model;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Data
 @Entity
@@ -11,4 +14,12 @@ public class Assessment{
     private int assessment;
 
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
+    public Long getId() {
+        return id;
+    }
 }
