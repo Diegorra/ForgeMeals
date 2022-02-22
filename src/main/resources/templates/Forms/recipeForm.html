@@ -1,18 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="fragments/head :: header" />
     <title>Document</title>
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
 
-    <!--TODO-->
-    <!--Consulta: https://getbootstrap.com/docs/5.1/forms/overview/-->
-
+<div class="container"  style="display: flex; justify-content: center; position: fixed; left: 0; right:0; top: 10vh; bottom:0;">
+<div class="card bg-light" style="border-radius: 15px;">
+    <form method="post" th:action="@{/addRecipe}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre receta:</label>
+            <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Nombre receta"/>
+        </div>
+        <div class="mb-3" >
+            <label class="form-label">Ingredientes:</label>
+            <ul id="il">
+                <div id="ing">
+                    <input type="text" class="form-control" placeholder="Introducir Ingredientes" />
+                    <span class="input-group-addon"></span>
+                    <input type="number" min="0" max="5000" class="form-control" placeholder="Introducir Cantidad" />
+                    <hr class="my-4">
+                </div>
+            </ul>
+            <div>
+                <button type = "button" class="btn btn-primary" id="ai">+ Añadir Ingrediente</button>
+                <button type = "button" class="btn btn-primary"  id="ei" disabled>- Eliminar Ingrediente</button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Describe la receta:</label>
+            <textarea class="container" placeholder="Descripción de la receta"  id="description"></textarea>
+            <!--<input type="password" class="form-control" id="description">-->
+        </div>
+        <div class="mb-3">
+            <label for="src" class="form-label">Sube la imagen de la receta:</label>
+            <input type="file" accept="image/png, image/jpeg" class="form-control" id="src">
+        </div>
+        <button type="submit" class="btn btn-primary">Subir</button>
+    </form>
+</div>
+</div>
 </body>
 
 </html>
+
+<script>
+    let but = document.getElementById("ai");
+    let but1 = document.getElementById("ei");
+    but.onclick = a_ing;
+    but1.onclick = e_ing;
+    function a_ing(){
+        but1.disabled = false;
+        let con = document.getElementById("il");
+        con.append(document.getElementById("ing").cloneNode(true));
+    }
+    function e_ing(){
+
+        let con = document.getElementById("il");
+        con.removeChild(con.lastElementChild);
+
+        if(document.querySelectorAll("#ing").length === 1)
+            but1.disabled = true;
+
+
+
+    }
+</script>

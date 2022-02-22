@@ -26,6 +26,9 @@ public class RootController {
     @GetMapping("/contact")
     public String contact(Model model){return "contact";}
 
+    @GetMapping("/addRecipe")
+    public String newRecipe(Model model){return "/Forms/recipeForm";}
+
 	@GetMapping("/")
     public String index(Model model) {
         return "index";
