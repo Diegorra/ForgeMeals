@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.SequenceGenerator;
+
 /**
  *  Non-authenticated requests only.
  */
@@ -23,14 +25,23 @@ public class RootController {
     @GetMapping("/register")
     public String register(Model model){return "/Forms/register"; }
 
-    @GetMapping("/contact")
-    public String contact(Model model){return "contact";}
+    @GetMapping("/profile")
+    public String profile(Model model){return "profile";}
+
+    @GetMapping("/checkout")
+    public String checkout(Model model){return "checkout";}
+
+    @GetMapping("/settings")
+    public String settings(Model model){return "settings";}
+
+    @GetMapping("/weekplan")
+    public String weekplan(Model model){return "weekplan";}
 
     @GetMapping("/addRecipe")
     public String newRecipe(Model model){return "/Forms/recipeForm";}
 
-    @GetMapping("/checkout")
-    public String checkout(Model model){return "checkout";}
+    @GetMapping("/contact")
+    public String contact(Model model){return "contact";}
 
 	@GetMapping("/")
     public String index(Model model) {

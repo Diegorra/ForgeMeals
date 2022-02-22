@@ -5,21 +5,15 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Recipe {
+public class orderRecipe {
     private Long id;
-    private Long user;
-    private String name;
-    private String src;
-    private ArrayList<Long> recipeIngredient;
-    private String description;
-
-
+    private Long recipe;
+    private Float quantity;
+    private Float price;
 
     public void setId(Long id) {
         this.id = id;

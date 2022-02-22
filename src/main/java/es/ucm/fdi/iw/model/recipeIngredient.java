@@ -11,15 +11,11 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class Recipe {
+public class recipeIngredient {
     private Long id;
-    private Long user;
-    private String name;
-    private String src;
-    private ArrayList<Long> recipeIngredient;
-    private String description;
-
-
+    private Long ingredient;
+    private Float cuantity;
+    private ArrayList<Allergen> allergen;
 
     public void setId(Long id) {
         this.id = id;
