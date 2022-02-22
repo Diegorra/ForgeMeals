@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *  Non-authenticated requests only.
@@ -21,6 +22,9 @@ public class RootController {
 
     @GetMapping("/register")
     public String register(Model model){return "/Forms/register"; }
+
+    @GetMapping("/contact")
+    public String contact(Model model){return "contact";}
 
 	@GetMapping("/")
     public String index(Model model) {
