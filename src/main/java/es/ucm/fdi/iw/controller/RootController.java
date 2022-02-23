@@ -31,6 +31,9 @@ public class RootController {
     @GetMapping("/checkout")
     public String checkout(Model model){return "checkout";}
 
+    @GetMapping("/payment")
+    public String payment(Model model){return "/Forms/payment";}
+
     @GetMapping("/settings")
     public String settings(Model model){return "settings";}
 
