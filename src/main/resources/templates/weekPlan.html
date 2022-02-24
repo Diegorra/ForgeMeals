@@ -8,7 +8,70 @@
 
 <body>
     <header th:replace="fragments/nav.html :: nav"></header>
-    <!--TODO-->
+    
+    <div class=" mx-5">
+      <h1> Week Plan</h1>
+     
+      <table class="table table-bordered .table-hover" > 
+        <thead>
+          <tr>
+            <th scope="col"> </th>
+            <th scope="col">Lunes</th>
+            <th scope="col">Martes</th>
+            <th scope="col">Miércoles</th>
+            <th scope="col">Jueves</th>
+            <th scope="col">Viernes</th>
+            <th scope="col">Sábado</th>
+            <th scope="col">Domingo</th>
+          </tr>
+        </thead>
+       
+        <tbody>
+          <tr>
+            <th scope="row">Desayuno</th>
+            <td> Pan con tomate  </td>
+            <td> - </td>
+            <td> Tortilla de espinacas</td>
+            <td> - </td> 
+            <td> - </td> 
+            <td> - </td>
+            <td> - </td>
+          </tr>
+          <tr>
+            <th scope="row">Comida</th>
+            <td> Pan con tomate  </td>
+            <td> - </td>
+            <td> Tortilla de espinacas</td>
+            <td> - </td> 
+            <td> - </td> 
+            <td> - </td>
+            <td> - </td>
+          </tr>
+          <tr>
+            <th scope="row">Cena</th>
+            <td> Pan con tomate  </td>
+            <td> - </td>
+            <td> Tortilla de espinacas</td>
+            <td> - </td> 
+            <td> - </td> 
+            <td> - </td>
+            <td> - </td>
+          </tr>
+          <tr>
+            <th scope="row">Meriendas</th>
+            <td> Pan con tomate  </td>
+            <td> - </td>
+            <td> Tortilla de espinacas</td>
+            <td> - </td> 
+            <td> - </td> 
+            <td> - </td>
+            <td> - </td>
+          </tr>
+        </tbody>
+      </table>
+  
+    </div>
+  
     <!--Consulta: https://getbootstrap.com/docs/5.1/examples/grid/-->
     <th:block th:replace="fragments/footer.html :: footer" />
 </body>
