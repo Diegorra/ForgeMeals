@@ -27,15 +27,13 @@
         </thead>
        
         <tbody>
+          <!-- https://www.baeldung.com/spring-thymeleaf-fragments#parametrized-fragments 
+          Quiero hacerlo con puras variables java así que luego del :: se pondría cellWP(field='Desayuno',value='Variable') y así
+        -->
           <tr>
             <th scope="row">Desayuno</th>
-            <td> Pan con tomate  </td>
-            <td> - </td>
-            <td> Tortilla de espinacas</td>
-            <td> - </td> 
-            <td> - </td> 
-            <td> - </td>
-            <td> - </td>
+            <td th:replace="fragments/wpCell :: td"> Arepas con queso </td>
+            <!-- Existe algun tipo de for para estas cosas?-->
           </tr>
           <tr>
             <th scope="row">Comida</th>

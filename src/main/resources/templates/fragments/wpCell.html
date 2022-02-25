@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- Administrar en controller, 
+    usamos la variable comida (un String con el alimento) 
+    y una variable para el link a esa comida
+    TODO añadirlo a controller y añadir botones de eliminar-modificar
+        -->
+
+    
+<head>
+    <title>Nav fragment - rest intentionally left empty</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <!-- https://www.youtube.com/watch?v=4PY78rnOAf0 
+    https://www.baeldung.com/spring-thymeleaf-fragments#parametrized-fragments
+    -->
+    <th:block th:if="${session.u}">
+        <td>
+            <!--Mi idea es q al hacer click puedas mirar la receta y modificarla?? no sé-->
+            <a href="${linkComida}" th:text="${comida}"> comida </a>
+            <!-- TODO ponerle imagen en vez de la x + hacer que los botones funcionen -->
+            <button type="reset" name="borrar" >
+                <img src="" alt="x" />
+            </button>
+
+        </td>
+    </th:block>
+</body>
+        
+</html>
