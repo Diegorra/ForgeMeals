@@ -16,5 +16,5 @@ public class OrderRecipe {
     private Long id;
 
     private Recipe recipe;
-    private Float quantity;
+    private Integer quantity;
 }

@@ -17,7 +17,7 @@ public class RecipeIngredient {
     private Long id;
 
     private Ingredient ingredient;
-    private Float cuantity;
+    private Integer cuantity;
 
 
 }
