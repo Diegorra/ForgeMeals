@@ -1,25 +1,20 @@
 package es.ucm.fdi.iw.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 
 @Data
 @Entity
 @NoArgsConstructor
 public class Assessment{
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
+    @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
-    private long user;
-    private long recipe;
+
+    private User user;
+    private Recipe recipe;
     private int assessment;
 
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Id
-    public Long getId() {
-        return id;
-    }
 }

@@ -1,24 +1,20 @@
 package es.ucm.fdi.iw.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 
 @Data
 @Entity
 @NoArgsConstructor
 public class WeekPlanning{
-    private long id;
-    private long user;
-    private ArrayList<Long> recipes;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Id
-    public Long getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
+    @SequenceGenerator(name = "gen", sequenceName = "gen")
+    private long id;
+    private long user;
+    private ArrayList<RecipeIngredient> recipes;
+
 }

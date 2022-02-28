@@ -1,25 +1,23 @@
 package es.ucm.fdi.iw.model;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Order{
-
-    public enum State{CHECKOUT, RECEIVED, PROCESSED,SEND}
-
+public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
     @SequenceGenerator(name = "gen", sequenceName = "gen")
-    private long id;
+    private Long id;
 
-    private User user;
-    private State state;
-    private String direction;
-    private ArrayList<OrderRecipe> recipes = new ArrayList<>();
+    private Ingredient ingredient;
+    private Float cuantity;
+
 
 }

@@ -3,8 +3,8 @@ package es.ucm.fdi.iw.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,21 +12,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class Recipe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
+    @SequenceGenerator(name = "gen", sequenceName = "gen")
     private Long id;
-    private Long user;
+
+    private User user;
     private String name;
     private String src;
-    private ArrayList<Long> recipeIngredient;
+    private ArrayList<RecipeIngredient> ingredients = new ArrayList<>();
     private String description;
-
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Id
-    public Long getId() {
-        return id;
-    }
+    private BigDecimal price;
 }

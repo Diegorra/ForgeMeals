@@ -3,8 +3,8 @@ package es.ucm.fdi.iw.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -12,17 +12,36 @@ import java.util.List;
 @NoArgsConstructor
 public class Ingredient {
 
-    private Long id;
-    private String name;
-    private String info;
-    private Float price;
+    public enum Allergen{
+        Null,
+        CEREALES,
+        CRUSTACEOS,
+        HUEVOS,
+        PESCADO,
+        CACAHUETES,
+        SOJA,
+        LECHE,
+        FRUTOS_DE_CASCARA,
+        APIO,
+        MOSTAZA,
+        SESAMO,
+        DIOXIDO_DE_AZUFRE_SULFITOS,
+        ALTRAMUCES,
+        MOLUSCOS
+    };
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+
 
     @Id
-    public Long getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
+    @SequenceGenerator(name = "gen", sequenceName = "gen")
+    private long id;
+
+    private String name;
+    private String info;
+    private Float units;
+    private String unitsMeasure;
+    private BigDecimal price;
+    private Allergen allergen;
+
 }
