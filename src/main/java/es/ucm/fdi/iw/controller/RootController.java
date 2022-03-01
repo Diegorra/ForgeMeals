@@ -38,7 +38,7 @@ public class RootController {
     public String settings(Model model){return "settings";}
 
     @GetMapping("/weekplan")
-    public String weekplan(Model model){return "weekplan";}
+    public String weekplan(Model model){return "weekPlan";}
 
     @GetMapping("/addRecipe")
     public String newRecipe(Model model){return "/Forms/recipeForm";}
