@@ -14,7 +14,7 @@ public class Assessment{
     private long id;
 
     @ManyToOne
-    private User user;
+    private User author;
     @ManyToOne
     private Recipe recipe;
     private int assessment;

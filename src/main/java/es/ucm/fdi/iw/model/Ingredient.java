@@ -38,7 +38,7 @@ public class Ingredient {
 
     private String name;
     private String info;
-    private Float units;
+    private Integer units;
     private String unitsMeasure;
     private BigDecimal price;
     private Allergen allergen;

@@ -17,12 +17,14 @@ public class Recipe {
     private long id;
 
     @ManyToOne
-    private User user;
+    private User author;
+
     private String name;
     private String src;
 
     @OneToMany
     private List<RecipeIngredient> ingredients = new ArrayList<>();
+
     private String description;
     private BigDecimal price;
 }

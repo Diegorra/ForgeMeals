@@ -3,10 +3,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.*;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 public class WeekPlanning{
 
@@ -15,6 +15,8 @@ public class WeekPlanning{
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
     private long user;
-    private ArrayList<RecipeIngredient> recipes;
+
+    @OneToMany
+    private List<RecipeIngredient> recipes = new ArrayList<>();
 
 }
