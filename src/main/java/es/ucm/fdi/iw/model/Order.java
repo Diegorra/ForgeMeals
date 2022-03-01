@@ -3,7 +3,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.*;
 
 @Entity
 @Data
@@ -17,9 +17,12 @@ public class Order{
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
 
+    @ManyToOne
     private User user;
     private State state;
     private String direction;
-    private ArrayList<OrderRecipe> recipes = new ArrayList<>();
+
+    @OneToMany
+    private List<OrderRecipe> recipes = new ArrayList<>();
 
 }

@@ -14,8 +14,9 @@ public class RecipeIngredient {
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private Long id;
 
+    @ManyToOne
     private Ingredient ingredient;
-    private Integer cuantity;
+    private Integer quantity;
 
 
 }
