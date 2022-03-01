@@ -12,8 +12,9 @@ public class OrderRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
     @SequenceGenerator(name = "gen", sequenceName = "gen")
-    private Long id;
+    private long id;
 
+    @ManyToOne
     private Recipe recipe;
     private Integer quantity;
 }

@@ -13,7 +13,9 @@ public class Assessment{
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
 
+    @ManyToOne
     private User user;
+    @ManyToOne
     private Recipe recipe;
     private int assessment;
 
