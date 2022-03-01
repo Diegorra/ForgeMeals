@@ -9,17 +9,19 @@
 </head>
 
 
-<body>
+<body class>
     <header th:replace="fragments/nav.html :: nav"></header>
     <!--TODO-->
     <h1 style="margin-top: 40px; margin-left: 45%;">Carrito</h1>
+    
+    <div class="bg">
 
-    <hr class="my-4" style="width: 90%;margin-left: 5%;">
+    <hr class="my-4 " style="width: 90%;margin-left: 5%;">
 
-    <div class="container mt-5 p-3" style="background-color: white;">
+    <div class="container mt-5 p-3 " style="background-color:white;border-radius: 1cm">
         <div class="row no-gutters">
             <div class="col-md-6">
-                <div class="product-details mr-2" style="border-style: solid; border-radius: 1cm;" >
+                <div class="product-details mr-2" style="border-style: solid; border-radius: 1cm; background-color: white;" >
                     <div style="margin: 1cm;">
                         <div class="d-flex flex-row align-items-center" style="font-size: 30px;"><i class="fa fa-long-arrow-left"></i><span class="ml-2">Articulos</span></div>
                         <hr>
@@ -55,8 +57,9 @@
             </div>
         </div>
     </div>
-
-    <th:block th:replace="fragments/footer.html :: footer" />
+    <hr class="my-4 " style="width: 90%;margin-left: 5%;">
+    </div>
+    <th:block th:replace="fragments/footer.html :: footer" / style="margin-top: 2cm;">
 </body>
 
 </html>
