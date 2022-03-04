@@ -18,5 +18,7 @@ public class RecipeIngredient {
     private Ingredient ingredient;
     private Integer quantity;
 
-
+    public RecipeIngredient(Ingredient ingredient){
+        this.ingredient = ingredient;
+    }
 }

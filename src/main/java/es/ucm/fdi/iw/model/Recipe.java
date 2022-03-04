@@ -27,4 +27,9 @@ public class Recipe {
 
     private String description;
     private BigDecimal price;
+    public Recipe(String name, BigDecimal price, List<RecipeIngredient> ingredients){
+        this.name = name;
+        this.price = price;
+        this.ingredients = ingredients;
+    }
 }

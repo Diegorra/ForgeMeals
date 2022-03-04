@@ -42,5 +42,7 @@ public class Ingredient {
     private String unitsMeasure;
     private BigDecimal price;
     private Allergen allergen;
-
+    public Ingredient(String name){
+        this.name = name;
+    }
 }

@@ -14,23 +14,24 @@
             <div class="row g-0">
         
                 <div class="col-md-6">
-                    <div class="card-body" style="border-style:hidden ;">
-                         <h5 class="card-title">Receta</h5>
+                    <div class="card-body" style="border-style:hidden;">
+                         <h5 class="card-title" th:text="${article.recipe.name}"></h5>
             
                         <ul>
-                            <!--Se haria un for con los ingredientes-->
-                            <p>Ingrediente</p>
+                            <div th:each="ingredient: ${article.recipe.ingredients}">
+                                <li th:text="${ingredient.ingredient.name}"></li>
+                            </div>
                         </ul>
 
                         <label>Cant.</label>
-                        <input type="number" min="0" max="5000" class="form-control" placeholder="1" style="font-size: 12; width: auto;"> 
+                        <input type="number" min="0" max="5000" class="form-control" th:value="${article.quantity}" style="font-size: 12; width: auto;"> 
                         <br>
                         <button type="button" class="btn btn-danger">Elim.</button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <img src="https://www.lavanguardia.com/files/article_main_microformat/files/fp/uploads/2020/09/09/5f58b1bb6d322.r_d.627-418-0.jpeg" class="img-fluid rounded-start" style="margin-top: 20px;border-style:solid;">
-                        <p style="text-align: right;margin: 10px;">Precio: 4.99€</p>
+                        <p th:inline="text" style="text-align: right;margin: 10px;">Precio: [[${article.recipe.price}]] €</p>  
                 </div>
              </div>
         </div>

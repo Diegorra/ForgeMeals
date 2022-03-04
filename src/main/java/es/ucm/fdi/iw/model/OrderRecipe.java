@@ -17,4 +17,8 @@ public class OrderRecipe {
     @ManyToOne
     private Recipe recipe;
     private Integer quantity;
+    public OrderRecipe(Recipe recipe, Integer quantity){
+        this.recipe = recipe;
+        this.quantity = quantity;
+    }
 }
