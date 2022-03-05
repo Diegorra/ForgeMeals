@@ -2,12 +2,15 @@ package es.ucm.fdi.iw.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class OrderRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
@@ -15,10 +18,10 @@ public class OrderRecipe {
     private long id;
 
     @ManyToOne
+    @NonNull
     private Recipe recipe;
+
+    @NonNull
     private Integer quantity;
-    public OrderRecipe(Recipe recipe, Integer quantity){
-        this.recipe = recipe;
-        this.quantity = quantity;
-    }
+
 }

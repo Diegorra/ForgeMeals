@@ -2,6 +2,8 @@ package es.ucm.fdi.iw.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -10,6 +12,7 @@ import java.util.*;
 @Entity
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
@@ -19,17 +22,14 @@ public class Recipe {
     @ManyToOne
     private User author;
 
-    private String name;
+    @NonNull private String name;
     private String src;
 
+    @NonNull
     @OneToMany
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
     private String description;
-    private BigDecimal price;
-    public Recipe(String name, BigDecimal price, List<RecipeIngredient> ingredients){
-        this.name = name;
-        this.price = price;
-        this.ingredients = ingredients;
-    }
+    @NonNull private BigDecimal price;
+
 }

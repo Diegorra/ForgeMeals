@@ -46,10 +46,15 @@ public class RootController {
         ingredients.add(new RecipeIngredient(new Ingredient("huevo")));
         ingredients.add(new RecipeIngredient(new Ingredient("maiz")));
         ingredients.add(new RecipeIngredient(new Ingredient("patata")));
-        recipes.add(new OrderRecipe(new Recipe("receta",new BigDecimal("4.99"),ingredients),2));
-        recipes.add(new OrderRecipe(new Recipe("receta1",new BigDecimal("7.99"),ingredients),3));
-        recipes.add(new OrderRecipe(new Recipe("receta2",new BigDecimal("2.50"),ingredients),1));
-        recipes.add(new OrderRecipe(new Recipe("receta3",new BigDecimal("3"),ingredients),5));
+
+        recipes.add(new OrderRecipe(new Recipe("receta", new BigDecimal("4.99")),2));
+        recipes.add(new OrderRecipe(new Recipe("receta1", new BigDecimal("7.99")),3));
+        recipes.add(new OrderRecipe(new Recipe("receta2", new BigDecimal("2.50")),1));
+        recipes.add(new OrderRecipe(new Recipe("receta3", new BigDecimal("3")),5));
+
+        for(OrderRecipe recipe :  recipes){
+            recipe.getRecipe().setIngredients(ingredients);
+        }
         model.addAttribute("cantidad", cant);
         model.addAttribute("articles", recipes);
         return "checkout";

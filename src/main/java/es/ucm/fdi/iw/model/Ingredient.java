@@ -2,6 +2,8 @@ package es.ucm.fdi.iw.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -9,6 +11,7 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Ingredient {
 
     public enum Allergen{
@@ -36,13 +39,16 @@ public class Ingredient {
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
 
-    private String name;
+    @NonNull private String name;
+
     private String info;
+
     private Integer units;
+
     private String unitsMeasure;
+
     private BigDecimal price;
+
     private Allergen allergen;
-    public Ingredient(String name){
-        this.name = name;
-    }
+
 }
