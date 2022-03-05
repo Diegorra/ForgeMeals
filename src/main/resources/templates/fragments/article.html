@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <img src="https://www.lavanguardia.com/files/article_main_microformat/files/fp/uploads/2020/09/09/5f58b1bb6d322.r_d.627-418-0.jpeg" class="img-fluid rounded-start" style="margin-top: 20px;border-style:solid;">
+                    <img th:src="${article.recipe.src}" class="img-fluid rounded-start" style="margin-top: 20px;border-style:solid;">
                         <p th:inline="text" style="text-align: right;margin: 10px;">Precio: [[${article.recipe.price}]] €</p>  
                 </div>
              </div>

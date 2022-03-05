@@ -23,7 +23,7 @@ public class Recipe {
     private User author;
 
     @NonNull private String name;
-    private String src;
+    @NonNull private String src;
 
     @NonNull
     @OneToMany

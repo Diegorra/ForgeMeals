@@ -35,23 +35,25 @@
                 </div>
             </div>
         </div>
-        <img src="https://www.lavanguardia.com/files/article_main_microformat/files/fp/uploads/2020/09/09/5f58b1bb6d322.r_d.627-418-0.jpeg" class="card-img-top" alt="..." />
+        <img th:src="${recipe.src}" class="card-img-top" alt="..." />
         <div class="card-body">
             <!--Este campo sería dinámico-->
-            <h5 class="card-title">ESPAGUETIS A LA BOLOÑESA</h5>
-            <!--Este campo sería dinámico-->
-            <p class="card-text">Descripción corta</p>
+            <h5 class="card-title" th:text="${recipe.name}">Nombre</h5>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <h6 class="card-title">Ingredientes</h6>
                 <!--Este campo sería dinámico-->
-                <p class="card-text">...</p>
+                <ul>
+                    <div th:each="ingredient: ${recipe.ingredients}">
+                        <li th:text="${ingredient.ingredient.name}"></li>
+                    </div>
+                </ul>
             </li>
             <li class="list-group-item">
                 <h6 class="card-title">Preparación</h6>
                 <!--Este campo sería dinámico-->
-                <p class="card-text">...</p>
+                <p class="card-text" th:text="${recipe.description}">...</p>
             </li>
         </ul>
         <div class="card-body">

@@ -15,7 +15,10 @@
         </div>
         <div class="container">
             <!--Haríamos un for para recorrer cada receta y mostarla en un card-->
-            <div class="cards" th:replace="fragments/recipeCard.html :: card"></div>
+            <div th:each="recipe: ${recipes}">
+                <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
+                <p></p>
+            </div>
         </div>
     </main>
 
