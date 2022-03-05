@@ -23,6 +23,7 @@ public class Order{
     private String direction;
 
     @OneToMany
+    @JoinColumn(name="OrderRecipe_id")
     private List<OrderRecipe> recipes = new ArrayList<>();
 
 }

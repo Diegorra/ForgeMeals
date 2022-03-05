@@ -27,6 +27,7 @@ public class Recipe {
 
     @NonNull
     @OneToMany
+    @JoinColumn(name="RecipeIngredient_id")
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
     private String description;
