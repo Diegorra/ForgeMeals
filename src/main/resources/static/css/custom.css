@@ -25,5 +25,12 @@
     justifyContent: "center";
     alignItems: "center"
 }
+.grid {
+    max-width: 90%;
+    justify-items: center;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    grid-gap: 20px 5px;
+}
 
 
