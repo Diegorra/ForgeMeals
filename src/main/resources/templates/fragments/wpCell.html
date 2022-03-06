@@ -8,7 +8,8 @@
 
     
 <head>
-    <title>Nav fragment - rest intentionally left empty</title>
+    <title>cell</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -17,12 +18,13 @@
     -->
     <th:block th:if="${session.u}">
         <td>
+        
             <!--Mi idea es q al hacer click puedas mirar la receta y modificarla?? no sé-->
-            <a href="${linkComida}" th:text="${comida}"> comida </a>
+            <a href="${linkComida}" th:text="${comida}"> </a>
+                <p> Nombre comida </p>
             <!-- TODO ponerle imagen en vez de la x + hacer que los botones funcionen -->
-            <button type="reset" name="borrar" >
-                <img src="" alt="x" />
-            </button>
+            <button type="button" style="vertical-align: bottom; float:right; padding: 0px; border:0px; margin:0.5px;" class="btn btn-sm"><img style="max-width: 17px; max-height: 17px; margin: 0px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/480px-Edit_icon_%28the_Noun_Project_30184%29.svg.png"></i></button>  
+            <button type="button" style="vertical-align: bottom; float:right; padding: 0px; border:0px; margin:0.5px;" class="btn btn-sm"><img style="max-width: 17px; max-height: 17px; margin: 0px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/No_icon_%28white_X_on_red_circle%29.svg/2048px-No_icon_%28white_X_on_red_circle%29.svg.png"></i></button>
 
         </td>
     </th:block>

@@ -19,5 +19,4 @@ public class WeekPlanning{
     @OneToMany
     @JoinColumn(name="RecipeIngredient_id")
     private List<RecipeIngredient> recipes = new ArrayList<>();
-
 }

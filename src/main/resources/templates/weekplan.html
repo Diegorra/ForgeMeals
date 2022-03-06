@@ -8,63 +8,36 @@
 
 <body>
     <header th:replace="fragments/nav.html :: nav"></header>
-    
-    <div class=" mx-5">
-      <h1> Week Plan</h1>
-     
-      <table class="table table-bordered .table-hover" > 
+
+      <table class="table table-sm table-bordered .table-hover w-75" style="margin-left:auto; margin-right: auto;" > 
         <thead>
           <tr>
             <th scope="col"> </th>
-            <th scope="col">Lunes</th>
-            <th scope="col">Martes</th>
-            <th scope="col">Miércoles</th>
-            <th scope="col">Jueves</th>
-            <th scope="col">Viernes</th>
-            <th scope="col">Sábado</th>
-            <th scope="col">Domingo</th>
+            <th scope="col">Desayuno</th>
+            <th scope="col">Comida</th>
+            <th scope="col">Cena</th>
+            <th scope="col">Snacks</th>
           </tr>
         </thead>
        
         <tbody>
           <!-- https://www.baeldung.com/spring-thymeleaf-fragments#parametrized-fragments 
           Quiero hacerlo con puras variables java así que luego del :: se pondría cellWP(field='Desayuno',value='Variable') y así
+
+          Hacer lista de dias de la semana para usar en vez de día
+           en vez de hacerlos con numbers.sequence, usamos una lista del modelo para coger cada dato
+
+           El slide 25 de thymeleaf no funciona, pero quiero hacer eso con los días de la semana
         -->
-          <tr>
-            <th scope="row">Desayuno</th>
-            <td th:replace="fragments/wpCell :: td"> Arepas con queso </td>
-            <!-- Existe algun tipo de for para estas cosas?-->
-          </tr>
-          <tr>
-            <th scope="row">Comida</th>
-            <td> Pan con tomate  </td>
-            <td> - </td>
-            <td> Tortilla de espinacas</td>
-            <td> - </td> 
-            <td> - </td> 
-            <td> - </td>
-            <td> - </td>
-          </tr>
-          <tr>
-            <th scope="row">Cena</th>
-            <td> Pan con tomate  </td>
-            <td> - </td>
-            <td> Tortilla de espinacas</td>
-            <td> - </td> 
-            <td> - </td> 
-            <td> - </td>
-            <td> - </td>
-          </tr>
-          <tr>
-            <th scope="row">Meriendas</th>
-            <td> Pan con tomate  </td>
-            <td> - </td>
-            <td> Tortilla de espinacas</td>
-            <td> - </td> 
-            <td> - </td> 
-            <td> - </td>
-            <td> - </td>
-          </tr>
+          
+            
+              <tr th:each="i: ${#numbers.sequence(1, 7)}">
+                  <th scope="row" th.text="${current}">Día</th>
+                 <th:block  th:each="k: ${#numbers.sequence(1, 4)}">
+                  <td th:replace="fragments/wpCell :: td"></td>
+                 </th:block> 
+              </tr>
+            </th:block>
         </tbody>
       </table>
   
