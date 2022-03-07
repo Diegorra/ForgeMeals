@@ -3,6 +3,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -21,9 +23,20 @@ public class Order{
     private User user;
     private State state;
     private String direction;
+    private BigDecimal price;
 
     @OneToMany
     @JoinColumn(name="OrderRecipe_id")
     private List<OrderRecipe> recipes = new ArrayList<>();
+
+    public void actPrecio(){
+        
+        BigDecimal precio = BigDecimal.valueOf(0);
+        for(OrderRecipe r:recipes){
+            precio = precio.add(r.getRecipe().getPrice().multiply(BigDecimal.valueOf(r.getQuantity())));
+        }
+
+        this.price = precio;
+    }
 
 }
