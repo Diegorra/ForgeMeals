@@ -68,12 +68,12 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-
 	@GetMapping("/profile")
 	public String profile(Model model){return "profile";}
 
 	@GetMapping("/checkout")
 	public String checkout(Model model){
+
 		int cant = 4;
 		List<OrderRecipe> recipes = new ArrayList<>();
 		List<RecipeIngredient> ingredients = new ArrayList<>();
@@ -87,11 +87,16 @@ public class UserController {
 		recipes.add(new OrderRecipe(new Recipe("Pasta Carbonara", "https://www.elespectador.com/resizer/VDIYcF2ol0HmQ3bC9SvoI7R23Es=/920x613/filters:format(jpeg)/cloudfront-us-east-1.images.arcpublishing.com/elespectador/TMTI6JW2CZETZOJTCUN3MQPHIY.jpg", new BigDecimal("7.99")),1));
 		recipes.add(new OrderRecipe(new Recipe("Perrito Caliente","https://imag.bonviveur.com/perrito-caliente.jpg", new BigDecimal("1.99")),5));
 
+		Order order = new Order();
+		order.setRecipes(recipes);
+		order.actPrecio();
+		System.out.print(order.getPrice());
 		for(OrderRecipe recipe :  recipes){
 			recipe.getRecipe().setIngredients(ingredients);
 		}
-		model.addAttribute("cantidad", cant);
-		model.addAttribute("articles", recipes);
+
+		model.addAttribute("order", order);
+
 		return "checkout";
 	}
 
@@ -345,5 +350,7 @@ public class UserController {
 		return "{\"result\": \"message sent.\"}";
 	}
 
+
+	
 
 }
