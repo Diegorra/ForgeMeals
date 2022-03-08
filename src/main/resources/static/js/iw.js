@@ -59,28 +59,30 @@ const ws = {
 
 /**
  * Sends an "ajax" request using Fetch. Sends JSON and expects JSON back.
- * 
- * @param {string} url 
+ *
+ * @param {string} url
  * @param {string} method (GET|POST)
  * @param {*} data, typically a JSON-izable object, like a Message
- * 
- * @return {Promise}, which you should chain with `.then()` to manage responses, 
- *             and with `.catch()` to manage possible errors. 
+ * @param {*} headers, to be used instead of defaults, if specified. To send NO headers,
+ *  use {}. To send defaults, specify no value, or use false
+ *
+ * @return {Promise}, which you should chain with `.then()` to manage responses,
+ *             and with `.catch()` to manage possible errors.
  *             Errors will be notified as
  *  {
- *     url: <that you were accessing>, 
+ *     url: <that you were accessing>,
  *     data: <data you sent>,
- *     status: <code, such as 403>, 
+ *     status: <code, such as 403>,
  *     text: <describing the error>
  *  }
  */
-function go(url, method, data = {}) {
+function go(url, method, data = {}, headers = false) {
     let params = {
         method: method, // POST, GET, POST, PUT, DELETE, etc.
-        headers: {
+        headers: headers === false ? {
             "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify(data)
+        } : headers,
+        body: data instanceof FormData ? data : JSON.stringify(data)
     };
     if (method === "GET") {
         // GET requests cannot have body; I could URL-encode, but it would not be used here

@@ -5,6 +5,8 @@ VALUES (1, TRUE, 'ADMIN,USER', 'a',
 INSERT INTO IWUser (id, enabled, roles, username, password)
 VALUES (2, TRUE, 'USER', 'b',
     '{bcrypt}$2a$10$2BpNTbrsarbHjNsUWgzfNubJqBRf.0Vz9924nRSHBqlbPKerkgX.W');
+-- start id numbering from a value that is larger than any assigned above
+ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 1024;
 
 INSERT INTO "PUBLIC"."RECIPE" VALUES
 (1, NULL, 'Pizza', 3.00, 'https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg', NULL),
