@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -109,8 +110,17 @@ public class UserController {
 	@GetMapping("/weekplan")
 	public String weekplan(Model model){return "weekPlan";}
 
+
 	@GetMapping("/addRecipe")
 	public String newRecipe(Model model){return "/Forms/recipeForm";}
+	
+	@ResponseBody
+	@PostMapping("/addRecipe")
+	public String newRecipe(Model model, @RequestBody JsonNode data){
+		log.info(data.get("description"));
+		return "{}";
+		
+	}
 
 
 
