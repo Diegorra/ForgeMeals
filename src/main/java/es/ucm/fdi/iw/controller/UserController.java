@@ -69,8 +69,12 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@GetMapping("/profile")
-	public String profile(Model model){return "profile";}
+	@GetMapping("/{id}/profile")
+	public String profile(@PathVariable long id, Model model, HttpSession session){
+		User target = entityManager.find(User.class, id);
+        model.addAttribute("user", target);
+		return "profile";
+	}
 
 	@GetMapping("/checkout")
 	public String checkout(Model model){
