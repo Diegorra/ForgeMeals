@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragments/head :: header" />
+    <title>Recipe</title>
+</head>
+<body class="d-flex flex-column h-100">
+    <header th:replace="fragments/nav.html :: nav"></header>
+        <h1>Receta: <em th:text="${recipe.id}">id</em></h1>
+        <h2>Usuario: <em th:text="${recipe.author}">user</em></h2>
+    <!--
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <h6 class="card-title">Ingredientes</h6>
+
+                <ul>
+                    <div th:each="ingredient: ${recipe.ingredients}">
+                        <li th:text="${ingredient.ingredient.name}"></li>
+                    </div>
+                </ul>
+            </li>
+            <li class="list-group-item">
+                <h6 class="card-title">Preparación</h6>
+                <p class="card-text" th:text="${recipe.description}">...</p>
+            </li>
+        </ul>
+    -->
+    <th:block th:replace="fragments/footer.html :: footer" />
+</body>
+</html>

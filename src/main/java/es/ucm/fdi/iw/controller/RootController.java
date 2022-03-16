@@ -6,20 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import java.math.BigDecimal;
-import java.net.http.WebSocket.Listener;
-import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.iw.model.Recipe;
-import es.ucm.fdi.iw.model.RecipeIngredient;
-import es.ucm.fdi.iw.model.Ingredient;
-import es.ucm.fdi.iw.model.OrderRecipe;
 
 import javax.persistence.EntityManager;
-import javax.persistence.SequenceGenerator;
 import javax.transaction.Transactional;
 
 /**
@@ -62,6 +55,14 @@ public class RootController {
 */
         model.addAttribute("recipes", recipes);
         return "index";
+    }
+
+    @GetMapping(value= "/recipe/{id}")
+    public String recipeInfo(@PathVariable Long id, Model model){
+	    Recipe recipe = (Recipe) entityManager.createQuery("select r from Recipe r where r.id = :id", Recipe.class).setParameter("id", id).getSingleResult();
+	    System.out.println(recipe.getAuthor());
+	    model.addAttribute("recipe", recipe);
+	    return "recipe";
     }
 
 }
