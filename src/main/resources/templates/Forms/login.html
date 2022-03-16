@@ -14,34 +14,34 @@
             </svg>
         </button>
     </a>
-    <main class="flex-shrink-0">
-        <div class="container"  style="display: flex; justify-content: center; position: fixed; left: 0; right:0; top: 10vh; bottom:0;">
-            <div class="card bg-light" style="border-radius: 15px; width: max(35%, 250px); height: 50vh;">
-                <article class="card-body mx-auto"  >
 
-                        <h2 class="fcard-title mt-3 text-center">Please sign in</h2>
-                        <hr/>
-                    <form class="form-signin" method="post" th:action="@{/login}" style="width: max(35%, 250px)">
-                        <p>
-                            <label for="username" class="visually-hidden">Username</label>
-                            <input type="text" id="username" name="username" class="form-control" placeholder="Username"
-                                required="required">
-                        </p>
-                        <p>
-                            <label for="password" class="visually-hidden">Password</label>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                                required="required">
-                        </p>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    </form>
-                    <article class="card-body mx-auto" style="max-width: 400px;">
-                            <p class="card-title mt-3 text-center">Don't you have an account?<a th:action="@{/register}" href="/register"> Register </a></p>
-                    </article>
-                </article>
-            </div>
+    <div class="container"  style="display: flex; justify-content: center; position: fixed; left: 0; right:0; top: 10vh; bottom:0;">
+        <div class="card bg-light" style="border-radius: 15px; width: max(35%, 250px); height: 50vh;">
+            <article class="card-body mx-auto">
+                <h2 class="card-title mt-3 text-center">Please sign in</h2>
+                <hr/>
+                <form method="post" th:action="@{/login}" style="width: max(35%, 250px)">
+                    <div class="mb-3">
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                            required="required">
+                    </div>
+
+                    <p></p>
+
+                    <div class="mb-3">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                            required="required">
+                    </div>
+
+                    <p></p>
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                </form>
+
+                <p style="transform: translateY(30px);" class="text-center">Don't you have an account?<a th:action="@{/register}" href="/register"> Register </a></p>
+            </article>
         </div>
-    </main>
-
+    </div>
 
 </body>
 

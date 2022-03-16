@@ -6,26 +6,94 @@
     <title>Recipe</title>
 </head>
 <body class="d-flex flex-column h-100">
-    <header th:replace="fragments/nav.html :: nav"></header>
-        <h1>Receta: <em th:text="${recipe.id}">id</em></h1>
-        <h2>Usuario: <em th:text="${recipe.author}">user</em></h2>
-    <!--
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <h6 class="card-title">Ingredientes</h6>
+    <header th:replace="fragments/nav.html :: nav" />
 
-                <ul>
-                    <div th:each="ingredient: ${recipe.ingredients}">
-                        <li th:text="${ingredient.ingredient.name}"></li>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Post content-->
+                <article>
+                    <!-- Post header-->
+                    <header class="mb-4">
+                        <!-- Post title-->
+                        <h1 class="fw-bolder mb-1" th:text="${recipe.name}">Welcome to Blog Post!</h1>
+                        <!-- Post meta content-->
+                        <div class="text-muted fst-italic mb-2">Posted on January 1, 2021 by <em th:text="${recipe.author}">ForgeMeals</em></div>
+                        <!-- Post categories-->
+                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Foodie</a>
+                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Healthy</a>
+                    </header>
+                    <!-- Preview image figure-->
+                    <figure class="mb-4"><img class="img-fluid rounded" th:src="${recipe.src}" alt="..."></figure>
+                    <!-- Post content-->
+                    <section class="mb-5">
+                        <h2 class="fw-bolder mb-4 mt-5">Ingredientes</h2>
+                        <div th:each="ingredient: ${recipe.ingredients}">
+                            <li class="fs-5 mb-4" th:text="${ingredient}">Ingredients</li>
+                        </div>
+                        <hr>
+                        <h2 class="fw-bolder mb-4 mt-5">Preparación</h2>
+                        <p class="fs-5 mb-4" th:text="${recipe.description}">Description</p>
+                    </section>
+                </article>
+                <!-- Comments section-->
+                <section class="mb-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <!-- Comment form-->
+                            <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                            <!-- Comments-->
+                            <div class="d-flex mb-4" th:each="comment : ${comments}">
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
+                                <div class="ms-3">
+                                    <h6 class="fw-bolder mb-4 mt-5" th:text="${comment.author}"></h6>
+                                    <p th:text="${comment.text}">Comment</p>
+                                </div>
+                            </div>
+                            <!-- Single comment example-->
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
+                                <div class="ms-3">
+                                    <div class="fw-bold">Commenter Name</div>
+                                    When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </ul>
-            </li>
-            <li class="list-group-item">
-                <h6 class="card-title">Preparación</h6>
-                <p class="card-text" th:text="${recipe.description}">...</p>
-            </li>
-        </ul>
-    -->
+                </section>
+            </div>
+            <!-- Side widgets-->
+            <div class="col-lg-4">
+                <!-- Categories widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Categories</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#!">Easy</a></li>
+                                    <li><a href="#!">Enjoy</a></li>
+                                    <li><a href="#!">Delicious</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#!">Gluten</a></li>
+                                    <li><a href="#!">Frutos Secos</a></li>
+                                    <li><a href="#!">Carne</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Add to my Cart</div>
+                    <div class="card-body">Metemos los elementos del carrito y botón para proceder al pago?</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <th:block th:replace="fragments/footer.html :: footer" />
 </body>
 </html>

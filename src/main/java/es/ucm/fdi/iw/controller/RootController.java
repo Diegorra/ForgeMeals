@@ -1,5 +1,6 @@
 package es.ucm.fdi.iw.controller;
 
+import es.ucm.fdi.iw.model.Comments;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +60,10 @@ public class RootController {
 
     @GetMapping(value= "/recipe/{id}")
     public String recipeInfo(@PathVariable Long id, Model model){
-	    Recipe recipe = (Recipe) entityManager.createQuery("select r from Recipe r where r.id = :id", Recipe.class).setParameter("id", id).getSingleResult();
-	    System.out.println(recipe.getAuthor());
-	    model.addAttribute("recipe", recipe);
+	    Recipe recipe1 = entityManager.find(Recipe.class, id);
+	    //List<Comments> comments = entityManager.createQuery("select c from Comments c where c.recipe = :id", Comments.class).setParameter("id", id).getResultList();
+	    model.addAttribute("recipe", recipe1);
+	    //model.addAttribute("comments", comments);
 	    return "recipe";
     }
 

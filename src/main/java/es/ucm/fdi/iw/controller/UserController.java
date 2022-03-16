@@ -108,8 +108,8 @@ public class UserController {
 	@GetMapping("/payment")
 	public String payment(Model model){return "/Forms/payment";}
 
-	@GetMapping("/settings")
-	public String settings(Model model){return "settings";}
+	@GetMapping("/{id}//settings")
+	public String settings(@PathVariable long id, Model model, HttpSession session){return "settings";}
 
 	@GetMapping("/weekplan")
 	public String weekplan(Model model){return "weekPlan";}
@@ -217,8 +217,7 @@ public class UserController {
             }
 		}		
 		target.setUsername(edited.getUsername());
-		target.setFirstName(edited.getFirstName());
-		target.setLastName(edited.getLastName());
+
 
 		// update user session so that changes are persisted in the session, too
         if (requester.getId() == target.getId()) {

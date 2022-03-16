@@ -11,14 +11,10 @@
     <!--TODO-->
     <main class="container">
         <div class="d-flex align-items-center p-3 my-3 text-black bg-gray rounded shadow-sm position-relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                </svg>
+            <img th:src="${user.src}" height="52" class="rounded-circle">
 
                 <div class="lh-1">
-                     <h1 class="h6 mb-1 text-black lh-base"><span th:text="${user.username}">Paco</span></h1>
-                     <small><span th:text="${user.id}">id</span></small>
+                     <h1 class="h6 mb-1 text-black lh-base"><h1 th:text="${user.username}">Paco</h1></h1>
                 </div>
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-wrench-adjustable-circle-fill position-absolute top-25 end-0 me-2" viewBox="0 0 16 16">
@@ -39,19 +35,13 @@
         
         <div th:each="recipe: ${user.recipes}">
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h6 class="border-bottom pb-2 mb-0">
-                <span th:text="${recipe.name}">Nombre_Recetas</span>
-                </h6>
-                <!--Descripcion de receta-->
+                <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
+                <p></p>
             </div>
         </div>
         
-
-        
-        
     </main>
     
-    <!--Consulta:https://getbootstrap.com/docs/5.1/examples/offcanvas-navbar/-->
     <th:block th:replace="fragments/footer.html :: footer" />
 </body>
 

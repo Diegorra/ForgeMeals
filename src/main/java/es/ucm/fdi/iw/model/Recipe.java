@@ -13,6 +13,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@Table(name="Recipe")
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
