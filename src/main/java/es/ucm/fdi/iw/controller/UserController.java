@@ -108,7 +108,7 @@ public class UserController {
 	@GetMapping("/payment")
 	public String payment(Model model){return "/Forms/payment";}
 
-	@GetMapping("/{id}//settings")
+	@GetMapping("/{id}/settings")
 	public String settings(@PathVariable long id, Model model, HttpSession session){return "settings";}
 
 	@GetMapping("/weekplan")
