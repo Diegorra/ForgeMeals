@@ -28,12 +28,13 @@
            en vez de hacerlos con numbers.sequence, usamos una lista del modelo para coger cada dato
 
            El slide 25 de thymeleaf no funciona, pero quiero hacer eso con los días de la semana
-        -->
           
+        -->
+        
             
-              <tr th:each="i: ${#numbers.sequence(1, 7)}">
-                  <th scope="row" th.text="${current}">Día</th>
-                 <th:block  th:each="k: ${#numbers.sequence(1, 4)}">
+              <tr th:each="i: ${#numbers.sequence(0, 6)}"> <!-- dias de la semana-->
+                  <th scope="row" th:text="${current}" >Día</th>
+                 <th:block  th:each="k: ${#numbers.sequence(0, 3)}"> <!-- desayuno-comida-merienda-cena -->
                   <td th:replace="fragments/wpCell :: td"></td>
                  </th:block> 
               </tr>
