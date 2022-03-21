@@ -68,8 +68,10 @@
     but1.onclick = e_ing;
     function a_ing(){
         but1.disabled = false;
-        
-        con.append(document.getElementById("ing").cloneNode(true));
+        const cloned = document.getElementById("ing_orig").cloneNode(true)
+        cloned.id = "ing";
+        cloned.style.visibility = "visible";
+        con.append(cloned);
         
     }
     function e_ing(){
@@ -89,8 +91,6 @@
     sub_but.onclick = submit_recipe;
     function submit_recipe(e){
         e.preventDefault();
-        console.log("Entrado en funcion")
-        //console.log(document.querySelectorAll("ingredient").values());
         go("/user/addRecipe", 'POST', {
             description: document.getElementById("description").value,
             /*ingredient_names: document.querySelectorAll("ingredient").values(),
@@ -103,6 +103,14 @@
 
 
 </body>
+
+<div id="ing_orig" style="visibility: hidden;">
+    <input type="text" class="form-control" id="ingredient" placeholder="Introducir Ingredientes" />
+    <span class="input-group-addon"></span>
+    <input type="number" min="0" max="5000" id="cant_ing" class="form-control" placeholder="Introducir Cantidad" />
+    <hr class="my-4" style="width: 95%;">
+</div>
+
 </html>
 
 
