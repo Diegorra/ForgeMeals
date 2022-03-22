@@ -26,15 +26,13 @@
         <div class="nav-scroller bg-body shadow-sm">
               <nav class="nav nav-underline" aria-label="opcion">
                   <a class="nav-link link-dark" href="#">Mis recetas </a>
-                  <a class="nav-link" href="#">Recetas favoritas</a>
-                  <a class="nav-link" href="#">Carrito</a>
               </nav>
         </div>
         
-        <!--For de Recetas-->
-        
-        <div th:each="recipe: ${user.recipes}">
-            <div class="my-3 p-3 bg-body rounded shadow-sm">
+      
+        <div class = "grid row align-items-start">
+           <!--For de Recetas-->
+            <div th:each="recipe: ${user.recipes}">
                 <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
                 <p></p>
             </div>
