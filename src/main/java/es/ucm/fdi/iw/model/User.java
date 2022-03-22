@@ -52,6 +52,8 @@ public class User implements Transferable<User.Transfer> {
 
     @OneToMany
     private List<Recipe> recipes = new ArrayList<>();
+    @OneToMany
+    private List<WeekPlanMeal> meals = new ArrayList<>();
 
 	@OneToMany
 	@JoinColumn(name = "sender_id")
@@ -59,6 +61,29 @@ public class User implements Transferable<User.Transfer> {
 	@OneToMany
 	@JoinColumn(name = "recipient_id")	
 	private List<Message> received = new ArrayList<>();		
+    
+
+    // se llama al clickar botón + en una tabla weekplan.
+    public Boolean assignMeal(int dia, int hora, String receta){ // 0-6 = L-D, 0-3 = desayuno, comida, cena, snacks
+        WeekPlanMeal nuevo = new WeekPlanMeal();
+        if(!nuevo.intToWeekDay(dia) || !nuevo.intToTime(hora))
+            return false; // mejor una excepción
+        nuevo.setName(receta);    
+        // borrar lo que haya en esa celda
+        removeMeal(dia,hora);
+        meals.add(nuevo);
+        return true;
+    }
+
+    public void removeMeal(int dia, int hora){
+        for(WeekPlanMeal meal : meals){
+            if(meal.inCell(dia, hora)){
+                meals.remove(meal);
+            }
+        }
+    }
+
+    
 
     /**
      * Checks whether this user has a given role.
