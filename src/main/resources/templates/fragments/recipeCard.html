@@ -15,12 +15,12 @@
                     <a href="#" class="d-block link-dark text-decoration-none" id="avatar"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <!--Esta imagen sería dinámica-->
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img th:src="${recipe.author.src}" src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                 </div>
                 <div class="col-xl">
                     <!--Este campo sería dinámico-->
-                    <h5>UserName</h5>
+                    <h5 th:text="${recipe.author.username}">UserName</h5>
                 </div>
 
                 <div class="dropdown text-end col-xl">

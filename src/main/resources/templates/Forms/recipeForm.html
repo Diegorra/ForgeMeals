@@ -57,7 +57,7 @@
 
  <!-- Websockets -->
  <script th:src="@{/js/stomp.js}" src="js/stomp.js"></script>
- <script th:src="@{/js/iw.js}" src="js/iw.js"></script>
+ <!--script th:src="@{/js/iw.js}" src="js/iw.js"></script-->
 
 <script>
 
@@ -93,8 +93,10 @@
         e.preventDefault();
         go("/user/addRecipe", 'POST', {
             description: document.getElementById("description").value,
-            /*ingredient_names: document.querySelectorAll("ingredient").values(),
-            ingredient_cant: document.querySelectorAll("cant_ing").values()*/
+            image: document.getElementById("src").value,
+            name: document.getElementById("name").value,
+            ingredientNames: document.querySelectorAll("ingredient").values(),
+            ingredientCant: document.querySelectorAll("cant_ing").values()
         })
         .then(d=>console.log("Happy",d))
         .catch(e => console.log("sad", e))
