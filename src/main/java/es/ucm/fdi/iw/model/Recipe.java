@@ -11,6 +11,7 @@ import java.util.*;
 
 @Entity
 @Data
+
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name="Recipe")
