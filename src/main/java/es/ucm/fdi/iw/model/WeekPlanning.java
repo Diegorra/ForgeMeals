@@ -1,4 +1,4 @@
-package es.ucm.fdi.iw.model;
+/*package es.ucm.fdi.iw.model;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.*;
@@ -42,4 +42,4 @@ public class WeekPlanning{
         return "none";
     }
    
-}
+}*/

@@ -1,17 +1,21 @@
 package es.ucm.fdi.iw.controller;
 
 import es.ucm.fdi.iw.model.Comments;
+import es.ucm.fdi.iw.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 import es.ucm.fdi.iw.model.Recipe;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -25,6 +29,9 @@ public class RootController {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 	private static final Logger log = LogManager.getLogger(RootController.class);
 
 	@GetMapping("/login")
@@ -33,7 +40,21 @@ public class RootController {
     }
 
     @GetMapping("/register")
-    public String register(Model model){return "/Forms/register"; }
+    public String register(Model model){
+	    User newUser = new User();
+	    model.addAttribute("newUser", newUser);
+	    return "/Forms/register"; }
+
+    @PostMapping("/register")
+    @Transactional
+    public String postRegister(@ModelAttribute("newUser") User newUser){
+	    newUser.setRoles("USER");
+	    newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+	    newUser.setSrc("https://i.pinimg.com/736x/fb/6f/99/fb6f99f760733ce2c47ee8f57668050b.jpg");
+	    newUser.setEnabled(true);
+	    entityManager.persist(newUser);
+	    return "/Forms/login";
+    }
 
     @GetMapping("/contact")
     public String contact(Model model){return "contact";}
