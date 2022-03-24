@@ -83,6 +83,14 @@ public class User implements Transferable<User.Transfer> {
         }
     }
 
+    public WeekPlanMeal getMealByCell(int dia, int hora){
+        for(WeekPlanMeal m : meals){
+            if(m.inCell(dia, hora))
+                return m;
+        }
+        return new WeekPlanMeal(); // vacío
+    }
+
     
 
     /**
