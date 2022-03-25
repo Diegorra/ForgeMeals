@@ -33,10 +33,11 @@
         
             
               <tr th:each="i: ${#numbers.sequence(0, 6)}"> <!-- dias de la semana-->
-                  <th scope="row" th:text="${current}" >Día</th>
-                 <th:block  th:each="k: ${#numbers.sequence(0, 3)}"> <!-- desayuno-comida-merienda-cena -->
-                  <td th:replace="fragments/wpCell :: td"></td>
-                 </th:block> 
+                  
+                <th scope="row" th:text="${current}" >Día</th>
+                <th:block  th:each="k: ${#numbers.sequence(0, 3)}"> <!-- desayuno-comida-merienda-cena -->
+                  <td th:replace="fragments/wpCell.html :: td(meal = ${meals.get(1)}"></td> <!-- me da error la sintaxis del selector, quiero pasar el meal de esa celda a wpCell-->
+                </th:block> 
               </tr>
             </th:block>
         </tbody>

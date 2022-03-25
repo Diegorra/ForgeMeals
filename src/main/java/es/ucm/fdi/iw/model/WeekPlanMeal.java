@@ -1,25 +1,32 @@
 package es.ucm.fdi.iw.model;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Data
-public class WeekPlanMeal{
-    
-    public enum WeekDay{L, M, X, J, V, S, D};
-    public enum Time{ B, L, D, S}; // Breakfast, Lunch, Dinner, Snack
 
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Table(name="WeekPlanMeal")
+public class WeekPlanMeal{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
     
-    // TODO esto no se inicializa así, se pasa por constructor. Pero para ir debuggeando
+    public enum WeekDay{L, M, X, J, V, S, D};
+    public enum Time{ B, L, D, S}; // Breakfast, Lunch, Dinner, Snack
+
+    
     //@OneToOne
-    private String name;// = new OrderRecipe(new Recipe("comidita ñam", " ", null), null);  // para obtener el nombre recipe.getRecipe().getName();
-    private WeekDay weekday;
-    private Time time;
+    @NonNull private String name; // TODO en verdad seria un Recipe. Para obtener el nombre recipe.getRecipe().getName();
+    @NonNull private WeekDay weekday;
+    @NonNull private Time time;
 
     public Boolean intToWeekDay(int dia){
         // en vd es un setter
