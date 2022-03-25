@@ -1,6 +1,5 @@
 package es.ucm.fdi.iw.controller;
 
-import es.ucm.fdi.iw.model.Comments;
 import es.ucm.fdi.iw.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +17,7 @@ import es.ucm.fdi.iw.model.Recipe;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 /**
@@ -79,13 +79,20 @@ public class RootController {
         return "index";
     }
 
+    @GetMapping("/logout")
+    public String logout(Model model, HttpSession session){
+        session.invalidate();
+        index(model);
+        return "index";
+    }
+
     @GetMapping(value= "/recipe/{id}")
     public String recipeInfo(@PathVariable Long id, Model model){
 	    Recipe recipe1 = entityManager.find(Recipe.class, id);
 	    //List<Comments> comments = entityManager.createQuery("select c from Comments c where c.recipe = :id", Comments.class).setParameter("id", id).getResultList();
 	    model.addAttribute("recipe", recipe1);
 	    //model.addAttribute("comments", comments);
-	    return "recipe";
+	    return "/fragments/recipe";
     }
 
 }
