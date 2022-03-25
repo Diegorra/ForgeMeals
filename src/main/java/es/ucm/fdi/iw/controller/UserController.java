@@ -71,7 +71,7 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@GetMapping("/{id}/profile")
+	@GetMapping("/{id}")
 	public String profile(@PathVariable long id, Model model, HttpSession session){
 		User target = entityManager.find(User.class, id);
         model.addAttribute("user", target);
@@ -110,8 +110,8 @@ public class UserController {
 	@GetMapping("/payment")
 	public String payment(Model model){return "/Forms/payment";}
 
-	@GetMapping("/{id}/settings")
-	public String settings(@PathVariable long id, Model model, HttpSession session){return "settings";}
+	@GetMapping("/settings")
+	public String settings(){return "settings";}
 
 	@GetMapping("/weekplan")
 	public String weekplan(Model model){
@@ -198,16 +198,6 @@ public class UserController {
         byte[] token = new byte[byteLength];
         secureRandom.nextBytes(token);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(token); //base64 encoding
-    }
-
-    /**
-     * Landing page for a user profile
-     */
-	@GetMapping("{id}")
-    public String index(@PathVariable long id, Model model, HttpSession session) {
-        User target = entityManager.find(User.class, id);
-        model.addAttribute("user", target);
-        return "profile";
     }
 
     /**

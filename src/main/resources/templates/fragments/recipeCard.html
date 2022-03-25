@@ -12,10 +12,9 @@
         <div class="card-header">
             <div class="row row-cols-auto">
                 <div class="col-xl">
-                    <a href="#" class="d-block link-dark text-decoration-none" id="avatar"
-                       data-bs-toggle="dropdown" aria-expanded="false">
+                    <a th:href="'/user/' + ${recipe.author.id}" class="d-block link-dark text-decoration-none" id="avatar">
                         <!--Esta imagen sería dinámica-->
-                        <img th:src="${recipe.author.src}" src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img th:src="${recipe.author.src}" th:attr="postid=${recipe.author.id}" src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                 </div>
                 <div class="col-xl">
