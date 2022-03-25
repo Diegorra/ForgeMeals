@@ -10,7 +10,7 @@ Feature: login en servidor
 #    When submit().click("input[name=commit]")
 #    Then match html('.flash-error') contains 'Incorrect username or password.'
 #
-
+"""
   Scenario: login malo en plantilla
     Given driver baseUrl + '/user/2'
     And input('#username', 'dummy')
@@ -42,3 +42,20 @@ Feature: login en servidor
     Then waitForUrl(baseUrl + '/admin')
     When submit().click("{button}logout")
     Then waitForUrl(baseUrl + '/login')
+"""
+  @login_diego
+  Scenario: login correcto como diego
+    Given driver baseUrl + '/login'
+    And input('#username', 'diego')
+    And input('#password', '1234')
+    When submit().click(".form-signin button")
+    Then waitForUrl(baseUrl + '/admin')
+
+  Scenario: registro de usuario
+  Given driver baseUrl + '/register'
+  And input('#username', 'diego')
+  And input('#email', 'diego@ucm.es')
+  And input('#password', '1234')
+  When submit().click(".form-signin button")
+  Then waitForUrl(baseUrl + '/login')
+  Then @login_diego
