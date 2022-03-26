@@ -18,6 +18,9 @@
                     <h1 style="margin-right: 2em">ForgeMeals</h1>
                 </a>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <th:block th:if="${session.u}">
+                        <li><a th:href="'/user/weekplan/' + ${session.u.id}" class="nav-link px-2 link-dark" >WeekPlan</a></li>
+                    </th:block> 
                     <li><a href="/user/addRecipe" class="nav-link px-2 link-dark">Upload Recipe</a></li>
                     <li><a href="/user/checkout" class="nav-link px-2 link-dark">CheckOut</a></li>
                 </ul>
@@ -37,7 +40,6 @@
                             <li><a class="dropdown-item" th:href="'/user/' + ${session.u.id}">Profile</a></li>
                             <li><a class="dropdown-item" href="#">Favorite recipes</a></li>
                             <li><a class="dropdown-item" href="#">Shopping cart</a></li>
-                            <li><a class="dropdown-item" th:href="'/user/weekplan/' + ${session.u.id}">WeekPlan</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                         </ul>
