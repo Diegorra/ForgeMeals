@@ -21,25 +21,17 @@
         </thead>
        
         <tbody>
-          <!-- https://www.baeldung.com/spring-thymeleaf-fragments#parametrized-fragments 
-          Quiero hacerlo con puras variables java así que luego del :: se pondría cellWP(field='Desayuno',value='Variable') y así
-
-          Hacer lista de dias de la semana para usar en vez de día
-           en vez de hacerlos con numbers.sequence, usamos una lista del modelo para coger cada dato
-
-           El slide 25 de thymeleaf no funciona, pero quiero hacer eso con los días de la semana
-          
-        -->
-        
-            
-              <tr th:each="i: ${#numbers.sequence(0, 6)}"> <!-- dias de la semana-->
-                  
-                <th scope="row" th:text="${current}" >Día</th>
-                <th:block  th:each="k: ${#numbers.sequence(0, 3)}"> <!-- desayuno-comida-merienda-cena -->
-                  <td th:replace="fragments/wpCell.html :: td(meal = ${meals.get(1)}"></td> <!-- me da error la sintaxis del selector, quiero pasar el meal de esa celda a wpCell-->
-                </th:block> 
-              </tr>
-            </th:block>
+          <!-- https://www.baeldung.com/spring-thymeleaf-fragments#parametrized-fragments  -->
+            <tr th:each="day : ${weekdays}">
+              <th scope="row" th:text="${day}"> Día </th>
+              <td th:each="time : ${daytimes}">
+                <div th:with="meal=${user.getMealByCell(day,time)}">
+                  <p th:text="${meal.getName()}"> Nombre comida </p>
+                  <button type="button" style="vertical-align: bottom; float:right; padding: 0px; border:0px; margin:0.5px;" class="btn btn-sm"><img style="max-width: 17px; max-height: 17px; margin: 0px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/480px-Edit_icon_%28the_Noun_Project_30184%29.svg.png"></i></button>  
+                  <button type="button" style="vertical-align: bottom; float:right; padding: 0px; border:0px; margin:0.5px;" class="btn btn-sm"><img style="max-width: 17px; max-height: 17px; margin: 0px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/No_icon_%28white_X_on_red_circle%29.svg/2048px-No_icon_%28white_X_on_red_circle%29.svg.png"></i></button>
+                </div>
+              </td>
+            </tr>
         </tbody>
       </table>
   

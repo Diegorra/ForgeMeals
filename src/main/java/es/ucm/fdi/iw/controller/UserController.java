@@ -3,7 +3,7 @@ package es.ucm.fdi.iw.controller;
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.*;
 import es.ucm.fdi.iw.model.User.Role;
-import es.ucm.fdi.iw.model.WeekPlanMeal.Time;
+import es.ucm.fdi.iw.model.WeekPlanMeal.DayTime;
 import es.ucm.fdi.iw.model.WeekPlanMeal.WeekDay;
 
 import org.apache.logging.log4j.LogManager;
@@ -113,27 +113,28 @@ public class UserController {
 	@GetMapping("/settings")
 	public String settings(){return "settings";}
 
-	@GetMapping("/weekplan")
-	public String weekplan(Model model){
+	
+	@GetMapping("weekplan/{id}")
+	public String weekplan(@PathVariable long id,  Model model){
 		
 		// inicialmente pasar lista vacia al modelo
 		List<WeekPlanMeal> meals =  new ArrayList<>();//entityManager.createQuery("select r from WeekPlanMeal r", WeekPlanMeal.class).getResultList();	
+		User u = entityManager.find(User.class, id);
 		
 		
-		meals.add(new WeekPlanMeal("Pizza", WeekDay.L, Time.B));
-		meals.add(new WeekPlanMeal("Comidita", WeekDay.L, Time.L));
-		meals.add(new WeekPlanMeal("Sushi", WeekDay.L, Time.D));
-		meals.add(new WeekPlanMeal("ciruelas", WeekDay.L, Time.S));
-
-        /*for (WeekPlanMeal m : meals) {
-            entityManager.persist(m);
-        }*/
+		u.assignMeal("Pizza", WeekDay.Lunes, DayTime.Desayuno);
+		u.assignMeal("Comidita", WeekDay.Lunes, DayTime.Comida);
+		u.assignMeal("Sushi", WeekDay.Lunes, DayTime.Cena);
+		u.assignMeal("ciruelas", WeekDay.Lunes, DayTime.Snack);
+		
+		model.addAttribute("weekdays", WeekPlanMeal.WeekDay.values());
+		model.addAttribute("daytimes", WeekPlanMeal.DayTime.values()); 
+		model.addAttribute("user", u); // importante que venga de la BD; no vale que sea el de la sesión
 
 		// pasar a weekplan lista asociada al usuario en funcion de la sesion => coger id usuario logeado y su lista de weekplan con entityManager
 		// for por cada celda wpCell con form/JS para ver selección de botones + o x
 		// post mapping de weekplan postweekplan
 		
-		model.addAttribute("meals", meals);
 		return "weekplan";
 	}
 

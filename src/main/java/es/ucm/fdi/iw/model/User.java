@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import es.ucm.fdi.iw.model.WeekPlanMeal.DayTime;
+import es.ucm.fdi.iw.model.WeekPlanMeal.WeekDay;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,15 +67,14 @@ public class User implements Transferable<User.Transfer> {
     
 
     // se llama al clickar botón + en una tabla weekplan.
-    public Boolean assignMeal(int dia, int hora, String receta){ // 0-6 = L-D, 0-3 = desayuno, comida, cena, snacks
-        WeekPlanMeal nuevo = new WeekPlanMeal();
-        if(!nuevo.intToWeekDay(dia) || !nuevo.intToTime(hora))
-            return false; // mejor una excepción
-        nuevo.setName(receta);    
-        // borrar lo que haya en esa celda
+    public Boolean assignMeal(String receta, WeekDay dia, DayTime hora ){ 
+        WeekPlanMeal nuevo = new WeekPlanMeal(receta, dia, hora);
         removeMeal(dia,hora);
         meals.add(nuevo);
         return true;
+    }
+
+    private void removeMeal(WeekDay dia, DayTime hora) {
     }
 
     public void removeMeal(int dia, int hora){
@@ -83,9 +85,9 @@ public class User implements Transferable<User.Transfer> {
         }
     }
 
-    public WeekPlanMeal getMealByCell(int dia, int hora){
+    public WeekPlanMeal getMealByCell(WeekDay dia, DayTime hora){
         for(WeekPlanMeal m : meals){
-            if(m.inCell(dia, hora))
+            if(m.getWeekday() == dia && m.getTime() == hora) // antes if(m.inCell(dia, hora))
                 return m;
         }
         return new WeekPlanMeal(); // vacío
