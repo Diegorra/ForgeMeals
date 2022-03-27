@@ -146,8 +146,10 @@ public class UserController {
 	@ResponseBody
 	@Transactional
 	@PostMapping("/addRecipe")
-	public String newRecipe(Model model, @RequestBody JsonNode data){
+	public String newRecipe(Model model, @RequestBody JsonNode data, HttpSession session){
 		Recipe recipeNew = new Recipe();
+		User requester = (User)session.getAttribute("u");
+
 
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
 		JsonNode it = data.get("ingredientNames");
@@ -169,7 +171,7 @@ public class UserController {
 		recipeNew.setIngredients(ingredientes);
 		recipeNew.setSrc(data.get("image").textValue());
 		recipeNew.setDescription(data.get("description").textValue());
-		recipeNew.setAuthor(entityManager.find(User.class, (long)1));
+		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
 		recipeNew.setName(data.get("name").textValue());		
 		recipeNew.setPrice(BigDecimal.TEN);
