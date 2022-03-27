@@ -44,6 +44,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -147,16 +148,33 @@ public class UserController {
 	@PostMapping("/addRecipe")
 	public String newRecipe(Model model, @RequestBody JsonNode data){
 		Recipe recipeNew = new Recipe();
+
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
-		
+		JsonNode it = data.get("ingredientNames");
+		JsonNode it2 = data.get("ingredientCant");
+		for(int i = 0; i < it.size(); i++){
+		//for(JsonNode ingrediente: it){
+			
+			List<Ingredient> is = entityManager.createNamedQuery("Ingredient.byName", Ingredient.class)
+				.setParameter("iname", it.get(i).asText())
+				.getResultList();
+			
+			
+			if(is.size() == 0) continue;
+			RecipeIngredient ingredienteCompleto = new RecipeIngredient();
+			ingredienteCompleto.setIngredient(is.get(0));
+			ingredienteCompleto.setQuantity(it2.get(i).asInt());
+			ingredientes.add(ingredienteCompleto);
+		}
+		recipeNew.setIngredients(ingredientes);
 		recipeNew.setSrc(data.get("image").textValue());
-		//recipeNew.setDescription(data.get("description").textValue());
+		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, (long)1));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
 		recipeNew.setName(data.get("name").textValue());		
 		recipeNew.setPrice(BigDecimal.TEN);
 		entityManager.persist(recipeNew);
-		entityManager.flush();
+		//entityManager.flush();
 		
 		return "{}";
 		

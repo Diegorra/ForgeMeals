@@ -28,7 +28,7 @@ public class Recipe {
     @NonNull private String src;
 
     @NonNull
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="RecipeIngredient_id")
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 

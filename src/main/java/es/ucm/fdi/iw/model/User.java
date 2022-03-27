@@ -58,6 +58,9 @@ public class User implements Transferable<User.Transfer> {
     @OneToMany
     private List<WeekPlanMeal> meals = new ArrayList<>();
 
+    @OneToMany 
+    private List<OrderRecipe> checkout = new ArrayList<>();
+
 	@OneToMany
 	@JoinColumn(name = "sender_id")
 	private List<Message> sent = new ArrayList<>();
