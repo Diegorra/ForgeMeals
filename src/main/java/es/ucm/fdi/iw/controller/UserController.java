@@ -115,12 +115,12 @@ public class UserController {
 	public String settings(){return "settings";}
 
 	
-	@GetMapping("weekplan/{id}")
-	public String weekplan(@PathVariable long id,  Model model){
+	@GetMapping("/weekplan")
+	public String weekplan(Model model, HttpSession session){
 		
 		// inicialmente pasar lista vacia al modelo
-		List<WeekPlanMeal> meals =  new ArrayList<>();//entityManager.createQuery("select r from WeekPlanMeal r", WeekPlanMeal.class).getResultList();	
-		User u = entityManager.find(User.class, id);
+		User requester = (User)session.getAttribute("u");
+		User u = entityManager.find(User.class, requester.getId());
 		
 		
 		u.assignMeal("Pizza", WeekDay.Lunes, DayTime.Desayuno);
