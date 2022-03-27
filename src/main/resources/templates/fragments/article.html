@@ -24,14 +24,15 @@
                         </ul>
 
                         <label>Cant.</label>
-                        <input type="number" min="0" max="5000" class="form-control" th:value="${article.quantity}" style="font-size: 12; width: auto;"> 
+                        <input type="number" min="0" id="cant" max="5000" class="form-control" th:value="${article.quantity}" style="font-size: 12; width: auto;"> 
                         <br>
-                        <button type="button" class="btn btn-danger">Elim.</button>
+                        <button type="button" id="elimButton" class="btn btn-danger">Elim.</button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <img th:src="${article.recipe.src}" class="img-fluid rounded-start" style="margin-top: 20px;border-style:solid;">
-                        <p th:inline="text" style="text-align: right;margin: 10px;">Precio: [[${article.recipe.price}]] €</p>  
+                        <p th:inline="text" id="ab" style="text-align: right;margin: 10px;">Precio: [[${article.recipe.price}]] €</p>  
+                        <p th:text="${article.recipe.price}" style="visibility: hidden;" id="priceRecipe"></p>
                 </div>
              </div>
         </div>

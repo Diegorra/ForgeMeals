@@ -8,6 +8,11 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@NamedQueries({
+    @NamedQuery(name="Ingredient.byName",
+            query="SELECT i FROM Ingredient i "
+                    + "WHERE i.name = :iname")
+})
 @Entity
 @Data
 @NoArgsConstructor

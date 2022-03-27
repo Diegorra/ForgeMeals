@@ -26,9 +26,7 @@
                         <div class="d-flex flex-row align-items-center" style="font-size: 30px;"><i class="fa fa-long-arrow-left"></i><span class="ml-2">Articulos</span></div>
                         <hr>
 
-                        <div th:inline="text" class="d-flex justify-content-between">Tienes [[${order.recipes.size()}]] articulos en el carrito
-                           
-                        </div>
+                        <div id="cantArticulos" class="d-flex justify-content-between"> </div>
                         <div th:each="article: ${order.recipes}">
                             <div class="d-flex justify-content-between align-items-center mt-3 p-2" id="article">
                                 <div class="cards" th:replace="fragments/article.html :: card(article = ${article})"></div>
@@ -40,11 +38,11 @@
             </div>
             <div class="col-md-6">
                 <div class="payment-info" style="margin-top: 30%;margin-left: 10%;">
-                    <h1 th:inline="text"> TOTAL: [[${order.price}]]€</h1>
+                    <h1 id= "precioTotal"> </h1>
                     <div style="margin-left: 10%;">
-                        <a href="/payment"> <button type="submit" class="btn btn-primary" style="font-size: 0.7cm;margin-top: 20px;width: 7cm;">Realizar Pedido</button></a>
+                        <a > <button type="submit" id="RealPedido" class="btn btn-primary" style="font-size: 0.7cm;margin-top: 20px;width: 7cm;">Realizar Pedido</button></a>
                         <p></p>
-                        <a href="/"> <button type="button" onclick="" class="btn btn-primary" style="background-color:white;color:black;border-color: black;font-size: 0.7cm; width: 7cm;">Seguir comprando</button> </a>
+                        <a href="/"> <button type="button" onclick="" id="SegComp" class="btn btn-primary" style="background-color:white;color:black;border-color: black;font-size: 0.7cm; width: 7cm;">Seguir comprando</button> </a>
             
                     </div>
                     
@@ -56,5 +54,60 @@
     </div>
     <th:block th:replace="fragments/footer.html :: footer" / style="margin-top: 2cm;">
 </body>
+
+
+<script>
+
+
+    let cantInput = document.querySelectorAll("#cant");
+    cantInput.forEach(e=>e.onchange = updateTotalPrice);
+    let elimButton = document.querySelectorAll("#elimButton");
+
+    updateTotalPrice();
+    updateNumberElements();
+
+    elimButton.forEach(e=>e.onclick = () => {
+        e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+        cantInput = document.querySelectorAll("#cant");
+        elimButton = document.querySelectorAll("#elimButton");
+        updateTotalPrice();
+        updateNumberElements();
+    });
+    const realButton = document.getElementById("RealPedido");
+    const segButton = document.getElementById("SegComp");
+    function updateTotalPrice(){
+        let a = document.querySelectorAll("#priceRecipe")
+        
+        let sum = 0;
+        for(let i = 0; i < a.length; i++){
+            sum += parseFloat(a[i].textContent)*cantInput[i].value
+        }
+        sum = Math.round(sum * 100) / 100
+        precioTotal = document.getElementById("precioTotal");
+        precioTotal.textContent = "TOTAL: "+ sum + "€"
+    }
+
+
+    function updateNumberElements(){
+        const nCant = cantInput.length
+        const artElem = document.getElementById("cantArticulos");
+        artElem.textContent = "Tienes " + nCant + " articulos en el carrito";
+    }
+
+    function submit_checkout(e) {
+        let b = document.getElementById("cant");
+        console.log(b.value);
+        let a = document.querySelectorAll("#cant");
+        console.log(a.length)
+        a.forEach(e => console.log(e.value));
+        //e.preventDefault();
+        
+        /*go("/user/checkout", 'POST', {
+            
+        })
+            .then(d => console.log("Happy", d))
+            .catch(e => console.log("sad", e))*/
+    }
+</script>
 
 </html>

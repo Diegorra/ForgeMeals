@@ -14,3 +14,6 @@ INSERT INTO "PUBLIC"."RECIPE" VALUES
 (3, 'Receta Pasta Carbonara', 'Pasta Carbonara', 7.99, 'https://www.elespectador.com/resizer/VDIYcF2ol0HmQ3bC9SvoI7R23Es=/920x613/filters:format(jpeg)/cloudfront-us-east-1.images.arcpublishing.com/elespectador/TMTI6JW2CZETZOJTCUN3MQPHIY.jpg', 2),
 (4, U&'Receta Pasta Bolo\00f1esa', U&'Pasta Bolo\00f1esa', 7.99, 'https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/05/espaguetis-a-la-bolonesa-1080x671.jpg', 2),
 (5, 'Receta Perrito Caliente', 'Perrito Caliente', 1.99, 'https://imag.bonviveur.com/perrito-caliente.jpg', 2);
+
+INSERT INTO "PUBLIC"."INGREDIENT" VALUES
+(1, NULL, NULL, 'Tomate', 3.99, 500, 'ml');     
