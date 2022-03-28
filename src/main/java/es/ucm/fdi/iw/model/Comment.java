@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-public class Comments {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
@@ -23,5 +23,7 @@ public class Comments {
     private Recipe recipe;
 
     private String text;
+
+    private int assessment;
 
 }
