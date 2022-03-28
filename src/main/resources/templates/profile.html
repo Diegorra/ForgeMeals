@@ -11,16 +11,13 @@
     <!--TODO-->
     <main class="container">
         <div class="d-flex align-items-center p-3 my-3 text-black bg-gray rounded shadow-sm position-relative">
-            <img th:src="${user.src}" height="52" class="rounded-circle">
+            <h1 style="margin-right: 0.5em">
+                <img th:src="${user.src}" height="52" class="rounded-circle">
+            </h1>
 
-                <div class="lh-1">
-                     <h1 class="h6 mb-1 text-black lh-base"><h1 th:text="${user.username}">Paco</h1></h1>
-                </div>
-
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-wrench-adjustable-circle-fill position-absolute top-25 end-0 me-2" viewBox="0 0 16 16">
-                    <path d="M6.705 8.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z"/>
-                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm-6.202-4.751 1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2a7.031 7.031 0 0 1-2.949-2.951ZM12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z"/>
-                </svg>
+            <div class="lh-1">
+                <h1 class="h6 mb-1 text-black lh-base"><h1 th:text="${user.username}">Paco</h1></h1>
+            </div>
         </div>
 
         <div class="nav-scroller bg-body shadow-sm">
@@ -28,13 +25,14 @@
                   <a class="nav-link link-dark" href="#">Mis recetas </a>
               </nav>
         </div>
-        
-      
-        <div class = "grid row align-items-start">
-           <!--For de Recetas-->
-            <div th:each="recipe: ${user.recipes}">
-                <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
-                <p></p>
+
+        <div class = "d-flex shadow-sm mt-4">
+            <div class = "container grid mt-4">
+            <!--For de Recetas-->
+                <div th:each="recipe: ${user.recipes}">
+                    <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
+                    <p></p>
+                </div>
             </div>
         </div>
         
