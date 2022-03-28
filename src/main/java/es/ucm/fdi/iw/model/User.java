@@ -54,6 +54,7 @@ public class User implements Transferable<User.Transfer> {
     private String roles; // split by ',' to separate roles
 
     @OneToMany
+    @JoinColumn(name="author_id")
     private List<Recipe> recipes = new ArrayList<>();
     @OneToMany
     private List<WeekPlanMeal> meals = new ArrayList<>();
