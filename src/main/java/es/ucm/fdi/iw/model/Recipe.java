@@ -32,6 +32,9 @@ public class Recipe {
     @JoinColumn(name="RecipeIngredient_id")
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+
     private String description;
     @NonNull private BigDecimal price;
 
