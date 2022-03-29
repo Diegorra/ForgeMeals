@@ -88,13 +88,6 @@ public class User implements Transferable<User.Transfer> {
             
     }
 
-    public void removeMeal(int dia, int hora){
-        for(WeekPlanMeal meal : meals){
-            if(meal.inCell(dia, hora)){
-                meals.remove(meal);
-            }
-        }
-    }
 
     public WeekPlanMeal getMealByCell(WeekDay dia, DayTime hora){
         for(WeekPlanMeal m : meals){
