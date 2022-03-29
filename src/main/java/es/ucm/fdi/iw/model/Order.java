@@ -26,7 +26,7 @@ public class Order{
     private BigDecimal price;
 
     @OneToMany
-    @JoinColumn(name="OrderRecipe_id")
+    @JoinColumn(name="recipe_id")
     private List<OrderRecipe> recipes = new ArrayList<>();
 
     public void actPrecio(){
