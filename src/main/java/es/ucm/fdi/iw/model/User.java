@@ -49,7 +49,7 @@ public class User implements Transferable<User.Transfer> {
 
     private String src;
     private String email;
-
+    
     private boolean enabled;
     private String roles; // split by ',' to separate roles
 
@@ -59,8 +59,8 @@ public class User implements Transferable<User.Transfer> {
     @OneToMany
     private List<WeekPlanMeal> meals = new ArrayList<>();
 
-    @OneToMany 
-    private List<OrderRecipe> checkout = new ArrayList<>();
+    
+ 
 
 	@OneToMany
 	@JoinColumn(name = "sender_id")

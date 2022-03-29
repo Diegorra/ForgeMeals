@@ -2,8 +2,9 @@
 <html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
     <th:block th:replace="fragments/head :: header" />
     <title>Checkout</title>
 </head>
@@ -13,44 +14,53 @@
     <header th:replace="fragments/nav.html :: nav"></header>
     <!--TODO-->
     <h1 style="margin-top: 40px; margin-left: 45%;">Carrito</h1>
-    
+
     <div class="bg">
 
-    <hr class="my-4 " style="width: 90%;margin-left: 5%;">
+        <hr class="my-4 " style="width: 90%;margin-left: 5%;">
+        <form method="post" th:action="@{/addRecipe}">
+            <div class="container mt-5 p-3 " style="background-color:white;border-radius: 1cm">
+                <div class="row no-gutters">
+                    <div class="col-md-6">
+                        <div class="product-details mr-2"
+                            style="border-style: solid; border-radius: 1cm; background-color: white;">
+                            <div style="margin: 1cm;">
+                                <div class="d-flex flex-row align-items-center" style="font-size: 30px;"><i
+                                        class="fa fa-long-arrow-left"></i><span class="ml-2">Articulos</span></div>
+                                <hr>
 
-    <div class="container mt-5 p-3 " style="background-color:white;border-radius: 1cm">
-        <div class="row no-gutters">
-            <div class="col-md-6">
-                <div class="product-details mr-2" style="border-style: solid; border-radius: 1cm; background-color: white;" >
-                    <div style="margin: 1cm;">
-                        <div class="d-flex flex-row align-items-center" style="font-size: 30px;"><i class="fa fa-long-arrow-left"></i><span class="ml-2">Articulos</span></div>
-                        <hr>
-
-                        <div id="cantArticulos" class="d-flex justify-content-between"> </div>
-                        <div th:each="article: ${order.recipes}">
-                            <div class="d-flex justify-content-between align-items-center mt-3 p-2" id="article">
-                                <div class="cards" th:replace="fragments/article.html :: card(article = ${article})"></div>
+                                <div id="cantArticulos" class="d-flex justify-content-between"> </div>
+                                <div th:each="article: ${order.recipes}">
+                                    <div class="d-flex justify-content-between align-items-center mt-3 p-2"
+                                        id="article">
+                                        <div class="cards"
+                                            th:replace="fragments/article.html :: card(article = ${article})"></div>
+                                    </div>
+                                    <hr class="my-4" style="width: 95%;">
+                                </div>
                             </div>
-                            <hr class="my-4" style="width: 95%;">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="payment-info" style="margin-top: 30%;margin-left: 10%;">
+                            <h1 id="precioTotal"> </h1>
+                            <div style="margin-left: 10%;">
+                                <a> <button type="submit" id="RealPedido" class="btn btn-primary"
+                                        style="font-size: 0.7cm;margin-top: 20px;width: 7cm;">Realizar
+                                        Pedido</button></a>
+                                <p></p>
+                                <a href="/"> <button type="button" onclick="" id="SegComp" class="btn btn-primary"
+                                        style="background-color:white;color:black;border-color: black;font-size: 0.7cm; width: 7cm;">Seguir
+                                        comprando</button> </a>
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="payment-info" style="margin-top: 30%;margin-left: 10%;">
-                    <h1 id= "precioTotal"> </h1>
-                    <div style="margin-left: 10%;">
-                        <a > <button type="submit" id="RealPedido" class="btn btn-primary" style="font-size: 0.7cm;margin-top: 20px;width: 7cm;">Realizar Pedido</button></a>
-                        <p></p>
-                        <a href="/"> <button type="button" onclick="" id="SegComp" class="btn btn-primary" style="background-color:white;color:black;border-color: black;font-size: 0.7cm; width: 7cm;">Seguir comprando</button> </a>
-            
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr class="my-4 " style="width: 90%;margin-left: 5%;">
+        </form>
+        <hr class="my-4 " style="width: 90%;margin-left: 5%;">
     </div>
     <th:block th:replace="fragments/footer.html :: footer" / style="margin-top: 2cm;">
 </body>
@@ -60,13 +70,13 @@
 
 
     let cantInput = document.querySelectorAll("#cant");
-    cantInput.forEach(e=>e.onchange = updateTotalPrice);
+    cantInput.forEach(e => e.onchange = updateTotalPrice);
     let elimButton = document.querySelectorAll("#elimButton");
 
     updateTotalPrice();
     updateNumberElements();
 
-    elimButton.forEach(e=>e.onclick = () => {
+    elimButton.forEach(e => e.onclick = () => {
         e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
         cantInput = document.querySelectorAll("#cant");
         elimButton = document.querySelectorAll("#elimButton");
@@ -75,20 +85,20 @@
     });
     const realButton = document.getElementById("RealPedido");
     const segButton = document.getElementById("SegComp");
-    function updateTotalPrice(){
+    function updateTotalPrice() {
         let a = document.querySelectorAll("#priceRecipe")
-        
+
         let sum = 0;
-        for(let i = 0; i < a.length; i++){
-            sum += parseFloat(a[i].textContent)*cantInput[i].value
+        for (let i = 0; i < a.length; i++) {
+            sum += parseFloat(a[i].textContent) * cantInput[i].value
         }
         sum = Math.round(sum * 100) / 100
         precioTotal = document.getElementById("precioTotal");
-        precioTotal.textContent = "TOTAL: "+ sum + "€"
+        precioTotal.textContent = "TOTAL: " + sum + "€"
     }
 
 
-    function updateNumberElements(){
+    function updateNumberElements() {
         const nCant = cantInput.length
         const artElem = document.getElementById("cantArticulos");
         artElem.textContent = "Tienes " + nCant + " articulos en el carrito";
@@ -101,12 +111,12 @@
         console.log(a.length)
         a.forEach(e => console.log(e.value));
         //e.preventDefault();
-        
-        /*go("/user/checkout", 'POST', {
+
+        go("/user/checkout", 'POST', {
             
         })
             .then(d => console.log("Happy", d))
-            .catch(e => console.log("sad", e))*/
+            .catch(e => console.log("sad", e))
     }
 </script>
 

@@ -38,5 +38,7 @@ public class Order{
 
         this.price = precio;
     }
-
+    public void addRecipe(OrderRecipe recipe){
+        this.recipes.add(recipe);
+    }
 }

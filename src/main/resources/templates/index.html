@@ -25,4 +25,20 @@
     <th:block th:replace="fragments/footer.html :: footer" />
 </body>
 
+<script>
+    let addButton = document.querySelectorAll("#addToCart");
+    addButton.forEach(e => {e.onclick = addRecipeToCart});
+    //addButton.onclick = addRecipeToCart
+    
+        function addRecipeToCart(e) {
+            console.log("pulsado");
+            e.preventDefault();
+            go("/user/addToCart", 'POST', {
+                receta: this.getAttribute("recipeId")
+            })
+                .then(d => console.log("Happy", d))
+                .catch(e => console.log("sad", e))
+        }
+</script>
+
 </html>

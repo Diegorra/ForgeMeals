@@ -38,4 +38,16 @@ public class Recipe {
     private String description;
     @NonNull private BigDecimal price;
 
+    public Recipe(Recipe anotherRecipe){
+        this.name = anotherRecipe.name;
+        this.author = anotherRecipe.author;
+        this.src = anotherRecipe.src;
+        for (RecipeIngredient ingredient : anotherRecipe.ingredients) {
+            this.ingredients.add(ingredient);
+        }
+        this.price = anotherRecipe.price;
+        this.description = anotherRecipe.description;
+    }
+
+
 }

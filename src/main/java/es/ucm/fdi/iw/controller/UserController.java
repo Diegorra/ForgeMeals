@@ -39,6 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.*;
+import java.lang.ProcessHandle.Info;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -80,31 +81,31 @@ public class UserController {
 	}
 
 	@GetMapping("/checkout")
-	public String checkout(Model model){
-
-		int cant = 4;
+	public String checkout(Model model, HttpSession session) {
+		Order order = (Order)session.getAttribute("order");
+		//User requester = (User)session.getAttribute("u");
+		if(order == null){
+			order = new Order();
+			session.setAttribute("order", order);
+		}
+		/*int cant = 4;
 		List<OrderRecipe> recipes = new ArrayList<>();
 		List<RecipeIngredient> ingredients = new ArrayList<>();
 		ingredients.add(new RecipeIngredient(new Ingredient("harina")));
 		ingredients.add(new RecipeIngredient(new Ingredient("huevo")));
 		ingredients.add(new RecipeIngredient(new Ingredient("maiz")));
 		ingredients.add(new RecipeIngredient(new Ingredient("patata")));
-
 		recipes.add(new OrderRecipe(new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3")),2));
 		recipes.add(new OrderRecipe(new Recipe("Hamburguesa", "https://okdiario.com/img/2021/05/28/hamburguesa-3-655x368.jpg", new BigDecimal("2.50")),3));
 		recipes.add(new OrderRecipe(new Recipe("Pasta Carbonara", "https://www.elespectador.com/resizer/VDIYcF2ol0HmQ3bC9SvoI7R23Es=/920x613/filters:format(jpeg)/cloudfront-us-east-1.images.arcpublishing.com/elespectador/TMTI6JW2CZETZOJTCUN3MQPHIY.jpg", new BigDecimal("7.99")),1));
 		recipes.add(new OrderRecipe(new Recipe("Perrito Caliente","https://imag.bonviveur.com/perrito-caliente.jpg", new BigDecimal("1.99")),5));
-
-		Order order = new Order();
 		order.setRecipes(recipes);
 		order.actPrecio();
 		System.out.print(order.getPrice());
 		for(OrderRecipe recipe :  recipes){
 			recipe.getRecipe().setIngredients(ingredients);
-		}
-
+		}*/
 		model.addAttribute("order", order);
-
 		return "checkout";
 	}
 
@@ -139,7 +140,7 @@ public class UserController {
 		return "weekplan";
 	}
 
-
+	
 	@GetMapping("/addRecipe")
 	public String newRecipe(Model model){return "/Forms/recipeForm";}
 	
@@ -182,7 +183,31 @@ public class UserController {
 		
 	}
 
+	@Transactional
+	@ResponseBody
+	@PostMapping("/addToCart")
+	public String addToCart(Model model, @RequestBody JsonNode data, HttpSession session){
 
+
+		Order order = (Order)session.getAttribute("order");
+		User requester = (User)session.getAttribute("u");
+		if(order == null){
+			order = new Order();
+			order.setUser(requester);
+		}
+		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
+		
+		receta = new Recipe(receta);
+		//receta = new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3"));
+		OrderRecipe orderRecipe = new OrderRecipe();
+		orderRecipe.setRecipe(receta);
+		orderRecipe.setQuantity(1);
+		order.addRecipe(orderRecipe);
+		order.actPrecio();
+		//order.getRecipes().add(orderRecipe);
+        session.setAttribute("order", order);		
+		return "{}";
+	}
 
 
 	/**
