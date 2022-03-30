@@ -79,13 +79,6 @@ public class RootController {
         return "index";
     }
 
-    @GetMapping("/logout")
-    public String logout(Model model, HttpSession session){
-        session.invalidate();
-        index(model);
-        return "index";
-    }
-
     @GetMapping(value= "/recipe/{id}")
     public String recipeInfo(@PathVariable Long id, Model model){
 	    Recipe recipe1 = entityManager.find(Recipe.class, id);

@@ -15,15 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -178,11 +170,22 @@ public class UserController {
 		recipeNew.setPrice(BigDecimal.TEN);
 		entityManager.persist(recipeNew);
 		//entityManager.flush();
-		
-		return "{}";
+
+		return "redirect:/";
 		
 	}
+	@Transactional
+	@PostMapping("/removeRecipe/{id}")
+	public String removeRecipe(@PathVariable long id, Model model, HttpSession session){
+		//Comprobamos que el usuario que quiere borrar es admin o el propio autor
+		Recipe recipe = entityManager.find(Recipe.class, id);
+		User requester = (User)session.getAttribute("u");
+		if ((requester.getId() == recipe.getAuthor().getId()) || requester.hasRole(Role.ADMIN)) {
+			entityManager.remove(recipe);//borramos la receta
+		}
 
+		return "redirect:/";
+	}
 	@Transactional
 	@ResponseBody
 	@PostMapping("/addToCart")
@@ -209,6 +212,11 @@ public class UserController {
 		return "{}";
 	}
 
+	@GetMapping("/logout")
+	public String logout(Model model, HttpSession session){
+		session.invalidate();
+		return "redirect:/";
+	}
 
 	/**
      * Exception to use when denying access to unauthorized users.
