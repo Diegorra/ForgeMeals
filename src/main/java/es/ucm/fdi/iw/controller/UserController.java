@@ -132,6 +132,18 @@ public class UserController {
 		return "weekplan";
 	}
 
+	@PostMapping("/weekplan/remove")
+	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
+		//User requester = (User)session.getAttribute("u");
+		User u = (User)session.getAttribute("u");
+		JsonNode day = data.get("day");
+		JsonNode time = data.get("time");
+		u.removeMeal(day, time); // TODO modificar
+		model.addAttribute("u", u);
+		return "weekplan";
+	}
+
+	
 	
 	@GetMapping("/addRecipe")
 	public String newRecipe(Model model){return "/Forms/recipeForm";}

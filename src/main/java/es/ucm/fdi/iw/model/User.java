@@ -78,7 +78,7 @@ public class User implements Transferable<User.Transfer> {
         return true;
     }
 
-    private void removeMeal(WeekDay dia, DayTime hora) {
+    public void removeMeal(WeekDay dia, DayTime hora) {
         for(WeekPlanMeal m : meals){
             if(m.getTime() == hora && m.getWeekday() == dia){
                 meals.remove(m);
