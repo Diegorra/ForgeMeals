@@ -7,11 +7,12 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Entity
 @Data
-
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name="Recipe")
@@ -33,10 +34,14 @@ public class Recipe {
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
     @OneToMany
+    @JoinColumn(name="recipe_id")
     private List<Comment> comments = new ArrayList<>();
 
     private String description;
     @NonNull private BigDecimal price;
+    private String dateRegistered;
+    private Integer averageRating;
+
 
     public Recipe(Recipe anotherRecipe){
         this.name = anotherRecipe.name;
@@ -50,4 +55,8 @@ public class Recipe {
     }
 
 
+    public void setDateRegistered(LocalDateTime date) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.dateRegistered = date.format(format);
+    }
 }

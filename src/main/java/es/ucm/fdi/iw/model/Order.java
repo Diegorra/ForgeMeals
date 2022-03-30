@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -24,6 +25,7 @@ public class Order{
     private State state;
     private String direction;
     private BigDecimal price;
+    private LocalDateTime dateRegistered;
 
     @OneToMany
     @JoinColumn(name="recipe_id")

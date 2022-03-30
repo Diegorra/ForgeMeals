@@ -24,6 +24,6 @@ public class Comment {
 
     private String text;
 
-    private int assessment;
+    private Integer assessment;
 
 }

@@ -35,6 +35,7 @@ import java.lang.ProcessHandle.Info;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
@@ -138,7 +139,7 @@ public class UserController {
 		User u = (User)session.getAttribute("u");
 		JsonNode day = data.get("day");
 		JsonNode time = data.get("time");
-		u.removeMeal(day, time); // TODO modificar
+		//u.removeMeal(day, time); // TODO modificar
 		model.addAttribute("u", u);
 		return "weekplan";
 	}
@@ -180,12 +181,22 @@ public class UserController {
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
 		recipeNew.setName(data.get("name").textValue());		
 		recipeNew.setPrice(BigDecimal.TEN);
+		recipeNew.setDateRegistered(LocalDateTime.now());
 		entityManager.persist(recipeNew);
 		//entityManager.flush();
 
 		return "redirect:/";
 		
 	}
+
+	/**
+	 * Remove the recipe con id "id" if the requester is the author or is the admin
+	 *
+	 * @param id
+	 * @param model
+	 * @param session
+	 * @return index
+	 */
 	@Transactional
 	@PostMapping("/removeRecipe/{id}")
 	public String removeRecipe(@PathVariable long id, Model model, HttpSession session){
@@ -194,10 +205,13 @@ public class UserController {
 		User requester = (User)session.getAttribute("u");
 		if ((requester.getId() == recipe.getAuthor().getId()) || requester.hasRole(Role.ADMIN)) {
 			entityManager.remove(recipe);//borramos la receta
+		}else{
+			throw new NoEsTuPerfilException();
 		}
 
 		return "redirect:/";
 	}
+
 	@Transactional
 	@ResponseBody
 	@PostMapping("/addToCart")
@@ -224,6 +238,13 @@ public class UserController {
 		return "{}";
 	}
 
+	/**
+	 * Sing out the usser in the session
+	 *
+	 * @param model
+	 * @param session
+	 * @return index
+	 */
 	@GetMapping("/logout")
 	public String logout(Model model, HttpSession session){
 		session.invalidate();
