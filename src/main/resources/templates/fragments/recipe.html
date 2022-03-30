@@ -42,20 +42,19 @@
                         <div class="card-body">
                             <!-- Comment form-->
                             <form class="mb-4">
-                                <div class="ratings">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-star rating-color" viewBox="0 0 16 16">
-                                        <path
-                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                    </svg>
+                                <div class="mb-3">
+                                    <div class="stars-outer"></div>
                                 </div>
-                                <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Upload!</button>
                             </form>
                             <!-- Comments-->
-                            <div class="d-flex mb-4" th:each="comment : ${comments}">
-                                <div class="flex-shrink-0"><img class="rounded-circle" th:src="${comment.author.src}" alt="..."></div>
+                            <div class="d-flex" th:each="comment : ${recipe.comments}">
+                                <div class="flex-shrink-0"><img class="rounded-circle" th:src="${comment.author.src}" alt="..." width="60" height="60"></div>
                                 <div class="ms-3">
-                                    <h6 class="fw-bolder mb-4 mt-5" th:text="${comment.author}"></h6>
+                                    <div class="fw-bold" th:text="${comment.author.username}"></div>
                                     <div class="stars-outer">
                                         <div class="stars-inner" th:style="'width:' +  ${comment.assessment} + '%'"></div>
                                     </div>
@@ -64,7 +63,7 @@
                             </div>
                             <!-- Single comment example-->
                             <div class="d-flex">
-                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://i.pinimg.com/originals/cc/cd/42/cccd427cef4ccc0bd6a7ee5727be665f.png" alt="..." width="80" height="80"></div>
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://u.cubeupload.com/adsuri/7NQDHz.jpeg" alt="..." width="60" height="60"></div>
                                 <div class="ms-3">
                                     <div class="fw-bold">Paco</div>
                                     <div class="stars-outer">

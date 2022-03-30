@@ -38,36 +38,7 @@
 .attribution:hover {
     color: #1fa67a;
 }
-/*
-.ratings {
-    margin-right: 10px
-}
 
-.ratings i {
-    color: #cecece;
-    font-size: 32px
-}
-
-.rating-color {
-    color: #fbc634;
-}
-
-.review-count {
-    font-weight: 400;
-    margin-bottom: 2px;
-    font-size: 24px;
-}
-
-.small-ratings i {
-    color: #cecece
-}
-
-.review-stat {
-    font-weight: 300;
-    font-size: 18px;
-    margin-bottom: 2px
-}
-*/
 .bg {
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://wallpaper.dog/large/20398905.jpg);
 }

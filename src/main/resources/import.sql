@@ -16,4 +16,8 @@ INSERT INTO "PUBLIC"."RECIPE" VALUES
 (5, 40, NULL, 'Receta Perrito Caliente', 'Perrito Caliente', 1.99, 'https://imag.bonviveur.com/perrito-caliente.jpg', 2);
 
 INSERT INTO "PUBLIC"."INGREDIENT" VALUES
-(1, NULL, NULL, 'Tomate', 3.99, 500, 'ml');     
+(1, NULL, NULL, 'Tomate', 3.99, 500, 'ml');
+
+INSERT INTO "PUBLIC"."COMMENT" VALUES
+(1, 80, 'Me gusta mucho', 1, 1),
+(2, 0, 'No me gusta nada', 2, 1);
