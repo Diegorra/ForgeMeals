@@ -53,18 +53,24 @@
                             </form>
                             <!-- Comments-->
                             <div class="d-flex mb-4" th:each="comment : ${comments}">
-                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
+                                <div class="flex-shrink-0"><img class="rounded-circle" th:src="${comment.author.src}" alt="..."></div>
                                 <div class="ms-3">
                                     <h6 class="fw-bolder mb-4 mt-5" th:text="${comment.author}"></h6>
+                                    <div class="stars-outer">
+                                        <div class="stars-inner" th:style="'width:' +  ${comment.assessment} + '%'"></div>
+                                    </div>
                                     <p th:text="${comment.text}">Comment</p>
                                 </div>
                             </div>
                             <!-- Single comment example-->
                             <div class="d-flex">
-                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://i.pinimg.com/originals/cc/cd/42/cccd427cef4ccc0bd6a7ee5727be665f.png" alt="..." width="80" height="80"></div>
                                 <div class="ms-3">
-                                    <div class="fw-bold">Commenter Name</div>
-                                    When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+                                    <div class="fw-bold">Paco</div>
+                                    <div class="stars-outer">
+                                        <div class="stars-inner" style="width: 20%"></div>
+                                    </div>
+                                    <p>Me gusta la cerveza</p>
                                 </div>
                             </div>
                         </div>
