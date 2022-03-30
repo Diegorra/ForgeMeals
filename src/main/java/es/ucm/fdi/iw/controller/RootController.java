@@ -82,9 +82,7 @@ public class RootController {
     @GetMapping(value= "/recipe/{id}")
     public String recipeInfo(@PathVariable Long id, Model model){
 	    Recipe recipe1 = entityManager.find(Recipe.class, id);
-	    //List<Comments> comments = entityManager.createQuery("select c from Comments c where c.recipe = :id", Comments.class).setParameter("id", id).getResultList();
 	    model.addAttribute("recipe", recipe1);
-	    //model.addAttribute("comments", comments);
 	    return "/fragments/recipe";
     }
 

@@ -15,10 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.User.Role;
+import org.springframework.util.StringUtils;
 
 /**
  * Called when a user is first authenticated (via login).
@@ -30,7 +35,7 @@ import es.ucm.fdi.iw.model.User.Role;
  * updating the user's profile.
  */
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Autowired 
     private HttpSession session;
@@ -39,6 +44,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private EntityManager entityManager;    
     
 	private static Logger log = LogManager.getLogger(LoginSuccessHandler.class);
+	private RequestCache requestCache = new HttpSessionRequestCache();
 	
     /**
      * Called whenever a user authenticates correctly.
@@ -74,16 +80,26 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			.replaceFirst("[^:]*", "ws");       // http[s]://... => ws://...
 		session.setAttribute("ws", ws + "/ws");
 
-		// redirects to 'admin' or 'user/{id}', depending on the user
-		String nextUrl = u.hasRole(User.Role.ADMIN) ? 
-			"admin/" :
-			"user/" + u.getId();
 
 		log.info("LOG IN: {} (id {}) -- session is {}, websocket is {} -- redirected to {}",
-			u.getUsername(), u.getId(), session.getId(), ws, nextUrl);
+			u.getUsername(), u.getId(), session.getId(), ws);
 
-		// note that this is a 302, and will result in a new request
-		response.sendRedirect(nextUrl);
+		SavedRequest savedRequest = this.requestCache.getRequest(request, response);
+		if (savedRequest == null) {
+			super.onAuthenticationSuccess(request, response, authentication);
+			return;
+		}
+		String targetUrlParameter = getTargetUrlParameter();
+		if (isAlwaysUseDefaultTargetUrl()
+				|| (targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
+			this.requestCache.removeRequest(request, response);
+			super.onAuthenticationSuccess(request, response, authentication);
+			return;
+		}
+		clearAuthenticationAttributes(request);
+		// Use the DefaultSavedRequest URL
+		String targetUrl = savedRequest.getRedirectUrl();
+		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
 
 	/**
