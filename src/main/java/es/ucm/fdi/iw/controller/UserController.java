@@ -226,9 +226,23 @@ public class UserController {
 		}
 		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
 		
+		boolean encontrado = true;
+		long newId = -1;
+		while(encontrado){
+			newId++;
+			encontrado = false;
+			for(int i = 0; i < order.getRecipes().size(); i++){
+				if(newId == order.getRecipes().get(i).getId()){ 
+					encontrado = true;
+					break;
+				}
+			}
+		}
+
 		receta = new Recipe(receta);
 		//receta = new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3"));
 		OrderRecipe orderRecipe = new OrderRecipe();
+		orderRecipe.setId(newId);
 		orderRecipe.setRecipe(receta);
 		orderRecipe.setQuantity(1);
 		order.addRecipe(orderRecipe);
@@ -237,6 +251,7 @@ public class UserController {
         session.setAttribute("order", order);		
 		return "{}";
 	}
+
 
 	/**
 	 * Sing out the usser in the session
@@ -250,6 +265,30 @@ public class UserController {
 		session.invalidate();
 		return "redirect:/";
 	}
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/removeFromCart")
+	public String removeFromCard(Model model, @RequestBody JsonNode data, HttpSession session){
+
+		Order order = (Order)session.getAttribute("order");
+		order.removeRecipe(data.get("receta").asLong());
+        session.setAttribute("order", order);		
+		return "{}";
+	}
+
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/changequantCart")
+	public String changequantCart(Model model, @RequestBody JsonNode data, HttpSession session){
+		Order order = (Order)session.getAttribute("order");
+		order.changeQuant(data.get("receta").asLong(), data.get("quantity").asInt());
+        session.setAttribute("order", order);		
+
+		return "{}";
+	}
+
 
 	/**
      * Exception to use when denying access to unauthorized users.

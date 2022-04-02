@@ -31,7 +31,6 @@
     //addButton.onclick = addRecipeToCart
     
         function addRecipeToCart(e) {
-            console.log("pulsado");
             e.preventDefault();
             go("/user/addToCart", 'POST', {
                 receta: this.getAttribute("recipeId")

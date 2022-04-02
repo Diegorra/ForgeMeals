@@ -52,7 +52,6 @@
                                 <a href="/"> <button type="button" onclick="" id="SegComp" class="btn btn-primary"
                                         style="background-color:white;color:black;border-color: black;font-size: 0.7cm; width: 7cm;">Seguir
                                         comprando</button> </a>
-
                             </div>
 
                         </div>
@@ -70,18 +69,23 @@
 
 
     let cantInput = document.querySelectorAll("#cant");
-    cantInput.forEach(e => e.onchange = updateTotalPrice);
+    cantInput.forEach(e => e.onchange = () => {
+        updateTotalPrice();
+        changeQuantity(e.getAttribute("recipeId"), e.value);
+    });
     let elimButton = document.querySelectorAll("#elimButton");
 
     updateTotalPrice();
     updateNumberElements();
 
     elimButton.forEach(e => e.onclick = () => {
+        removeRecipeFromCart(e.getAttribute("recipeId"));
         e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
         cantInput = document.querySelectorAll("#cant");
         elimButton = document.querySelectorAll("#elimButton");
         updateTotalPrice();
         updateNumberElements();
+
     });
     const realButton = document.getElementById("RealPedido");
     const segButton = document.getElementById("SegComp");
@@ -97,6 +101,23 @@
         precioTotal.textContent = "TOTAL: " + sum + "€"
     }
 
+    function removeRecipeFromCart(e) {
+        go("/user/removeFromCart", 'POST', {
+            receta: e
+        })
+            .then(d => console.log("Happy", d))
+            .catch(e => console.log("sad", e))
+    }
+
+
+    function changeQuantity(e, q) {
+        go("/user/changequantCart", 'POST', {
+            receta: e,
+            quantity: q
+        })
+            .then(d => console.log("Happy", d))
+            .catch(e => console.log("sad", e))
+    }
 
     function updateNumberElements() {
         const nCant = cantInput.length
@@ -113,7 +134,7 @@
         //e.preventDefault();
 
         go("/user/checkout", 'POST', {
-            
+
         })
             .then(d => console.log("Happy", d))
             .catch(e => console.log("sad", e))

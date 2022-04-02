@@ -24,9 +24,9 @@
                         </ul>
 
                         <label>Cant.</label>
-                        <input type="number" min="0" id="cant" max="5000" class="form-control" th:value="${article.quantity}" style="font-size: 12; width: auto;"> 
+                        <input type="number" min="0" id="cant" max="5000" th:attr="recipeId=${article.id}" class="form-control" th:value="${article.quantity}" style="font-size: 12; width: auto;"> 
                         <br>
-                        <button type="button" id="elimButton" class="btn btn-danger">Elim.</button>
+                        <button type="button" id="elimButton" th:attr="recipeId=${article.id}" class="btn btn-danger">Elim.</button>
                     </div>
                 </div>
                 <div class="col-md-6">

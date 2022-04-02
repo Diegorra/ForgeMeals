@@ -43,4 +43,14 @@ public class Order{
     public void addRecipe(OrderRecipe recipe){
         this.recipes.add(recipe);
     }
+    public void removeRecipe(long id){
+        this.recipes.removeIf(x -> x.getId() == id);
+    }
+    public void changeQuant(long id, int quant){
+        recipes.forEach(e -> {
+            if( e.getId() == id){
+                e.setQuantity(quant);
+            }
+        });
+    }
 }
