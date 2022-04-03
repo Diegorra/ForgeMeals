@@ -15,6 +15,10 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@NamedQueries({
+    @NamedQuery(name="findRecipeWithName",query="SELECT r FROM Recipe r WHERE r.name = :name")
+})
+
 @Table(name="Recipe")
 public class Recipe {
     @Id

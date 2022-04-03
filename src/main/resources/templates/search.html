@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragments/head :: header" />
+    <title>Welcome</title>
+</head>
+<!--Usando index como ejemplar-->
+<body class="d-flex flex-column h-100">
+    <header th:replace="fragments/nav.html :: nav"></header>
+
+    <main class="flex-shrink-0 bg">
+        <div class="container">
+            <h1 class="mt-5" style="color: white">Resultados</h1>
+        </div>
+        <div class="container grid">
+            <!--Resultado de la busqueda Habria que ponemor un mensaje cuando no hay ningun resultado-->
+            <div th:each="recipe: ${recipes}">
+                <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
+                <p></p>
+            </div>
+        </div>
+    </main>
+
+    <th:block th:replace="fragments/footer.html :: footer" />
+</body>
+
+</html>

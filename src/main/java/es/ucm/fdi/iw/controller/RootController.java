@@ -20,6 +20,9 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.springframework.web.bind.annotation.RequestParam;
+import javax.persistence.*;
+
 /**
  *  Non-authenticated requests only.
  */
@@ -59,6 +62,14 @@ public class RootController {
     @GetMapping("/contact")
     public String contact(Model model){return "contact";}
 
+    @GetMapping("/search")
+    public String  search(Model model, @RequestParam String recipeName){
+        Query q = entityManager.createNamedQuery("findRecipeWithName");
+        q.setParameter("name", recipeName);
+        List<Recipe> recipes = q.getResultList();
+        model.addAttribute("recipes", recipes);
+        return "search";
+    }
     @GetMapping("/")
     @Transactional
     public String index(Model model) {
