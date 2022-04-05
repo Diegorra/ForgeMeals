@@ -64,12 +64,16 @@ public class RootController {
 
     @GetMapping("/search")
     public String  search(Model model, @RequestParam String recipeName){
-        Query q = entityManager.createNamedQuery("findRecipeWithName");
-        q.setParameter("name", recipeName);
-        List<Recipe> recipes = q.getResultList();
+
+        List<Recipe> recipes = entityManager
+            .createNamedQuery("findRecipeWithName")
+            .setParameter("name", recipeName)
+            .getResultList();
+        
         model.addAttribute("recipes", recipes);
         return "search";
     }
+
     @GetMapping("/")
     @Transactional
     public String index(Model model) {

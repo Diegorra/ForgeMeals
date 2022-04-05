@@ -11,10 +11,13 @@
 
     <main class="flex-shrink-0 bg">
         <div class="container">
-            <h1 class="mt-5" style="color: white">Resultados</h1>
+            <h1 class="mt-5" style="color: white">Resultados: 
+                <p th:text = "${recipes.size()}">NumResultados</p>
+            </h1>
         </div>
+        
         <div class="container grid">
-            <!--Resultado de la busqueda Habria que ponemor un mensaje cuando no hay ningun resultado-->
+            <!--For de recetas-->
             <div th:each="recipe: ${recipes}">
                 <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
                 <p></p>

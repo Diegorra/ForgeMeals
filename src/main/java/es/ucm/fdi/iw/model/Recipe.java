@@ -16,7 +16,9 @@ import java.util.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @NamedQueries({
-    @NamedQuery(name="findRecipeWithName",query="SELECT r FROM Recipe r WHERE r.name = :name")
+    @NamedQuery(
+        name="findRecipeWithName",
+        query="SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE CONCAT('%', LOWER(:name), '%')")
 })
 
 @Table(name="Recipe")
