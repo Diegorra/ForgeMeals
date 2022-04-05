@@ -138,10 +138,6 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/weekplan/remove")
 	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
-		Order order = (Order)session.getAttribute("order");
-		order.removeRecipe(data.get("receta").asLong());
-        session.setAttribute("order", order);	
-		
 		//User requester = (User)session.getAttribute("u");
 		User u = (User)session.getAttribute("u");
 		u.removeMeal(WeekPlanMeal.strToWeekDay(data.get("day").asText()), 
@@ -153,7 +149,25 @@ public class UserController {
 	}
 
 
+	@Transactional
+	@ResponseBody
+	@PostMapping("/weekplan/add")
+	public String addMeal(Model model, @RequestBody JsonNode data, HttpSession session){
+		User u = (User)session.getAttribute("u");
+		// TODO añadir cosas. También hay q modificar el javascript para q reciba el input, y luego conseguir q sean recetas
+		session.setAttribute("u", u);	
+		return "{}";
+	}
 
+	@Transactional
+	@ResponseBody
+	@PostMapping("/weekplan/addToCart")
+	public String addMealToCart(Model model, @RequestBody JsonNode data, HttpSession session){
+		User u = (User)session.getAttribute("u");
+		// TODO código para añadir al carrito, usando Order. Maybe usar el addToCart que está más arriba y eliminar este método 
+		session.setAttribute("u", u);	
+		return "{}";
+	}
 	
 	
 	@GetMapping("/addRecipe")
