@@ -133,16 +133,26 @@ public class UserController {
 		return "weekplan";
 	}
 
+
+	@Transactional
+	@ResponseBody
 	@PostMapping("/weekplan/remove")
 	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
+		Order order = (Order)session.getAttribute("order");
+		order.removeRecipe(data.get("receta").asLong());
+        session.setAttribute("order", order);	
+		
 		//User requester = (User)session.getAttribute("u");
 		User u = (User)session.getAttribute("u");
-		JsonNode day = data.get("day");
-		JsonNode time = data.get("time");
-		//u.removeMeal(day, time); // TODO modificar
-		model.addAttribute("u", u);
-		return "weekplan";
+		u.removeMeal(WeekPlanMeal.strToWeekDay(data.get("day").asText()), 
+					 WeekPlanMeal.strToDayTime(data.get("time").asText())
+					);
+		
+		session.setAttribute("u", u);	
+		return "{}";
 	}
+
+
 
 	
 	

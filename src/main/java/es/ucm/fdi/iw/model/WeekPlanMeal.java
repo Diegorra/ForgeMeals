@@ -30,47 +30,32 @@ public class WeekPlanMeal{
     @NonNull private DayTime time;
 
 
-    // deprecated methods
-    public Boolean intToWeekDay(int dia){
-        // en vd es un setter
-        if(dia >= 0 && dia < 7){
-            switch(dia){
-                case 0: weekday = WeekDay.Lunes;
-                        break;
-                case 1: weekday = WeekDay.Martes;
-                        break;
-                case 2: weekday = WeekDay.Miércoles;                                                                       
-                        break;
-                case 3: weekday = WeekDay.Jueves;
-                        break;
-                case 4: weekday = WeekDay.Viernes;
-                        break;
-                case 5: weekday = WeekDay.Sábado;
-                        break;
-                case 6: weekday = WeekDay.Domingo;
-                        break;
-            }
-            return true;
+   
+    public static WeekDay strToWeekDay(String dia){
+        
+        switch(dia){
+        case "Lunes": return WeekDay.Lunes;
+        case "Martes": return WeekDay.Martes;
+        case "Miércoles": return WeekDay.Miércoles;                                                                             
+        case "Jueves": return WeekDay.Jueves;    
+        case "Viernes": return WeekDay.Viernes;
+        case "Sábado": return WeekDay.Sábado;
+        case "Domingo": return WeekDay.Domingo;
         }
-        else return false; //estaria mejor lanzar exception
-    }
-    public Boolean intToTime(int hora){
-        // en vd es un setter
-        if(hora >= 0 && hora < 4){
-            switch(hora){
-                case 0: time = DayTime.Desayuno;
-                        break;
-                case 1: time = DayTime.Comida;
-                        break;
-                case 2: time = DayTime.Cena;                                                                       
-                        break;
-                case 3: time = DayTime.Snack;
-                        break;
-            }
-            return true;
+
+        return WeekDay.Lunes;
+}
+public static DayTime strToDayTime(String time){
+       
+        switch(time){
+        case "Desayuno": return DayTime.Desayuno;
+        case "Comida": return DayTime.Comida;
+        case "Cena": return DayTime.Cena;                                                                             
+        case "Snack": return DayTime.Snack;    
         }
-        else return false; //estaria mejor lanzar exception
-    }
+
+        return DayTime.Desayuno;
+}
 
      
     public Boolean inCell(int day, int time){
