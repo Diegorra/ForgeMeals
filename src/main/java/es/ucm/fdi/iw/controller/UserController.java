@@ -80,6 +80,7 @@ public class UserController {
 		if(order == null){
 			order = new Order();
 			session.setAttribute("order", order);
+			session.setAttribute("orderId", 1);
 		}
 		/*int cant = 4;
 		List<OrderRecipe> recipes = new ArrayList<>();
@@ -98,6 +99,7 @@ public class UserController {
 		for(OrderRecipe recipe :  recipes){
 			recipe.getRecipe().setIngredients(ingredients);
 		}*/
+
 		model.addAttribute("order", order);
 		return "checkout";
 	}
@@ -171,7 +173,11 @@ public class UserController {
 	
 	
 	@GetMapping("/addRecipe")
-	public String newRecipe(Model model){return "/Forms/recipeForm";}
+	public String newRecipe(Model model){
+		List<Ingredient> ingredients = entityManager.createQuery("select i from Ingredient i", Ingredient.class).getResultList();
+		model.addAttribute("ingredients",ingredients);
+		return "/Forms/recipeForm";
+	}
 	
 	@ResponseBody
 	@Transactional
@@ -185,7 +191,7 @@ public class UserController {
 		JsonNode it = data.get("ingredientNames");
 		JsonNode it2 = data.get("ingredientCant");
 		for(int i = 0; i < it.size(); i++){
-		//for(JsonNode ingrediente: it){
+		
 			
 			List<Ingredient> is = entityManager.createNamedQuery("Ingredient.byName", Ingredient.class)
 				.setParameter("iname", it.get(i).asText())
@@ -209,10 +215,44 @@ public class UserController {
 		entityManager.persist(recipeNew);
 		//entityManager.flush();
 
-		return "redirect:/";
+		return "{}";
 		
 	}
 
+
+	@PostMapping("/addRecipeImage")
+	@ResponseBody
+    public String addRecipeImage(@RequestParam("photo") MultipartFile photo, @PathVariable long id, 
+        HttpServletResponse response, HttpSession session, Model model) throws IOException {
+
+        /*User target = entityManager.find(User.class, id);
+        model.addAttribute("user", target);
+		
+		// check permissions
+		User requester = (User)session.getAttribute("u");
+		if (requester.getId() != target.getId() &&
+				! requester.hasRole(Role.ADMIN)) {
+            throw new NoEsTuPerfilException();
+		}*/
+		
+		log.info("Updating photo for user {}", id);
+		File f = localData.getFile("user", ""+id+".jpg");
+		if (photo.isEmpty()) {
+			log.info("failed to upload photo: emtpy file?");
+		} else {
+			try (BufferedOutputStream stream =
+					new BufferedOutputStream(new FileOutputStream(f))) {
+				byte[] bytes = photo.getBytes();
+				stream.write(bytes);
+                log.info("Uploaded photo for {} into {}!", id, f.getAbsolutePath());
+			} catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				log.warn("Error uploading " + id + " ", e);
+			}
+		}
+		return "{\"status\":\"photo uploaded correctly\"}";
+    }
+    
 	/**
 	 * Remove the recipe con id "id" if the requester is the author or is the admin
 	 *
@@ -236,7 +276,12 @@ public class UserController {
 		return "redirect:/";
 	}
 
-	@Transactional
+	private static int nextOrderId(HttpSession session) {
+		int next = (Integer)session.getAttribute("orderId");
+		session.setAttribute("orderId", next + 1);
+		return next;
+	}
+
 	@ResponseBody
 	@PostMapping("/addToCart")
 	public String addToCart(Model model, @RequestBody JsonNode data, HttpSession session){
@@ -247,26 +292,17 @@ public class UserController {
 		if(order == null){
 			order = new Order();
 			order.setUser(requester);
+			session.setAttribute("orderId", 1);
 		}
 		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
-		
-		boolean encontrado = true;
-		long newId = -1;
-		while(encontrado){
-			newId++;
-			encontrado = false;
-			for(int i = 0; i < order.getRecipes().size(); i++){
-				if(newId == order.getRecipes().get(i).getId()){ 
-					encontrado = true;
-					break;
-				}
-			}
+		for (RecipeIngredient ri : receta.getIngredients()) {
+			ri.getIngredient().getAllergen();
 		}
-
-		receta = new Recipe(receta);
+		
+		//receta = new Recipe(receta);
 		//receta = new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3"));
 		OrderRecipe orderRecipe = new OrderRecipe();
-		orderRecipe.setId(newId);
+		orderRecipe.setId(UserController.nextOrderId(session));
 		orderRecipe.setRecipe(receta);
 		orderRecipe.setQuantity(1);
 		order.addRecipe(orderRecipe);

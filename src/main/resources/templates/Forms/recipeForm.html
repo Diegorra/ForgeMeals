@@ -27,6 +27,10 @@
                             <div id="ing">
                                 <input type="text" class="form-control" id="ingredient"
                                     placeholder="Introducir Ingredientes" />
+                                <ul class="dropdown-menu text-small" id="ingrList" aria-labelledby="dropdownUser1"
+                                    style="">
+                                    <li><a class="dropdown-item">Hola</a></li>
+                                </ul>
                                 <span class="input-group-addon"></span>
                                 <input type="number" min="0" max="5000" id="cant_ing" class="form-control"
                                     placeholder="Introducir Cantidad" />
@@ -93,7 +97,13 @@
 
     <script>
 
+        let fileInput = document.getElementById("src");
         const sub_but = document.getElementById("sub_but");
+        fileInput.onchange = (e) => { subImg(e) };
+        function subImg(e) {
+            let img = document.getElementById("imag");
+            readImageFileData(fileInput.files[0], img);
+        }
         sub_but.onclick = submit_recipe;
         function submit_recipe(e) {
             e.preventDefault();
@@ -103,19 +113,19 @@
             qIngNames.forEach(e => ingNames.push(e.value));
             let ingCants = [];
             let qIngCants = document.querySelectorAll("#cant_ing");
-            qIngCants.forEach(e => {ingCants.push(e.value) });
+            qIngCants.forEach(e => { ingCants.push(e.value) });
 
-            let img = document.getElementById("imag");
+
             let fileInput = document.getElementById("src");
             //console.log(img, fileInput);
-            //readImageFileData(fileInput.files[0], img);
+
             //let imageBlob = toBlob(fileInput.src);
-            
+
 
 
             go("/user/addRecipe", 'POST', {
                 description: document.getElementById("description").value,
-                image: document.getElementById("src").value,
+                image: document.getElementById("imag").src,
                 //image: imageBlob,
                 name: document.getElementById("name").value,
                 ingredientNames: ingNames,
@@ -127,19 +137,19 @@
 
 
         function toBlob(dataurl) {
-        let arr = dataurl.split(','),
-            mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]),
-            n = bstr.length,
-            u8arr = new Uint8Array(n);
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
+            let arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {
+                type: mime
+            });
         }
-        return new Blob([u8arr], {
-            type: mime
-        });
-    }
-    
+
 
         function readImageFileData(file, targetImg) {
 
@@ -150,28 +160,61 @@
                     console.log(e);
                     targetImg.src = reader.result
                 }, false);
-
                 reader.readAsDataURL(file);
             } else {
                 console.log("Not a good format: ", file.name);
             }
         }
 
+        function readImageUrlData(url, targetImg) {
+            return fetch(url)
+                .then(response => response.blob())
+                .then(blob => new Promise((resolve, reject) => {
+                    const reader = new FileReader()
+                    reader.onloadend = () => resolve(reader.result)
+                    reader.onerror = reject
+                    reader.readAsDataURL(blob)
+                }))
+                .then(data => targetImg.src = data);
+        }
 
 
-        document.querySelector("#src").onchange = e => {
 
+        function postImage(img, endpoint, name, filename) {
+            // from https://stackoverflow.com/a/30470303/15472
+            function toBlob(dataurl) {
+                let arr = dataurl.split(','),
+                    mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]),
+                    n = bstr.length,
+                    u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {
+                    type: mime
+                });
+            }
+            let imageBlob = toBlob(img.src);
+            let fd = new FormData();
+            fd.append(name, imageBlob, filename);
+            return go(endpoint, "POST", fd, {})
         }
     </script>
 
 
 </body>
-
+<div id="ingred" th:attr="ingredientes=${ingredients}"></div>
 <div id="ing_orig" style="visibility: hidden;">
     <input type="text" class="form-control" id="ingredient" placeholder="Introducir Ingredientes" />
+    <ul class="dropdown-menu text-small" id="ingrList" aria-labelledby="dropdownUser1" style="">
+        <li><a class="dropdown-item">Hola</a></li>
+    </ul>
     <span class="input-group-addon"></span>
     <input type="number" min="0" max="5000" id="cant_ing" class="form-control" placeholder="Introducir Cantidad" />
     <hr class="my-4" style="width: 95%;">
 </div>
+
+
 
 </html>
