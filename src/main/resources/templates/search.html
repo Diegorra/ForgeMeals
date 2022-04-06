@@ -5,15 +5,22 @@
     <th:block th:replace="fragments/head :: header" />
     <title>Welcome</title>
 </head>
-<!--Usando index como ejemplar-->
+
 <body class="d-flex flex-column h-100">
     <header th:replace="fragments/nav.html :: nav"></header>
 
     <main class="flex-shrink-0 bg">
         <div class="container">
-            <h1 class="mt-5" style="color: white">Resultados: 
-                <p th:text = "${recipes.size()}">NumResultados</p>
-            </h1>
+            <div th:if="${not #lists.isEmpty(recipes)}">
+                <h1 class="mt-5" style="color: white"> 
+                    <p th:text = "'Resultados' + ': ' + ${recipes.size()}">NumResultados</p>
+                </h1>
+            </div>>
+        </div>
+
+        <!--Sin resultado-->>
+        <div th:if = "${#lists.isEmpty(recipes)}">
+            <h1 class = "text-center" style="color:whitesmoke"> La búsqueda no obtuvo ningún resultado </h1>
         </div>
         
         <div class="container grid">
