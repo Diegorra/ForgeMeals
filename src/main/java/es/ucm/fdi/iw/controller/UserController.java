@@ -137,17 +137,18 @@ public class UserController {
 
 
 	@Transactional
-	@ResponseBody
+	//@ResponseBody
 	@PostMapping("/weekplan/remove")
 	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		//User requester = (User)session.getAttribute("u");
-		User u = (User)session.getAttribute("u");
-		u.removeMeal(WeekPlanMeal.strToWeekDay(data.get("day").asText()), 
-					 WeekPlanMeal.strToDayTime(data.get("time").asText())
-					);
+		User requester = (User)session.getAttribute("u");
+		User u = entityManager.find(User.class, requester.getId());
 		
-		session.setAttribute("u", u);	
-		return "{}";
+		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno);
+		//
+		u.assignMeal("nuevas", WeekDay.Martes, DayTime.Desayuno);
+		model.addAttribute("user", u);	
+		return "/weekplan";
 	}
 
 
