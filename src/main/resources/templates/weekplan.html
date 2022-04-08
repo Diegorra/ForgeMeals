@@ -35,7 +35,7 @@
                     </a>
                     <!-- lista de opciones -->
                     <ul class="dropdown-menu text-small" th:aria-labelledby="'dropdown'+${day}+${time}" >
-                      <th:block th:unless="${meal.name == null}"> <!-- solo si hay una receta en la celda-->
+                      <th:block th:unless="${meal.recipe == null}"> <!-- solo si hay una receta en la celda-->
                           <li> <!-- Borrar receta del weekplan -->
                             <a class="bDelete dropdown-item" th:attr="data-id-delete-day=${day}, data-id-delete-time=${time}">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -56,7 +56,7 @@
                             </a>
                           </li>
                       </th:block>
-                      <th:block th:if="${meal.name == null}"> <!-- si no hay una receta en la celda-->
+                      <th:block th:if="${meal.recipe == null}"> <!-- si no hay una receta en la celda-->
                         <li> <!-- añadir receta a la celda -->
                           <a class="bAdd dropdown-item" th:attr="data-id-delete-day=${day}, data-id-delete-time=${time}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
@@ -65,7 +65,7 @@
                             <span >  Añadir receta</span>
                           </a>
                         </li>
-                    </th:block>
+                      </th:block>
                     </ul>
                   </div>
                 </div>
@@ -76,19 +76,22 @@
   
     <script>
         // Delete
-        document.querySelectorAll(".bDelete").forEach(b => {
-          b.addEventListener("click", e => {
-            let day = e.target.dataset.deleteDay;
-            let time = e.target.dataset.deleteTime;
-            if(confirm("Deseas eliminarlo?")){
-              // llamar funcion java para eliminarlo con parametros day, time
-              go("/user/weekplan/remove", 'POST', {
-                      day: day,
-                      time: time
-                  }).then(location.reload());
-            }
-          })
-        })
+        let deleteButton = document.querySelectorAll(".bDelete");
+        deleteButton.forEach(e => {e.onclick = removeRecipe});
+        //addButton.onclick = addRecipeToCart
+    
+        function removeRecipe(e) {
+          let day = e.target.dataset.deleteDay;
+          let time = e.target.dataset.deleteTime;
+          if(confirm("Deseas eliminarlo?")){
+            // llamar funcion java para eliminarlo con parametros day, time
+            go(config.rootUrl+"/user/weekplan/remove", 'POST', {
+              //day: day,
+              //time: time
+            }).then(d => alert("Happy", d))
+              .catch(e => alert("sad", e))
+        }
+
         // añadir al carrito
         document.querySelectorAll(".bCart").forEach(b => {
           b.addEventListener("click", e => {

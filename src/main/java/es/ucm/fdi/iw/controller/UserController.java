@@ -110,7 +110,21 @@ public class UserController {
 	@GetMapping("/settings")
 	public String settings(){return "settings";}
 
+	@Transactional
+	@GetMapping("/test")
+	public String test(Model model, HttpSession session){
+		User requester = (User)session.getAttribute("u");
+		User u = entityManager.find(User.class, requester.getId());
+		
+
+		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.Lunes, DayTime.Desayuno, entityManager);
+		u.assignMeal(entityManager.find(Recipe.class, 2L), WeekDay.Lunes, DayTime.Comida, entityManager);
+		entityManager.flush();
+		return weekplan(model, session);
+		
+	}
 	
+	@Transactional
 	@GetMapping("/weekplan")
 	public String weekplan(Model model, HttpSession session){
 		
@@ -118,38 +132,29 @@ public class UserController {
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
 		
-		
-		u.assignMeal("Pizza", WeekDay.Lunes, DayTime.Desayuno);
-		u.assignMeal("Comidita", WeekDay.Lunes, DayTime.Comida);
-		u.assignMeal("Sushi", WeekDay.Lunes, DayTime.Cena);
-		u.assignMeal("ciruelas", WeekDay.Lunes, DayTime.Snack);
+		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.Lunes, DayTime.Desayuno, entityManager);
+		u.assignMeal(entityManager.find(Recipe.class, 2L), WeekDay.Lunes, DayTime.Comida, entityManager);
+		entityManager.flush();
 		
 		model.addAttribute("weekdays", WeekPlanMeal.WeekDay.values());
 		model.addAttribute("daytimes", WeekPlanMeal.DayTime.values()); 
-		model.addAttribute("user", u); // importante que venga de la BD; no vale que sea el de la sesión
-
-		// pasar a weekplan lista asociada al usuario en funcion de la sesion => coger id usuario logeado y su lista de weekplan con entityManager
-		// for por cada celda wpCell con form/JS para ver selección de botones + o x
-		// post mapping de weekplan postweekplan
-		
+		model.addAttribute("user", u);
 		return "weekplan";
 	}
 
 // TODO no funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
 	@Transactional
-	@ResponseBody
-	@PostMapping("/weekplan/remove")
+	@PostMapping("/weekplan/removeMeal")
 	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		//User requester = (User)session.getAttribute("u");
 		User requester = (User)session.getAttribute("u");
-		User u = entityManager.find(User.class, requester.getId());
+		User u = entityManager.find(User.class, requester.getId()); 
 		// Mi confusión era que nosé si AJAX cambia el enum a String, porque en el JS le estoy pasando el enum
 		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
-		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno);
+		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno, entityManager);
 		model.addAttribute("user", u);	
-		return "/weekplan";
+		return "{}" ;
 	}
-
 
 	@Transactional
 	@ResponseBody

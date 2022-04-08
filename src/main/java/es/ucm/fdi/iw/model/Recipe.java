@@ -20,8 +20,6 @@ import java.util.*;
         name="findRecipeWithName",
         query="SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE CONCAT('%', LOWER(:name), '%')")
 })
-
-@Table(name="Recipe")
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
@@ -42,6 +40,10 @@ public class Recipe {
     @OneToMany
     @JoinColumn(name="recipe_id")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name="recipe_id")
+    private List<WeekPlanMeal> weekPlans = new ArrayList<>();
 
     private String description;
     @NonNull private BigDecimal price;

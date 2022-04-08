@@ -71,18 +71,19 @@ public class User implements Transferable<User.Transfer> {
     
 
     // se llama al clickar botón + en una tabla weekplan.
-    public Boolean assignMeal(String receta, WeekDay dia, DayTime hora ){ 
+    public void assignMeal(Recipe receta, WeekDay dia, DayTime hora, EntityManager em){ 
+      
         WeekPlanMeal nuevo = new WeekPlanMeal(receta, dia, hora);
-        removeMeal(dia,hora);
+        removeMeal(dia,hora, em);
         meals.add(nuevo);
-        return true;
+        em.persist(nuevo);
     }
 
-    public void removeMeal(WeekDay dia, DayTime hora) {
+    public void removeMeal(WeekDay dia, DayTime hora, EntityManager em) {
         for(WeekPlanMeal m : meals){
             if(m.getTime() == hora && m.getWeekday() == dia){
                 meals.remove(m);
-                return;
+                em.remove(m);
             }
         }
             

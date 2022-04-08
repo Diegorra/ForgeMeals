@@ -23,13 +23,16 @@ public class WeekPlanMeal{
     public enum DayTime{ Desayuno, Comida, Cena, Snack};
 
     
-    //@ManyToOne
-    //@NonNull private OrderRecipe recipe; // TODO en verdad seria un Recipe. Para obtener el nombre recipe.getRecipe().getName();
-    @NonNull private String name;
+    @ManyToOne
+    @NonNull private Recipe recipe; // TODO para obtener el nombre recipe.getName();
+   // @NonNull private String name;
     @NonNull private WeekDay weekday;
     @NonNull private DayTime time;
 
-
+    public String getName(){
+        if(recipe != null) return recipe.getName();
+        return "-";
+    }
    
     public static WeekDay strToWeekDay(String dia){
         
