@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="payment-info" style="margin-top: 30%;margin-left: 10%;">
+                        <div class="payment-info" id="payment">
                             <h1 id="precioTotal"> </h1>
                             <div style="margin-left: 10%;">
                                 <a> <button type="submit" id="RealPedido" class="btn btn-primary"
@@ -77,6 +77,7 @@
 
     updateTotalPrice();
     updateNumberElements();
+    actPayment();
 
     elimButton.forEach(e => e.onclick = () => {
         removeRecipeFromCart(e.getAttribute("recipeId"));
@@ -85,7 +86,7 @@
         elimButton = document.querySelectorAll("#elimButton");
         updateTotalPrice();
         updateNumberElements();
-
+        actPayment();
     });
     const realButton = document.getElementById("RealPedido");
     const segButton = document.getElementById("SegComp");
@@ -123,6 +124,19 @@
         const nCant = cantInput.length
         const artElem = document.getElementById("cantArticulos");
         artElem.textContent = "Tienes " + nCant + " articulos en el carrito";
+    }
+
+
+
+    function actPayment(){
+        let cantInput = document.querySelectorAll("#cant");
+        let payment = document.getElementById("payment");
+        if(cantInput.length == 0){
+            payment.style = "margin-top: 0%;margin-left: 10%;";
+        }
+        else{
+            payment.style = "margin-top: 30%;margin-left: 10%;";
+        }
     }
 
     function submit_checkout(e) {
