@@ -27,10 +27,6 @@
                             <div id="ing">
                                 <input type="text" class="form-control" id="ingredient"
                                     placeholder="Introducir Ingredientes" />
-                                <ul class="dropdown-menu text-small" id="ingrList" aria-labelledby="dropdownUser1"
-                                    style="">
-                                    <li><a class="dropdown-item">Hola</a></li>
-                                </ul>
                                 <span class="input-group-addon"></span>
                                 <input type="number" min="0" max="5000" id="cant_ing" class="form-control"
                                     placeholder="Introducir Cantidad" />
@@ -51,6 +47,7 @@
                     <div class="mb-3">
                         <label for="src" class="form-label">Sube la imagen de la receta:</label>
                         <input type="file" accept="image/png, image/jpeg" class="form-control" id="src">
+                        <img id="imag"  alt="Imagen a subir"/>
                         <!--input type="text" class="form-control" id="src"-->
                     </div>
                     <button type="submit" id="sub_but" class="btn btn-primary">Subir</button>
@@ -61,7 +58,7 @@
 
         </div>
     </div>
-    <img id="imag" style="visibility: hidden;" alt="careto a subir" />
+    
     <!-- Bootstrap -->
     <script th:src="@{/js/bootstrap.bundle-5.1.3.js}" src="js/bootstrap.bundle-5.1.3.js"></script>
 
@@ -99,7 +96,7 @@
 
         let fileInput = document.getElementById("src");
         const sub_but = document.getElementById("sub_but");
-        fileInput.onchange = (e) => { subImg(e) };
+        fileInput.onchange = subImg;
         function subImg(e) {
             let img = document.getElementById("imag");
             readImageFileData(fileInput.files[0], img);
@@ -121,11 +118,11 @@
 
             //let imageBlob = toBlob(fileInput.src);
 
-
+            sendImage()
 
             go("/user/addRecipe", 'POST', {
                 description: document.getElementById("description").value,
-                image: document.getElementById("imag").src,
+                image: document.getElementById("src").value,
                 //image: imageBlob,
                 name: document.getElementById("name").value,
                 ingredientNames: ingNames,
@@ -178,7 +175,15 @@
                 .then(data => targetImg.src = data);
         }
 
-
+        function sendImage(){
+            let url = document.querySelector("#sub_but").parentNode.action;
+            let img = document.querySelector("#imag");
+            let file = document.querySelector("#src");
+            postImage(img, "/user/addRecipeImage" , "photo").then(() => {
+                let cacheBuster = "?" + new Date().getTime();
+                //document.querySelector("a.nav-link>img.iwthumb").src = url + cacheBuster;
+            });
+        }
 
         function postImage(img, endpoint, name, filename) {
             // from https://stackoverflow.com/a/30470303/15472

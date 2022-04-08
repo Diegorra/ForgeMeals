@@ -183,9 +183,11 @@ public class UserController {
 	@Transactional
 	@PostMapping("/addRecipe")
 	public String newRecipe(Model model, @RequestBody JsonNode data, HttpSession session){
+		String id = "pruebaReceta";
 		Recipe recipeNew = new Recipe();
 		User requester = (User)session.getAttribute("u");
 
+		File f = localData.getFile("user", ""+id+".jpg");
 
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
 		JsonNode it = data.get("ingredientNames");
@@ -205,7 +207,7 @@ public class UserController {
 			ingredientes.add(ingredienteCompleto);
 		}
 		recipeNew.setIngredients(ingredientes);
-		recipeNew.setSrc(data.get("image").textValue());
+		recipeNew.setSrc(f.getPath());
 		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
@@ -222,7 +224,7 @@ public class UserController {
 
 	@PostMapping("/addRecipeImage")
 	@ResponseBody
-    public String addRecipeImage(@RequestParam("photo") MultipartFile photo, @PathVariable long id, 
+    public String addRecipeImage(@RequestParam("photo") MultipartFile photo,
         HttpServletResponse response, HttpSession session, Model model) throws IOException {
 
         /*User target = entityManager.find(User.class, id);
@@ -234,23 +236,23 @@ public class UserController {
 				! requester.hasRole(Role.ADMIN)) {
             throw new NoEsTuPerfilException();
 		}*/
-		
+		String id = "pruebaReceta";
 		log.info("Updating photo for user {}", id);
 		File f = localData.getFile("user", ""+id+".jpg");
 		if (photo.isEmpty()) {
-			log.info("failed to upload photo: emtpy file?");
+			
 		} else {
 			try (BufferedOutputStream stream =
 					new BufferedOutputStream(new FileOutputStream(f))) {
 				byte[] bytes = photo.getBytes();
 				stream.write(bytes);
-                log.info("Uploaded photo for {} into {}!", id, f.getAbsolutePath());
+                
 			} catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				log.warn("Error uploading " + id + " ", e);
+				
 			}
 		}
-		return "{\"status\":\"photo uploaded correctly\"}";
+		return "{}";
     }
     
 	/**
