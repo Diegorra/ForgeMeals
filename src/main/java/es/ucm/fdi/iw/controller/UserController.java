@@ -110,19 +110,7 @@ public class UserController {
 	@GetMapping("/settings")
 	public String settings(){return "settings";}
 
-	@Transactional
-	@GetMapping("/test")
-	public String test(Model model, HttpSession session){
-		User requester = (User)session.getAttribute("u");
-		User u = entityManager.find(User.class, requester.getId());
-		
-
-		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.Lunes, DayTime.Desayuno, entityManager);
-		u.assignMeal(entityManager.find(Recipe.class, 2L), WeekDay.Lunes, DayTime.Comida, entityManager);
-		entityManager.flush();
-		return weekplan(model, session);
-		
-	}
+	
 	
 	@Transactional
 	@GetMapping("/test")
@@ -158,6 +146,7 @@ public class UserController {
 
 // TODO no funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
 	@Transactional
+	@ResponseBody
 	@PostMapping("/weekplan/removeMeal")
 	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		//User requester = (User)session.getAttribute("u");
@@ -166,8 +155,9 @@ public class UserController {
 		// Mi confusión era que nosé si AJAX cambia el enum a String, porque en el JS le estoy pasando el enum
 		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
 		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno, entityManager);
+		
 		//model.addAttribute("user", u);	
-		return "{}" ;
+		return "{}";
 	}
 
 	@Transactional

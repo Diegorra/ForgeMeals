@@ -85,9 +85,9 @@
           let time = e.target.dataset.deleteTime;
           if(confirm("Deseas eliminarlo?")){
             // llamar funcion java para eliminarlo con parametros day, time
-            go(config.rootUrl+"/user/weekplan/remove", 'POST', {
-              //day: day,
-              //time: time
+            go("/user/weekplan/removeMeal", 'POST', {
+              day: day,
+              time: time
             }).then(d => alert("Happy", d))
               .catch(e => alert("sad", e))
         }
@@ -113,6 +113,7 @@
           })
         })
   
+        }
   
       </script>
 
