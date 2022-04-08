@@ -135,18 +135,17 @@ public class UserController {
 		return "weekplan";
 	}
 
-
+// TODO no funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
 	@Transactional
-	//@ResponseBody
+	@ResponseBody
 	@PostMapping("/weekplan/remove")
 	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		//User requester = (User)session.getAttribute("u");
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		
+		// Mi confusión era que nosé si AJAX cambia el enum a String, porque en el JS le estoy pasando el enum
+		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
 		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno);
-		//
-		u.assignMeal("nuevas", WeekDay.Martes, DayTime.Desayuno);
 		model.addAttribute("user", u);	
 		return "/weekplan";
 	}
