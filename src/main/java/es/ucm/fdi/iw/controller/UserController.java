@@ -82,24 +82,6 @@ public class UserController {
 			session.setAttribute("order", order);
 			session.setAttribute("orderId", 1);
 		}
-		/*int cant = 4;
-		List<OrderRecipe> recipes = new ArrayList<>();
-		List<RecipeIngredient> ingredients = new ArrayList<>();
-		ingredients.add(new RecipeIngredient(new Ingredient("harina")));
-		ingredients.add(new RecipeIngredient(new Ingredient("huevo")));
-		ingredients.add(new RecipeIngredient(new Ingredient("maiz")));
-		ingredients.add(new RecipeIngredient(new Ingredient("patata")));
-		recipes.add(new OrderRecipe(new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3")),2));
-		recipes.add(new OrderRecipe(new Recipe("Hamburguesa", "https://okdiario.com/img/2021/05/28/hamburguesa-3-655x368.jpg", new BigDecimal("2.50")),3));
-		recipes.add(new OrderRecipe(new Recipe("Pasta Carbonara", "https://www.elespectador.com/resizer/VDIYcF2ol0HmQ3bC9SvoI7R23Es=/920x613/filters:format(jpeg)/cloudfront-us-east-1.images.arcpublishing.com/elespectador/TMTI6JW2CZETZOJTCUN3MQPHIY.jpg", new BigDecimal("7.99")),1));
-		recipes.add(new OrderRecipe(new Recipe("Perrito Caliente","https://imag.bonviveur.com/perrito-caliente.jpg", new BigDecimal("1.99")),5));
-		order.setRecipes(recipes);
-		order.actPrecio();
-		System.out.print(order.getPrice());
-		for(OrderRecipe recipe :  recipes){
-			recipe.getRecipe().setIngredients(ingredients);
-		}*/
-
 		model.addAttribute("order", order);
 		return "checkout";
 	}
@@ -197,6 +179,7 @@ public class UserController {
 		User requester = (User)session.getAttribute("u");
 
 		File f = localData.getFile("user", ""+id+".jpg");
+		
 
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
 		JsonNode it = data.get("ingredientNames");
@@ -216,7 +199,7 @@ public class UserController {
 			ingredientes.add(ingredienteCompleto);
 		}
 		recipeNew.setIngredients(ingredientes);
-		recipeNew.setSrc(f.getPath());
+		recipeNew.setSrc(f.getAbsolutePath());
 		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
@@ -248,6 +231,7 @@ public class UserController {
 		String id = "pruebaReceta";
 		log.info("Updating photo for user {}", id);
 		File f = localData.getFile("user", ""+id+".jpg");
+		//File f = new File("user/pruebaReceta.jpg");
 		if (photo.isEmpty()) {
 			
 		} else {
