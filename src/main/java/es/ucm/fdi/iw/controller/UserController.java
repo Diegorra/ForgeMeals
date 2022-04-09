@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -31,14 +30,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.*;
-import java.lang.ProcessHandle.Info;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -141,7 +137,7 @@ public class UserController {
 	public String addMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		
+		// da error 500 y no sube nada
 		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
 		model.addAttribute("user", u);
 		entityManager.flush();	
