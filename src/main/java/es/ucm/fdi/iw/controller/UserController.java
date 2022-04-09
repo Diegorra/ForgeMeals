@@ -129,22 +129,15 @@ public class UserController {
 	@Transactional
 	@GetMapping("/weekplan")
 	public String weekplan(Model model, HttpSession session){
-		
-		// inicialmente pasar lista vacia al modelo
 		User requester = (User)session.getAttribute("u");
-		User u = entityManager.find(User.class, requester.getId());
-		
-		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.Lunes, DayTime.Desayuno, entityManager);
-		u.assignMeal(entityManager.find(Recipe.class, 2L), WeekDay.Lunes, DayTime.Comida, entityManager);
-		entityManager.flush();
-		
+		User u = entityManager.find(User.class, requester.getId()); 
 		model.addAttribute("weekdays", WeekPlanMeal.WeekDay.values());
 		model.addAttribute("daytimes", WeekPlanMeal.DayTime.values()); 
 		model.addAttribute("user", u);
 		return "weekplan";
 	}
 
-// TODO no funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
+	// TODO no funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
 	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/removeMeal")
@@ -156,7 +149,7 @@ public class UserController {
 		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
 		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno, entityManager);
 		
-		//model.addAttribute("user", u);	
+		model.addAttribute("user", u);	
 		return "{}";
 	}
 
@@ -164,9 +157,12 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/weekplan/add")
 	public String addMeal(Model model, @RequestBody JsonNode data, HttpSession session){
-		User u = (User)session.getAttribute("u");
-		// TODO añadir cosas. También hay q modificar el javascript para q reciba el input, y luego conseguir q sean recetas
-		session.setAttribute("u", u);	
+		User requester = (User)session.getAttribute("u");
+		User u = entityManager.find(User.class, requester.getId());
+		
+		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
+		model.addAttribute("user", u);
+		entityManager.flush();	
 		return "{}";
 	}
 
@@ -175,7 +171,7 @@ public class UserController {
 	@PostMapping("/weekplan/addToCart")
 	public String addMealToCart(Model model, @RequestBody JsonNode data, HttpSession session){
 		User u = (User)session.getAttribute("u");
-		// TODO código para añadir al carrito, usando Order. Maybe usar el addToCart que está más arriba y eliminar este método 
+		addToCart(model, data,session); // en data pasamos receta: recipeId 
 		session.setAttribute("u", u);	
 		return "{}";
 	}

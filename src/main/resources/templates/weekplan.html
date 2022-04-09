@@ -45,7 +45,7 @@
                               </a>
                           </li> 
                           <li> <!-- añadir receta al carrito -->
-                            <a class="bCart dropdown-item" th:attr="data-id-cart-day=${day}, data-id-cart-time=${time}">
+                            <a class="bCart dropdown-item" th:attr="data-id-cart-day=${day}, data-id-cart-time=${time}, data-id-cart-recipeID=${meal.recipe.id}" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
                                     <path
                                             d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z" />
@@ -62,7 +62,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
                               <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
                             </svg>
-                            <span >  Añadir receta</span>
+                            <span> Añadir receta</span>
                           </a>
                         </li>
                       </th:block>
@@ -75,12 +75,13 @@
       </table>
   
     <script>
+      let cartButton = document.querySelectorAll(".bCart");
+      let deleteButton = document.querySelectorAll(".bDelete");
+      let addButton = document.querySelectorAll(".bAdd");
         // Delete
-        let deleteButton = document.querySelectorAll(".bDelete");
         deleteButton.forEach(e => {e.onclick = removeRecipe});
-        //addButton.onclick = addRecipeToCart
-    
         function removeRecipe(e) {
+          e.preventDefault();
           let day = e.target.dataset.deleteDay;
           let time = e.target.dataset.deleteTime;
           if(confirm("Deseas eliminarlo?")){
@@ -90,30 +91,33 @@
               time: time
             }).then(d => alert("Happy", d))
               .catch(e => alert("sad", e))
+          }
         }
 
         // añadir al carrito
-        document.querySelectorAll(".bCart").forEach(b => {
-          b.addEventListener("click", e => {
-            let day = e.target.dataset.cartDay;
-            let time = e.target.dataset.cartTime;
-            go(config.rootUrl, 'POST', {
-                    message: document.getElementById("message").value // TODO addToCart(day, time)
-            })
-          })
-        })
-        // añadir receta
-        document.querySelectorAll(".bAdd").forEach(b => {
-          b.addEventListener("click", e => {
-            let day = e.target.dataset.addDay;
-            let time = e.target.dataset.addTime;
-            go(config.rootUrl, 'POST', {
-                    message: document.getElementById("message").value // TODO addRecipe(day, time) tiene q ser interactivo, que líiioooo
-            })
-          })
-        })
-  
+        deleteButton.forEach(e => {e.onclick = addToCart});
+        function addToCart(e) {
+          e.preventDefault();
+          let recipeId = e.target.dataset.cartRecipeID();
+            go("/user/weekplan/addToCart", 'POST', {
+              receta: recipeId
+            }).then(d => alert("Happy", d))
+              .catch(e => alert("sad", e))
         }
+        
+        // añadir receta
+        addButton.forEach(e => {e.onclick = addMeal});
+        function addMeal(e) {
+          e.preventDefault();
+          let day = e.target.dataset.addDay;
+          let time = e.target.dataset.addTime;
+          
+          go("/user/weekplan/add", 'POST', {
+              day: day,
+              time: time
+            }).then(d => alert("Happy", d))
+              .catch(e => alert("sad", e))
+        }  
   
       </script>
 

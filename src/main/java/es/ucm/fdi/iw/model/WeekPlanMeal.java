@@ -33,32 +33,6 @@ public class WeekPlanMeal{
         if(recipe != null) return recipe.getName();
         return "-";
     }
-   
-    public static WeekDay strToWeekDay(String dia){
-        
-        switch(dia){
-        case "Lunes": return WeekDay.Lunes;
-        case "Martes": return WeekDay.Martes;
-        case "Miércoles": return WeekDay.Miércoles;                                                                             
-        case "Jueves": return WeekDay.Jueves;    
-        case "Viernes": return WeekDay.Viernes;
-        case "Sábado": return WeekDay.Sábado;
-        case "Domingo": return WeekDay.Domingo;
-        }
-
-        return WeekDay.Lunes;
-}
-public static DayTime strToDayTime(String time){
-       
-        switch(time){
-        case "Desayuno": return DayTime.Desayuno;
-        case "Comida": return DayTime.Comida;
-        case "Cena": return DayTime.Cena;                                                                             
-        case "Snack": return DayTime.Snack;    
-        }
-
-        return DayTime.Desayuno;
-}
 
      
     public Boolean inCell(int day, int time){

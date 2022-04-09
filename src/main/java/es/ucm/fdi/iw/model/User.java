@@ -84,6 +84,7 @@ public class User implements Transferable<User.Transfer> {
             if(m.getTime() == hora && m.getWeekday() == dia){
                 meals.remove(m);
                 em.remove(m);
+                return;
             }
         }
             
