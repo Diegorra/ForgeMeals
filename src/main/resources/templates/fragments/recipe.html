@@ -52,7 +52,7 @@
                             </form>
                             <!-- Comments-->
                             <div class="d-flex" th:each="comment : ${recipe.comments}">
-                                <div class="flex-shrink-0"><img class="rounded-circle" th:src="${comment.author.src}" alt="..." width="60" height="60"></div>
+                                <div class="flex-shrink-0"><img class="rounded-circle" th:src="@{/user/{id}/pic(id=${comment.author.id})}" alt="..." width="60" height="60"></div>
                                 <div class="ms-3">
                                     <div class="fw-bold" th:text="${comment.author.username}"></div>
                                     <div class="stars-outer">

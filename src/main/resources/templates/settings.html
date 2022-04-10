@@ -13,22 +13,35 @@
             <div class="col-12 col-lg-10 col-xl-8 mx-auto">
                 <h2 class="h3 mb-4 page-title">Settings</h2>
                 <div class="my-4">
-                    <form method="post" th:action="@{/settings}">
-                        <div class="row mt-5 align-items-center">
+                    <!--Icono de usuario. Posiblemente mejerare con un despligue-->
+                    <div class="col">
+                        <div class="row align-items-center">
                             <div class="col-md-3 text-center mb-5">
                                 <div class="avatar avatar-xl">
-                                    <img th:src="${session.u.src}" alt="..." style="width: 110px;" class="avatar-img rounded-circle" />
+                                    <img th:src="@{/user/{id}/pic(id=${session.u.id})}" id = "p_img" alt="..." style="width: 110px;" class="avatar-img rounded-circle" />
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="row align-items-center">
-                                    <div class="col-md-7">
-                                        <h4 class="mb-1" th:text="${session.u.username}">Username</h4>
-                                    </div>
-                                </div>
 
+                            <div class="col-md-7">
+                                <h4 class="mb-1" th:text="${session.u.username}">Username</h4>
                             </div>
                         </div>
+                    </div>
+                    <div class="row"> 
+                        <div id="imgPreview" class="col border border-2 border-tertiary rounded">
+                            <input type="file" id="f_img" accept="image/jpeg,image/png ">
+                        </div>
+
+                        <form th:action="@{/user/{id}/pic(id=${session.u.id})}" class = "col">
+                            <button id="postUserIcon" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+
+                    <form method="post" th:action="@{/settings}">
+                        <div class="row mt-5 align-items-center">
+                            
+                        </div>
+
                         <hr class="my-4" />
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -123,6 +136,31 @@
     </div>
     -->
     <th:block th:replace="fragments/footer.html :: footer" />
+
+    <script>
+        // previsualizacion
+        document.querySelector("#f_img").onchange = e => {
+            let img = document.querySelector("#p_img");
+            let fileInput = document.querySelector("#f_img");
+            console.log(img, fileInput);
+            readImageFileData(fileInput.files[0], img);
+        };
+
+        // post Imangen de usuario
+        document.querySelector("#postUserIcon").onclick = e => {
+            e.preventDefault();
+            let url = document.querySelector("#postUserIcon").parentNode.action;
+            console.log(url);
+            let img = document.querySelector("#p_img");
+            let file = document.querySelector("#f_img");
+            postImage(img, url, "photo").then(() => {
+                let cacheBuster = "?" + new Date().getTime();
+                document.querySelector("#navIcon").src = url + cacheBuster;
+                
+            });
+        };
+    </script>
+
 </body>
 
 </html>
