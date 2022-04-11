@@ -67,4 +67,8 @@ public class Recipe {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         this.dateRegistered = date.format(format);
     }
+
+    public void setAverageRating(Integer rating){
+        this.averageRating = (this.averageRating + rating)/2;
+    }
 }

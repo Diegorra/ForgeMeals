@@ -32,6 +32,5 @@ public class Comment {
     private Integer assessment;
 
     public Comment() {
-
     }
 }
