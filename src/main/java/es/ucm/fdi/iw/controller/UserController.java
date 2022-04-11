@@ -195,16 +195,15 @@ public class UserController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/removeMeal")
-	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
-		//User requester = (User)session.getAttribute("u");
+	public String removeMeal(Model model, @RequestParam String day, @RequestParam String time, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
 		// Mi confusión era que nosé si AJAX cambia el enum a String, porque en el JS le estoy pasando el enum
 		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
-		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno, entityManager);
+		u.removeMeal(WeekDay.valueOf(day), DayTime.valueOf(time), entityManager);
 
-		model.addAttribute("user", u);
-		return "{}";
+		//model.addAttribute("user", u);
+		return "redirect:/user/weekplan";
 	}
 
 	@Transactional
@@ -215,7 +214,7 @@ public class UserController {
 		User u = entityManager.find(User.class, requester.getId());
 		// da error 500 y no sube nada
 		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
-		model.addAttribute("user", u);
+		//model.addAttribute("user", u);
 		entityManager.flush();
 		return "{}";
 	}
