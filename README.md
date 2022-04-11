@@ -15,5 +15,5 @@ Con ForgeMeals podrás encontrar las mejores recetas y comprar los ingredientes 
 * Incluir la lógica para la página de settings.
 * Poder subir fotos con archivos locales cuando se sube la receta.
 * Implementar de forma correcta toda la lógica para el weekplan.
-* Redirección desde checkput a la página de pagos.
+* Redirección desde checkout a la página de pagos.
 
