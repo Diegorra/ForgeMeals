@@ -44,7 +44,19 @@
                             <!-- Comment form-->
                             <form class="mb-4" th:action="'/user/newComment/' + ${recipe.id}" method="POST" >
                                 <div class="mb-3">
-                                    <div class="stars-outer"></div>
+                                    <div class="star-rating">
+                                        <!--Fuente: https://codepen.io/chris22smith/pen/MJzLJN-->
+                                        <input type="radio" id="5-stars" name="rating" value="5" />
+                                        <label for="5-stars" class="star">&#9733;</label>
+                                        <input type="radio" id="4-stars" name="rating" value="4" />
+                                        <label for="4-stars" class="star">&#9733;</label>
+                                        <input type="radio" id="3-stars" name="rating" value="3" />
+                                        <label for="3-stars" class="star">&#9733;</label>
+                                        <input type="radio" id="2-stars" name="rating" value="2" />
+                                        <label for="2-stars" class="star">&#9733;</label>
+                                        <input type="radio" id="1-star" name="rating" value="1" />
+                                        <label for="1-star" class="star">&#9733;</label>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <textarea name = "text" id="text" class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
@@ -125,19 +137,5 @@
         </div>
     </div>
     <th:block th:replace="fragments/footer.html :: footer" />
-    <!--
-    <script>
-        let b = document.getElementById("comment");
-        b.onclick = (e) => {
-            e.preventDefault();
-            go(b.parentNode.action, 'POST', {
-                assessment: 0,
-                text: document.getElementById("text").value
-            })
-                .then(d => location.href = location.href)
-                .catch(e => console.log("sad", e))
-        }
-    </script>
-    -->
 </body>
 </html>

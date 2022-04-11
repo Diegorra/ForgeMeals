@@ -343,8 +343,8 @@ public class UserController {
 
 	@Transactional
 	@PostMapping("newComment/{id}")
-	public String newComment(@PathVariable long id, @RequestParam String text, HttpSession session){
-		Comment comment = new Comment((User) session.getAttribute("u"),  entityManager.find(Recipe.class, id), text, 0);
+	public String newComment(@PathVariable long id, @RequestParam String rating, @RequestParam String text, HttpSession session){
+		Comment comment = new Comment((User) session.getAttribute("u"),  entityManager.find(Recipe.class, id), text, Integer.parseInt(rating)*20);
 		entityManager.persist(comment);
 		return "redirect:/recipe/" + id;
 	}

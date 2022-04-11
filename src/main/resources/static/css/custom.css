@@ -1,5 +1,35 @@
 /* usa este fichero para personalizar tus vistas */
+/*------------------CSS para que el usuario valore recetas---------------------------------------*/
+.star-rating {
+    border:solid 1px #ccc;
+    display:flex;
+    flex-direction: row-reverse;
+    font-size:1.5em;
+    justify-content:space-around;
+    padding:0 .2em;
+    text-align:center;
+    width:5em;
+}
 
+.star-rating input {
+    display:none;
+}
+
+.star-rating label {
+    color:#ccc;
+    cursor:pointer;
+}
+
+.star-rating :checked ~ label {
+    color:#f90;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color:#fc0;
+}
+
+/*---------------------------Mostrar estrellas de valoración en recetas-------------------------------*/
 .stars-outer {
     display: inline-block;
     position: relative;
@@ -38,7 +68,7 @@
 .attribution:hover {
     color: #1fa67a;
 }
-
+/*----------------------------------------------------------------------------------------------------------*/
 .bg {
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://wallpaper.dog/large/20398905.jpg);
 }
