@@ -18,6 +18,9 @@
                     <header class="mb-4">
                         <!-- Post title-->
                         <h1 class="fw-bolder mb-1" th:text="${recipe.name}">Welcome to Blog Post!</h1>
+                        <div class="stars-outer">
+                            <div class="stars-inner" th:style="'width:' +  ${recipe.averageRating} + '%'"></div>
+                        </div>
                         <!-- Post meta content-->
                         <div class="text-muted fst-italic mb-2">Posted on <em th:text="${recipe.dateRegistered}">January 1, 2021 </em> by <em th:text="${recipe.author.username}">ForgeMeals</em></div>
                         <!-- Post categories-->
