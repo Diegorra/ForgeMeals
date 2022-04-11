@@ -4,6 +4,7 @@
 <head>
     <th:block th:replace="fragments/head :: header" />
     <title>Recipe</title>
+    <!--Fuente: https://startbootstrap.com/template/blog-post-->
 </head>
 <body class="d-flex flex-column h-100">
     <header th:replace="fragments/nav.html :: nav" />
@@ -41,14 +42,14 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <!-- Comment form-->
-                            <form class="mb-4">
+                            <form class="mb-4" th:action="'/user/newComment/' + ${recipe.id}" method="POST" >
                                 <div class="mb-3">
                                     <div class="stars-outer"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                    <textarea name = "text" id="text" class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Upload!</button>
+                                <button id="comment" type="submit" class="btn btn-primary">Upload!</button>
                             </form>
                             <!-- Comments-->
                             <div class="d-flex" th:each="comment : ${recipe.comments}">
@@ -102,12 +103,41 @@
                 </div>
                 <!-- Side widget-->
                 <div class="card mb-4">
-                    <div class="card-header">Add to my Cart</div>
-                    <div class="card-body">Metemos los elementos del carrito y botón para proceder al pago?</div>
+                    <div class="card-header">
+                        <button  id="addToCart" class="btn btn-light">
+                            <span>Add to my Cart </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-cart-plus" viewBox="0 0 16 16">
+                                <path
+                                        d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z" />
+                                <path
+                                        d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!--<ul th:each="orderRecipe: ${order.recipes}">
+                            <li th:text="${orderRecipe.recipe.name}">NombreReceta</li>
+                        </ul>-->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <th:block th:replace="fragments/footer.html :: footer" />
+    <!--
+    <script>
+        let b = document.getElementById("comment");
+        b.onclick = (e) => {
+            e.preventDefault();
+            go(b.parentNode.action, 'POST', {
+                assessment: 0,
+                text: document.getElementById("text").value
+            })
+                .then(d => location.href = location.href)
+                .catch(e => console.log("sad", e))
+        }
+    </script>
+    -->
 </body>
 </html>

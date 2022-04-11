@@ -62,12 +62,32 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	/*--------------------------------------------------------Manejo del Perfil--------------------------------------------------------------------------------*/
+
 	@GetMapping("/{id}")
 	public String profile(@PathVariable long id, Model model, HttpSession session){
 		User target = entityManager.find(User.class, id);
         model.addAttribute("user", target);
 		return "profile";
 	}
+
+	@GetMapping("/settings")
+	public String settings(){return "settings";}
+
+	/**
+	 * Sing out the usser in the session
+	 *
+	 * @param model
+	 * @param session
+	 * @return index
+	 */
+	@GetMapping("/logout")
+	public String logout(Model model, HttpSession session){
+		session.invalidate();
+		return "redirect:/";
+	}
+
+	/*--------------------------------------------------------Manejo del Checkout--------------------------------------------------------------------------------*/
 
 	@GetMapping("/checkout")
 	public String checkout(Model model, HttpSession session) {
@@ -82,52 +102,108 @@ public class UserController {
 		return "checkout";
 	}
 
+	@ResponseBody
+	@PostMapping("/addToCart")
+	public String addToCart(Model model, @RequestBody JsonNode data, HttpSession session){
+
+
+		Order order = (Order)session.getAttribute("order");
+		User requester = (User)session.getAttribute("u");
+		if(order == null){
+			order = new Order();
+			order.setUser(requester);
+			session.setAttribute("orderId", 1);
+		}
+		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
+		for (RecipeIngredient ri : receta.getIngredients()) {
+			ri.getIngredient().getAllergen();
+		}
+
+		//receta = new Recipe(receta);
+		//receta = new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3"));
+		OrderRecipe orderRecipe = new OrderRecipe();
+		orderRecipe.setId(UserController.nextOrderId(session));
+		orderRecipe.setRecipe(receta);
+		orderRecipe.setQuantity(1);
+		order.addRecipe(orderRecipe);
+		order.actPrecio();
+		//order.getRecipes().add(orderRecipe);
+		session.setAttribute("order", order);
+		return "{}";
+	}
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/removeFromCart")
+	public String removeFromCard(Model model, @RequestBody JsonNode data, HttpSession session){
+
+		Order order = (Order)session.getAttribute("order");
+		order.removeRecipe(data.get("receta").asLong());
+		session.setAttribute("order", order);
+		return "{}";
+	}
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/changequantCart")
+	public String changequantCart(Model model, @RequestBody JsonNode data, HttpSession session){
+		Order order = (Order)session.getAttribute("order");
+		order.changeQuant(data.get("receta").asLong(), data.get("quantity").asInt());
+		session.setAttribute("order", order);
+
+		return "{}";
+	}
+
+	private static int nextOrderId(HttpSession session) {
+		int next = (Integer)session.getAttribute("orderId");
+		session.setAttribute("orderId", next + 1);
+		return next;
+	}
+
 	@GetMapping("/payment")
 	public String payment(Model model){return "/Forms/payment";}
 
-	@GetMapping("/settings")
-	public String settings(){return "settings";}
+	/*--------------------------------------------------------Manejo del WeekPlan--------------------------------------------------------------------------------*/
 
-	
-	
+	@Transactional
+	@GetMapping("/weekplan")
+	public String weekplan(Model model, HttpSession session){
+		User requester = (User)session.getAttribute("u");
+		User u = entityManager.find(User.class, requester.getId());
+		model.addAttribute("weekdays", WeekPlanMeal.WeekDay.values());
+		model.addAttribute("daytimes", WeekPlanMeal.DayTime.values());
+		model.addAttribute("user", u);
+		return "weekplan";
+	}
+
 	@Transactional
 	@GetMapping("/test")
 	public String test(Model model, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		
+
 
 		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.Lunes, DayTime.Desayuno, entityManager);
 		u.assignMeal(entityManager.find(Recipe.class, 2L), WeekDay.Lunes, DayTime.Comida, entityManager);
 		entityManager.flush();
 		return weekplan(model, session);
-		
-	}
-	
-	@Transactional
-	@GetMapping("/weekplan")
-	public String weekplan(Model model, HttpSession session){
-		User requester = (User)session.getAttribute("u");
-		User u = entityManager.find(User.class, requester.getId()); 
-		model.addAttribute("weekdays", WeekPlanMeal.WeekDay.values());
-		model.addAttribute("daytimes", WeekPlanMeal.DayTime.values()); 
-		model.addAttribute("user", u);
-		return "weekplan";
+
 	}
 
-	// TODO no funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
+
+	//No funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
 	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/removeMeal")
 	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		//User requester = (User)session.getAttribute("u");
 		User requester = (User)session.getAttribute("u");
-		User u = entityManager.find(User.class, requester.getId()); 
+		User u = entityManager.find(User.class, requester.getId());
 		// Mi confusión era que nosé si AJAX cambia el enum a String, porque en el JS le estoy pasando el enum
 		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
 		u.removeMeal(WeekDay.Lunes, DayTime.Desayuno, entityManager);
-		
-		model.addAttribute("user", u);	
+
+		model.addAttribute("user", u);
 		return "{}";
 	}
 
@@ -140,7 +216,7 @@ public class UserController {
 		// da error 500 y no sube nada
 		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
 		model.addAttribute("user", u);
-		entityManager.flush();	
+		entityManager.flush();
 		return "{}";
 	}
 
@@ -149,19 +225,20 @@ public class UserController {
 	@PostMapping("/weekplan/addToCart")
 	public String addMealToCart(Model model, @RequestBody JsonNode data, HttpSession session){
 		User u = (User)session.getAttribute("u");
-		addToCart(model, data,session); // en data pasamos receta: recipeId 
-		session.setAttribute("u", u);	
+		addToCart(model, data,session); // en data pasamos receta: recipeId
+		session.setAttribute("u", u);
 		return "{}";
 	}
-	
-	
+
+	/*--------------------------------------------------------Manejo de Recetas--------------------------------------------------------------------------------*/
+
 	@GetMapping("/addRecipe")
 	public String newRecipe(Model model){
 		List<Ingredient> ingredients = entityManager.createQuery("select i from Ingredient i", Ingredient.class).getResultList();
 		model.addAttribute("ingredients",ingredients);
 		return "/Forms/recipeForm";
 	}
-	
+
 	@ResponseBody
 	@Transactional
 	@PostMapping("/addRecipe")
@@ -171,19 +248,19 @@ public class UserController {
 		User requester = (User)session.getAttribute("u");
 
 		File f = localData.getFile("user", ""+id+".jpg");
-		
+
 
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
 		JsonNode it = data.get("ingredientNames");
 		JsonNode it2 = data.get("ingredientCant");
 		for(int i = 0; i < it.size(); i++){
-		
-			
+
+
 			List<Ingredient> is = entityManager.createNamedQuery("Ingredient.byName", Ingredient.class)
 				.setParameter("iname", it.get(i).asText())
 				.getResultList();
-			
-			
+
+
 			if(is.size() == 0) continue;
 			RecipeIngredient ingredienteCompleto = new RecipeIngredient();
 			ingredienteCompleto.setIngredient(is.get(0));
@@ -195,16 +272,15 @@ public class UserController {
 		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
-		recipeNew.setName(data.get("name").textValue());		
+		recipeNew.setName(data.get("name").textValue());
 		recipeNew.setPrice(BigDecimal.TEN);
 		recipeNew.setDateRegistered(LocalDateTime.now());
 		entityManager.persist(recipeNew);
 		//entityManager.flush();
 
 		return "{}";
-		
-	}
 
+	}
 
 	@PostMapping("/addRecipeImage")
 	@ResponseBody
@@ -213,7 +289,7 @@ public class UserController {
 
         /*User target = entityManager.find(User.class, id);
         model.addAttribute("user", target);
-		
+
 		// check permissions
 		User requester = (User)session.getAttribute("u");
 		if (requester.getId() != target.getId() &&
@@ -225,21 +301,21 @@ public class UserController {
 		File f = localData.getFile("user", ""+id+".jpg");
 		//File f = new File("user/pruebaReceta.jpg");
 		if (photo.isEmpty()) {
-			
+
 		} else {
 			try (BufferedOutputStream stream =
 					new BufferedOutputStream(new FileOutputStream(f))) {
 				byte[] bytes = photo.getBytes();
 				stream.write(bytes);
-                
+
 			} catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				
+
 			}
 		}
 		return "{}";
     }
-    
+
 	/**
 	 * Remove the recipe con id "id" if the requester is the author or is the admin
 	 *
@@ -263,88 +339,29 @@ public class UserController {
 		return "redirect:/";
 	}
 
-	private static int nextOrderId(HttpSession session) {
-		int next = (Integer)session.getAttribute("orderId");
-		session.setAttribute("orderId", next + 1);
-		return next;
-	}
-
-	@ResponseBody
-	@PostMapping("/addToCart")
-	public String addToCart(Model model, @RequestBody JsonNode data, HttpSession session){
-
-
-		Order order = (Order)session.getAttribute("order");
-		User requester = (User)session.getAttribute("u");
-		if(order == null){
-			order = new Order();
-			order.setUser(requester);
-			session.setAttribute("orderId", 1);
-		}
-		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
-		for (RecipeIngredient ri : receta.getIngredients()) {
-			ri.getIngredient().getAllergen();
-		}
-		
-		//receta = new Recipe(receta);
-		//receta = new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3"));
-		OrderRecipe orderRecipe = new OrderRecipe();
-		orderRecipe.setId(UserController.nextOrderId(session));
-		orderRecipe.setRecipe(receta);
-		orderRecipe.setQuantity(1);
-		order.addRecipe(orderRecipe);
-		order.actPrecio();
-		//order.getRecipes().add(orderRecipe);
-        session.setAttribute("order", order);		
-		return "{}";
-	}
-
-
-	/**
-	 * Sing out the usser in the session
-	 *
-	 * @param model
-	 * @param session
-	 * @return index
-	 */
-	@GetMapping("/logout")
-	public String logout(Model model, HttpSession session){
-		session.invalidate();
-		return "redirect:/";
-	}
+	/*--------------------------------------------------------Manejo del Comentarios--------------------------------------------------------------------------------*/
 
 	@Transactional
-	@ResponseBody
-	@PostMapping("/removeFromCart")
-	public String removeFromCard(Model model, @RequestBody JsonNode data, HttpSession session){
-
-		Order order = (Order)session.getAttribute("order");
-		order.removeRecipe(data.get("receta").asLong());
-        session.setAttribute("order", order);		
-		return "{}";
+	@PostMapping("newComment/{id}")
+	public String newComment(@PathVariable long id, @RequestParam String text, HttpSession session){
+		Comment comment = new Comment((User) session.getAttribute("u"),  entityManager.find(Recipe.class, id), text, 0);
+		entityManager.persist(comment);
+		return "redirect:/recipe/" + id;
 	}
 
 
-	@Transactional
-	@ResponseBody
-	@PostMapping("/changequantCart")
-	public String changequantCart(Model model, @RequestBody JsonNode data, HttpSession session){
-		Order order = (Order)session.getAttribute("order");
-		order.changeQuant(data.get("receta").asLong(), data.get("quantity").asInt());
-        session.setAttribute("order", order);		
 
-		return "{}";
-	}
 
+	/*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 	/**
      * Exception to use when denying access to unauthorized users.
-     * 
+     *
      * In general, admins are always authorized, but users cannot modify
      * each other's profiles.
      */
 	@ResponseStatus(
-		value=HttpStatus.FORBIDDEN, 
+		value=HttpStatus.FORBIDDEN,
 		reason="No eres administrador, y éste no es tu perfil")  // 403
 	public static class NoEsTuPerfilException extends RuntimeException {}
 
@@ -354,7 +371,7 @@ public class UserController {
 	 * encodings, since encodings contain a randomly-generated salt.
 	 * @param rawPassword to encode
 	 * @return the encoded password (typically a 60-character string)
-	 * for example, a possible encoding of "test" is 
+	 * for example, a possible encoding of "test" is
 	 * {bcrypt}$2y$12$XCKz0zjXAP6hsFyVc8MucOzx6ER6IsC1qo5zQbclxhddR1t6SfrHm
 	 */
 	public String encodePassword(String rawPassword) {
@@ -380,8 +397,8 @@ public class UserController {
 	@Transactional
 	public String postUser(
 			HttpServletResponse response,
-			@PathVariable long id, 
-			@ModelAttribute User edited, 
+			@PathVariable long id,
+			@ModelAttribute User edited,
 			@RequestParam(required=false) String pass2,
 			Model model, HttpSession session) throws IOException {
 
@@ -396,16 +413,16 @@ public class UserController {
             entityManager.flush(); // forces DB to add user & assign valid id
             id = target.getId();   // retrieve assigned id from DB
         }
-        
+
         // retrieve requested user
         target = entityManager.find(User.class, id);
         model.addAttribute("user", target);
-		
+
 		if (requester.getId() != target.getId() &&
 				! requester.hasRole(Role.ADMIN)) {
 			throw new NoEsTuPerfilException();
 		}
-		
+
 		if (edited.getPassword() != null) {
             if ( ! edited.getPassword().equals(pass2)) {
                 // FIXME: complain
@@ -413,7 +430,7 @@ public class UserController {
                 // save encoded version of password
                 target.setPassword(encodePassword(edited.getPassword()));
             }
-		}		
+		}
 		target.setUsername(edited.getUsername());
 
 
@@ -423,17 +440,17 @@ public class UserController {
         }
 
 		return "profile";
-	}	
+	}
 
     /**
      * Returns the default profile pic
-     * 
+     *
      * @return
      */
     private static InputStream defaultPic() {
 	    return new BufferedInputStream(Objects.requireNonNull(
             UserController.class.getClassLoader().getResourceAsStream(
-                "static/img/default-pic.jpg")));
+					"static/users/1.jpg")));
     }
 
     /**
