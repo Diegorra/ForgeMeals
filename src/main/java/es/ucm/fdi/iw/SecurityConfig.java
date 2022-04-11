@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 	        .authorizeRequests()
 				//.antMatchers("/recipe/**").permitAll()
+				.antMatchers("/register").permitAll()
 				.antMatchers("/user/**/pic").permitAll() 	   // users icons
 				.antMatchers("/css/**", "/js/**", "/img/**", "/", "/error").permitAll()
 				.antMatchers("/api/**").permitAll()            // <-- public api access

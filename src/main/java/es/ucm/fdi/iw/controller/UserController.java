@@ -450,7 +450,7 @@ public class UserController {
     private static InputStream defaultPic() {
 	    return new BufferedInputStream(Objects.requireNonNull(
             UserController.class.getClassLoader().getResourceAsStream(
-					"static/users/1.jpg")));
+					"static/img/users/default-pic.jpg")));
     }
 
     /**
