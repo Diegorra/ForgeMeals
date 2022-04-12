@@ -198,10 +198,8 @@ public class UserController {
 	public String removeMeal(Model model, @RequestParam String day, @RequestParam String time, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		// Mi confusión era que nosé si AJAX cambia el enum a String, porque en el JS le estoy pasando el enum
 		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
 		u.removeMeal(WeekDay.valueOf(day), DayTime.valueOf(time), entityManager);
-
 		//model.addAttribute("user", u);
 		return "redirect:/user/weekplan";
 	}
@@ -209,14 +207,15 @@ public class UserController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/add")
-	public String addMeal(Model model, @RequestBody JsonNode data, HttpSession session){
+	public String addMeal(Model model,  @RequestParam String day, @RequestParam String time, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		// da error 500 y no sube nada
-		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
+		// da error 500 y no sube nada usando data (de la función go), así como está (usando form) da error 403
+		// u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
+		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(day), DayTime.valueOf(time), entityManager);
 		//model.addAttribute("user", u);
 		entityManager.flush();
-		return "{}";
+		return "redirect:/user/weekplan";
 	}
 
 	@Transactional
