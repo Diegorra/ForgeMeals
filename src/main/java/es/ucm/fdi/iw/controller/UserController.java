@@ -92,12 +92,6 @@ public class UserController {
 	@GetMapping("/checkout")
 	public String checkout(Model model, HttpSession session) {
 		Order order = (Order)session.getAttribute("order");
-		//User requester = (User)session.getAttribute("u");
-		if(order == null){
-			order = new Order();
-			session.setAttribute("order", order);
-			session.setAttribute("orderId", 1);
-		}
 		model.addAttribute("order", order);
 		return "checkout";
 	}
@@ -108,26 +102,16 @@ public class UserController {
 
 
 		Order order = (Order)session.getAttribute("order");
-		User requester = (User)session.getAttribute("u");
-		if(order == null){
-			order = new Order();
-			order.setUser(requester);
-			session.setAttribute("orderId", 1);
-		}
 		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
 		for (RecipeIngredient ri : receta.getIngredients()) {
 			ri.getIngredient().getAllergen();
 		}
-
-		//receta = new Recipe(receta);
-		//receta = new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3"));
 		OrderRecipe orderRecipe = new OrderRecipe();
 		orderRecipe.setId(UserController.nextOrderId(session));
 		orderRecipe.setRecipe(receta);
 		orderRecipe.setQuantity(1);
 		order.addRecipe(orderRecipe);
 		order.actPrecio();
-		//order.getRecipes().add(orderRecipe);
 		session.setAttribute("order", order);
 		return "{}";
 	}
@@ -251,6 +235,7 @@ public class UserController {
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
 		JsonNode it = data.get("ingredientNames");
 		JsonNode it2 = data.get("ingredientCant");
+		BigDecimal recipePrice = BigDecimal.ZERO;
 		for(int i = 0; i < it.size(); i++){
 
 
@@ -261,17 +246,20 @@ public class UserController {
 
 			if(is.size() == 0) continue;
 			RecipeIngredient ingredienteCompleto = new RecipeIngredient();
+	
 			ingredienteCompleto.setIngredient(is.get(0));
 			ingredienteCompleto.setQuantity(it2.get(i).asInt());
+			recipePrice = recipePrice.add(is.get(0).getPrice().multiply(new BigDecimal(it2.get(i).asInt()))); 
 			ingredientes.add(ingredienteCompleto);
 		}
 		recipeNew.setIngredients(ingredientes);
-		recipeNew.setSrc(f.getAbsolutePath());
+		recipeNew.setSrc(f.getPath());
 		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
 		recipeNew.setName(data.get("name").textValue());
-		recipeNew.setPrice(BigDecimal.TEN);
+
+		recipeNew.setPrice(recipePrice);
 		recipeNew.setDateRegistered(LocalDateTime.now());
 		entityManager.persist(recipeNew);
 		//entityManager.flush();
