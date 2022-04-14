@@ -4,6 +4,27 @@
 <head>
   <th:block th:replace="fragments/head :: header" />
   <title>WeekPlan</title>
+  <style>
+    .dropdown-menu li {
+      position: relative;
+    }
+
+    .dropdown-menu .dropdown-submenu {
+      display: none;
+      position: absolute;
+      left: 100%;
+      top: -7px;
+    }
+
+    .dropdown-menu .dropdown-submenu-left {
+      right: 100%;
+      left: auto;
+    }
+
+    .dropdown-menu>li:hover>.dropdown-submenu {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
@@ -68,14 +89,23 @@
                   <!-- si no hay una receta en la celda-->
                   <li>
                     <!-- añadir receta a la celda -->
-                    <a class="bAdd dropdown-item" th:attr="aDay=${day}, aTime=${time}">
+                    <button class="dropdown-item" >
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-plus-square-fill" viewBox="0 0 16 16">
                         <path
                           d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
                       </svg>
                       <span> Añadir receta</span>
-                    </a>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-submenu" >
+                      <th:block th:each="recipe : ${recipes}">
+                        <li>
+                          <a class="bAdd dropdown-item" href="#" th:text="${recipe.name}" th:attr="aDay=${day}, aTime=${time}, aRecipe=${recipe.id}"> receta </a>
+                        </li>
+                      </th:block> 
+                    </ul>
+
                   </li>
                 </th:block>
               </ul>
@@ -86,35 +116,26 @@
     </tbody>
   </table>
 
+  <!-- TODO: implementar botón que mete todo en el carrito y alguna otra cosa chula si hay tiempo -->
+
   <script>
     let cartButton = document.querySelectorAll(".bCart");
     let deleteButton = document.querySelectorAll(".bDelete");
     let addButton = document.querySelectorAll(".bAdd");
 
-    // añadir receta
+    // TODO añadir receta: funciona pero da fetch error siempre al cargar la primera receta (en el resto no)
     addButton.forEach(e => e.onclick = () => {
-      addMeal(e.getAttribute("aDay"), e.getAttribute("aTime"));
+      addMeal(e.getAttribute("aDay"), e.getAttribute("aTime"), e.getAttribute("aRecipe"));
       location.reload();
     });
-    function addMeal(d, t) {
+    function addMeal(d, t, r) {
       go("/user/weekplan/add", 'POST', {
         day: d,
-        time: t
+        time: t,
+        recipe: r
       }).then(d => console.log("Happy", d))
-        .catch(e => alert(e, e))
+        .catch(e => console.log(e, e))
     }
-    /* codigo que funciona
-    addButton.forEach(e => e.onclick = () => {
-      addMeal(e.getAttribute("aDay"), e.getAttribute("aTime"));
-      location.reload();
-    });
-    function addMeal(d, t) {
-      go("/user/weekplan/add", 'POST', {
-        day: d,
-        time: t
-      }).then(d => console.log("Happy", d))
-        .catch(e => alert(e, e))
-    }*/
 
     // Delete
     deleteButton.forEach(e => e.onclick = () => {
@@ -128,7 +149,7 @@
           day: d,
           time: t
         }).then(d => console.log("Happy", d))
-          .catch(e => alert(e, e))
+          .catch(e => console.log(e, e))
       }
     }
 
@@ -139,16 +160,8 @@
     function addToCart(id) {
       go("/user/weekplan/addToCart", 'POST', {
         receta: id
-      }).then(d => alert("Happy", d))
-        .catch(e => alert("sad", e))
-    }
-
-    // ventana emergente add
-    function openModal() {
-      $('#overlay').show();
-    }
-    function closeModal() {
-      $('#overlay').hide();
+      }).then(d => console.log("Happy", d))
+        .catch(e => console.log(e, e))
     }
 
   </script>

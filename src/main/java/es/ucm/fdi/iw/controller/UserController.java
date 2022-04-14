@@ -154,6 +154,8 @@ public class UserController {
 	public String weekplan(Model model, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
+		List<Recipe> recipes = entityManager.createQuery("select r from Recipe r", Recipe.class).getResultList();
+		model.addAttribute("recipes", recipes);
 		model.addAttribute("weekdays", WeekPlanMeal.WeekDay.values());
 		model.addAttribute("daytimes", WeekPlanMeal.DayTime.values());
 		model.addAttribute("user", u);
@@ -176,9 +178,10 @@ public class UserController {
 	public String addMeal(Model model,  @RequestBody JsonNode data, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		List<Recipe> recipes = entityManager.createQuery("select r from Recipe r", Recipe.class).getResultList();
-		model.addAttribute("recetis", recipes)
-		u.assignMeal(entityManager.find(Recipe.class, 4L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
+		u.assignMeal( entityManager.find(Recipe.class, data.get("recipe").asLong()), 
+						WeekDay.valueOf(data.get("day").asText()), 
+						DayTime.valueOf(data.get("time").asText()), 
+						entityManager);
 		entityManager.flush();
 		return "{}";
 	}
