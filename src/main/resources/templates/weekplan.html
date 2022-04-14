@@ -8,7 +8,6 @@
 
 <body>
   <header th:replace="fragments/nav.html :: nav"></header>
-
   <table class="table table-sm table-bordered .table-hover w-75" style="margin-left:auto; margin-right: auto;">
     <thead>
       <tr>
@@ -42,23 +41,18 @@
                   <!-- solo si hay una receta en la celda-->
                   <li>
                     <!-- Borrar receta del weekplan -->
-                    <form action="/user/weekplan/removeMeal" method="post">
-                      <input type="hidden" th:value="${day}" name="day">
-                      <input type="hidden" th:value="${time}" name="time">
-                      <button class="bDelete dropdown-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-trash3" viewBox="0 0 16 16">
-                          <path
-                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                        </svg>
-                        <span> Delete </span>
-                      </button>
-                    </form>
+                    <a class="bDelete dropdown-item" th:attr="delDay=${day}, delTime=${time}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-trash3" viewBox="0 0 16 16">
+                        <path
+                          d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                      </svg>
+                      <span> Delete </span>
+                    </a>
                   </li>
                   <li>
                     <!-- añadir receta al carrito -->
-                    <a class="bCart dropdown-item"
-                      th:attr="data-id-cart-day=${day}, data-id-cart-time=${time}, data-id-cart-recipe=${meal.recipe.id}">
+                    <a class="bCart dropdown-item" th:attr="cId=${meal.recipe.id}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-cart-plus" viewBox="0 0 16 16">
                         <path
@@ -73,19 +67,15 @@
                 <th:block th:if="${meal.recipe == null}">
                   <!-- si no hay una receta en la celda-->
                   <li>
-                    <!-- añadir receta a la celda 
-                    <form action="/user/weekplan/add" method="post">
-                      <input type="hidden" th:value="${day}" name="day">
-                      <input type="hidden" th:value="${time}" name="time"> -->
-                      <button class="bAdd dropdown-item" th:attr="data-id-add-day=${day}, data-id-add-time=${time}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-plus-square-fill" viewBox="0 0 16 16">
-                          <path
-                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
-                        </svg>
-                        <span> Añadir receta</span>
-                      </button>
-                   <!-- </form> -->
+                    <!-- añadir receta a la celda -->
+                    <a class="bAdd dropdown-item" th:attr="aDay=${day}, aTime=${time}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                        <path
+                          d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
+                      </svg>
+                      <span> Añadir receta</span>
+                    </a>
                   </li>
                 </th:block>
               </ul>
@@ -97,50 +87,70 @@
   </table>
 
   <script>
-    // USANDO ESTO DA ERROR 500 Y USANDO FORM DA ERROR 403. ARREGLAR!
     let cartButton = document.querySelectorAll(".bCart");
     let deleteButton = document.querySelectorAll(".bDelete");
     let addButton = document.querySelectorAll(".bAdd");
-      // Delete
-      deleteButton.forEach(e => {e.onclick = removeRecipe});
-      function removeRecipe(e) {
-        e.preventDefault();
-        let day = e.target.dataset.deleteDay;
-        let time = e.target.dataset.deleteTime;
-        if(confirm("Deseas eliminarlo?")){
-          // llamar funcion java para eliminarlo con parametros day, time
-          go("/user/weekplan/removeMeal", 'POST', {
-            day: day,
-            time: time
-          }).then(d => alert("Happy", d))
-            .catch(e => alert("sad", e))
-        }
-      }
 
-      // añadir al carrito
-      deleteButton.forEach(e => {e.onclick = addToCart});
-      function addToCart(e) {
-        e.preventDefault();
-        let recipeId = e.target.dataset.cartRecipe;
-          go("/user/weekplan/addToCart", 'POST', {
-            receta: recipeId
-          }).then(d => alert("Happy", d))
-            .catch(e => alert("sad", e))
+    // añadir receta
+    addButton.forEach(e => e.onclick = () => {
+      addMeal(e.getAttribute("aDay"), e.getAttribute("aTime"));
+      location.reload();
+    });
+    function addMeal(d, t) {
+      go("/user/weekplan/add", 'POST', {
+        day: d,
+        time: t
+      }).then(d => console.log("Happy", d))
+        .catch(e => alert(e, e))
+    }
+    /* codigo que funciona
+    addButton.forEach(e => e.onclick = () => {
+      addMeal(e.getAttribute("aDay"), e.getAttribute("aTime"));
+      location.reload();
+    });
+    function addMeal(d, t) {
+      go("/user/weekplan/add", 'POST', {
+        day: d,
+        time: t
+      }).then(d => console.log("Happy", d))
+        .catch(e => alert(e, e))
+    }*/
+
+    // Delete
+    deleteButton.forEach(e => e.onclick = () => {
+      removeRecipe(e.getAttribute("delDay"), e.getAttribute("delTime"));
+      location.reload();
+    });
+    function removeRecipe(d, t) {
+      if (confirm("Deseas eliminarlo?")) {
+        // llamar funcion java para eliminarlo con parametros day, time
+        go("/user/weekplan/removeMeal", 'POST', {
+          day: d,
+          time: t
+        }).then(d => console.log("Happy", d))
+          .catch(e => alert(e, e))
       }
-      
-      // añadir receta
-      addButton.forEach(e => {e.onclick = addMeal});
-      function addMeal(e) {
-        e.preventDefault();
-        let day = e.target.dataset.addDay;
-        let time = e.target.dataset.addTime;
-        
-        go("/user/weekplan/add", 'POST', {
-            day: day,
-            time: time
-          }).then(d => alert("Happy", d))
-            .catch(e => alert("sad", e))
-      }  
+    }
+
+    // añadir al carrito
+    cartButton.forEach(e => e.onclick = () => {
+      addToCart(e.getAttribute("cId"));
+    });
+    function addToCart(id) {
+      go("/user/weekplan/addToCart", 'POST', {
+        receta: id
+      }).then(d => alert("Happy", d))
+        .catch(e => alert("sad", e))
+    }
+
+    // ventana emergente add
+    function openModal() {
+      $('#overlay').show();
+    }
+    function closeModal() {
+      $('#overlay').hide();
+    }
+
   </script>
 
   <!--Consulta: https://getbootstrap.com/docs/5.1/examples/grid/-->

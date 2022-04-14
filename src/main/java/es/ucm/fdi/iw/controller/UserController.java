@@ -161,55 +161,33 @@ public class UserController {
 	}
 
 	@Transactional
-	@GetMapping("/test")
-	public String test(Model model, HttpSession session){
-		User requester = (User)session.getAttribute("u");
-		User u = entityManager.find(User.class, requester.getId());
-
-
-		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.Lunes, DayTime.Desayuno, entityManager);
-		u.assignMeal(entityManager.find(Recipe.class, 2L), WeekDay.Lunes, DayTime.Comida, entityManager);
-		entityManager.flush();
-		return weekplan(model, session);
-
-	}
-
-
-	//No funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
-	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/removeMeal")
-	public String removeMeal(Model model, @RequestParam String day, @RequestParam String time, HttpSession session){
+	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
-		u.removeMeal(WeekDay.valueOf(day), DayTime.valueOf(time), entityManager);
-		//model.addAttribute("user", u);
-		return "redirect:/user/weekplan";
+		u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
+		return "{}";
 	}
 
 	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/add")
-	public String addMeal(Model model,  @RequestParam String day, @RequestParam String time, HttpSession session){
+	public String addMeal(Model model,  @RequestBody JsonNode data, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		// da error 500 y no sube nada usando data (de la función go), así como está (usando form) da error 403
-		// u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
-		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(day), DayTime.valueOf(time), entityManager);
-		//model.addAttribute("user", u);
+		List<Recipe> recipes = entityManager.createQuery("select r from Recipe r", Recipe.class).getResultList();
+		model.addAttribute("recetis", recipes)
+		u.assignMeal(entityManager.find(Recipe.class, 4L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
 		entityManager.flush();
-		return "redirect:/user/weekplan";
+		return "{}";
 	}
 
 	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/addToCart")
 	public String addMealToCart(Model model, @RequestBody JsonNode data, HttpSession session){
-		User u = (User)session.getAttribute("u");
-		addToCart(model, data,session); // en data pasamos receta: recipeId
-		session.setAttribute("u", u);
-		return "{}";
+		return addToCart(model, data, session); // en data pasamos receta: recipeId;
 	}
 
 	/*--------------------------------------------------------Manejo de Recetas--------------------------------------------------------------------------------*/
