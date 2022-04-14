@@ -58,7 +58,7 @@
                   <li>
                     <!-- añadir receta al carrito -->
                     <a class="bCart dropdown-item"
-                      th:attr="data-id-cart-day=${day}, data-id-cart-time=${time}, data-id-cart-recipeID=${meal.recipe.id}">
+                      th:attr="data-id-cart-day=${day}, data-id-cart-time=${time}, data-id-cart-recipe=${meal.recipe.id}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-cart-plus" viewBox="0 0 16 16">
                         <path
@@ -73,10 +73,10 @@
                 <th:block th:if="${meal.recipe == null}">
                   <!-- si no hay una receta en la celda-->
                   <li>
-                    <!-- añadir receta a la celda -->
+                    <!-- añadir receta a la celda 
                     <form action="/user/weekplan/add" method="post">
                       <input type="hidden" th:value="${day}" name="day">
-                      <input type="hidden" th:value="${time}" name="time">
+                      <input type="hidden" th:value="${time}" name="time"> -->
                       <button class="bAdd dropdown-item" th:attr="data-id-add-day=${day}, data-id-add-time=${time}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                           class="bi bi-plus-square-fill" viewBox="0 0 16 16">
@@ -85,7 +85,7 @@
                         </svg>
                         <span> Añadir receta</span>
                       </button>
-                    </form>
+                   <!-- </form> -->
                   </li>
                 </th:block>
               </ul>
@@ -97,7 +97,7 @@
   </table>
 
   <script>
-    /* USANDO ESTO DA ERROR 500 Y USANDO FORM DA ERROR 403. ARREGLAR!
+    // USANDO ESTO DA ERROR 500 Y USANDO FORM DA ERROR 403. ARREGLAR!
     let cartButton = document.querySelectorAll(".bCart");
     let deleteButton = document.querySelectorAll(".bDelete");
     let addButton = document.querySelectorAll(".bAdd");
@@ -121,7 +121,7 @@
       deleteButton.forEach(e => {e.onclick = addToCart});
       function addToCart(e) {
         e.preventDefault();
-        let recipeId = e.target.dataset.cartRecipeID();
+        let recipeId = e.target.dataset.cartRecipe;
           go("/user/weekplan/addToCart", 'POST', {
             receta: recipeId
           }).then(d => alert("Happy", d))
@@ -141,7 +141,6 @@
           }).then(d => alert("Happy", d))
             .catch(e => alert("sad", e))
       }  
-*/
   </script>
 
   <!--Consulta: https://getbootstrap.com/docs/5.1/examples/grid/-->
