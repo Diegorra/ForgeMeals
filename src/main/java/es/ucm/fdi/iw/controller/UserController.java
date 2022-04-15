@@ -71,8 +71,26 @@ public class UserController {
 		return "profile";
 	}
 
-	@GetMapping("/settings")
-	public String settings(){return "settings";}
+	@GetMapping("/{id}/settings")
+	public String settings(@PathVariable long id, Model model, HttpSession session){
+		User target = entityManager.find(User.class, id);
+        model.addAttribute("user", target);
+		return "settings";
+	}
+
+
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/{id}/settings")
+	public String settings(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
+		User requester = entityManager.find(User.class, id);
+		requester.setUsername(data.get("firstname").textValue());
+		requester.setEmail(data.get("email").textValue());
+		requester.setPassword(passwordEncoder.encode(data.get("password").textValue()));
+		entityManager.persist(requester);
+		return "{}";
+	}
 
 	/**
 	 * Sing out the usser in the session
