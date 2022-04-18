@@ -2,12 +2,12 @@
 <html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:replace="fragments/head :: header" />
+    <th:block th:replace="Fragments/head :: header" />
     <title>Welcome</title>
 </head>
 
 <body class="d-flex flex-column h-100">
-    <header th:replace="fragments/nav.html :: nav"></header>
+    <header th:replace="Fragments/nav.html :: nav"></header>
 
     <main class="flex-shrink-0 bg">
         <div class="container">
@@ -16,13 +16,13 @@
         <div class="container grid">
             <!--Haríamos un for para recorrer cada receta y mostarla en un card-->
             <div th:each="recipe: ${recipes}">
-                <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
+                <div class="cards" th:replace="Fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
                 <p></p>
             </div>
         </div>
     </main>
 
-    <th:block th:replace="fragments/footer.html :: footer" />
+    <th:block th:replace="Fragments/footer.html :: footer" />
 </body>
 <script>
     let addButton = document.querySelectorAll("#addToCart");

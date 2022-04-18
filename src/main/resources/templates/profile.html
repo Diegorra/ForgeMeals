@@ -2,12 +2,12 @@
 <html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:replace="fragments/head :: header" />
+    <th:block th:replace="Fragments/head :: header" />
     <title>UserPage</title>
 </head>
 
 <body>
-    <header th:replace="fragments/nav.html :: nav"></header>
+    <header th:replace="Fragments/nav.html :: nav"></header>
     <!--TODO-->
     <main class="container">
         <div class="d-flex align-items-center p-3 my-3 text-black bg-gray rounded shadow-sm position-relative">
@@ -30,7 +30,7 @@
             <div class = "container grid mt-4">
             <!--For de Recetas-->
                 <div th:each="recipe: ${user.recipes}">
-                    <div class="cards" th:replace="fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
+                    <div class="cards" th:replace="Fragments/recipeCard.html :: card(recipe = ${recipe})"></div>
                     <p></p>
                 </div>
             </div>
@@ -38,7 +38,7 @@
 
     </main>
     
-    <th:block th:replace="fragments/footer.html :: footer" />
+    <th:block th:replace="Fragments/footer.html :: footer" />
 </body>
 
 </html>
