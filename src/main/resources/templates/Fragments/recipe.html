@@ -117,7 +117,7 @@
                 <!-- Side widget-->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <button  id="addToCart" class="btn btn-light">
+                        <button  id="addToCart" class="btn btn-light" th:attr="recipeId=${recipe.id}">
                             <span>Add to my Cart </span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-cart-plus" viewBox="0 0 16 16">
@@ -129,9 +129,9 @@
                         </button>
                     </div>
                     <div class="card-body">
-                        <!--<ul th:each="orderRecipe: ${order.recipes}">
+                        <ul th:each="orderRecipe: ${order.recipes}">
                             <li th:text="${orderRecipe.recipe.name}">NombreReceta</li>
-                        </ul>-->
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -139,4 +139,16 @@
     </div>
     <th:block th:replace="Fragments/footer.html :: footer" />
 </body>
+<script>
+    let addButton = document.getElementById("addToCart");
+    addButton.onclick  = addRecipeToCart;
+    function addRecipeToCart() {
+        //e.preventDefault();
+        go("/user/addToCart", 'POST', {
+            receta: this.getAttribute("recipeId")
+        })
+            .then(window.location.href=window.location.href)
+            .catch(e => console.log("sad", e))
+    }
+</script>
 </html>
