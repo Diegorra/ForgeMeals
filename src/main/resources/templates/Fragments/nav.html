@@ -34,7 +34,7 @@
                             <img th:src="@{/user/{id}/pic(id=${session.u.id})}" height="32" class="rounded-circle" id = "navIcon">
                         </a>
                         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-                            <li><a class="dropdown-item" th:href="'/user/settings'">Settings</a></li>
+                            <li><a class="dropdown-item" th:href="'/user/__${session.u.id}__/settings'">Settings</a></li>
                             <li><a class="dropdown-item" th:href="'/user/' + ${session.u.id}">Profile</a></li>
                             <li><a class="dropdown-item" href="#">Favorite recipes</a></li>
                             <li><hr class="dropdown-divider"></li>

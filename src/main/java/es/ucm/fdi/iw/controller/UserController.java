@@ -71,8 +71,26 @@ public class UserController {
 		return "profile";
 	}
 
-	@GetMapping("/settings")
-	public String settings(){return "settings";}
+	@GetMapping("/{id}/settings")
+	public String settings(@PathVariable long id, Model model, HttpSession session){
+		User target = entityManager.find(User.class, id);
+        model.addAttribute("user", target);
+		return "settings";
+	}
+
+
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/{id}/settings")
+	public String settings(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
+		User requester = entityManager.find(User.class, id);
+		requester.setUsername(data.get("firstname").textValue());
+		requester.setEmail(data.get("email").textValue());
+		requester.setPassword(passwordEncoder.encode(data.get("password").textValue()));
+		entityManager.persist(requester);
+		return "{}";
+	}
 
 	/**
 	 * Sing out the usser in the session
@@ -92,12 +110,6 @@ public class UserController {
 	@GetMapping("/checkout")
 	public String checkout(Model model, HttpSession session) {
 		Order order = (Order)session.getAttribute("order");
-		//User requester = (User)session.getAttribute("u");
-		if(order == null){
-			order = new Order();
-			session.setAttribute("order", order);
-			session.setAttribute("orderId", 1);
-		}
 		model.addAttribute("order", order);
 		return "checkout";
 	}
@@ -108,26 +120,16 @@ public class UserController {
 
 
 		Order order = (Order)session.getAttribute("order");
-		User requester = (User)session.getAttribute("u");
-		if(order == null){
-			order = new Order();
-			order.setUser(requester);
-			session.setAttribute("orderId", 1);
-		}
 		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
 		for (RecipeIngredient ri : receta.getIngredients()) {
 			ri.getIngredient().getAllergen();
 		}
-
-		//receta = new Recipe(receta);
-		//receta = new Recipe("Pizza", "https://w6h5a5r4.rocketcdn.me/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg" ,new BigDecimal("3"));
 		OrderRecipe orderRecipe = new OrderRecipe();
 		orderRecipe.setId(UserController.nextOrderId(session));
 		orderRecipe.setRecipe(receta);
 		orderRecipe.setQuantity(1);
 		order.addRecipe(orderRecipe);
 		order.actPrecio();
-		//order.getRecipes().add(orderRecipe);
 		session.setAttribute("order", order);
 		return "{}";
 	}
@@ -170,6 +172,8 @@ public class UserController {
 	public String weekplan(Model model, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
+		List<Recipe> recipes = entityManager.createQuery("select r from Recipe r", Recipe.class).getResultList();
+		model.addAttribute("recipes", recipes);
 		model.addAttribute("weekdays", WeekPlanMeal.WeekDay.values());
 		model.addAttribute("daytimes", WeekPlanMeal.DayTime.values());
 		model.addAttribute("user", u);
@@ -177,44 +181,25 @@ public class UserController {
 	}
 
 	@Transactional
-	@GetMapping("/test")
-	public String test(Model model, HttpSession session){
-		User requester = (User)session.getAttribute("u");
-		User u = entityManager.find(User.class, requester.getId());
-
-
-		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.Lunes, DayTime.Desayuno, entityManager);
-		u.assignMeal(entityManager.find(Recipe.class, 2L), WeekDay.Lunes, DayTime.Comida, entityManager);
-		entityManager.flush();
-		return weekplan(model, session);
-
-	}
-
-
-	//No funcionan. O por el go en weekplan.html o algo de la gestión aquí. Cómo se modifica el modelo si solo hay addAtribute?
-	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/removeMeal")
-	public String removeMeal(Model model, @RequestParam String day, @RequestParam String time, HttpSession session){
+	public String removeMeal(Model model, @RequestBody JsonNode data, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		// Mi confusión era que nosé si AJAX cambia el enum a String, porque en el JS le estoy pasando el enum
-		// u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time")).asText);
-		u.removeMeal(WeekDay.valueOf(day), DayTime.valueOf(time), entityManager);
-
-		//model.addAttribute("user", u);
-		return "redirect:/user/weekplan";
+		u.removeMeal(WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
+		return "{}";
 	}
 
 	@Transactional
 	@ResponseBody
 	@PostMapping("/weekplan/add")
-	public String addMeal(Model model, @RequestBody JsonNode data, HttpSession session){
+	public String addMeal(Model model,  @RequestBody JsonNode data, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		// da error 500 y no sube nada
-		u.assignMeal(entityManager.find(Recipe.class, 1L), WeekDay.valueOf(data.get("day").asText()), DayTime.valueOf(data.get("time").asText()), entityManager);
-		//model.addAttribute("user", u);
+		u.assignMeal( entityManager.find(Recipe.class, data.get("recipe").asLong()), 
+						WeekDay.valueOf(data.get("day").asText()), 
+						DayTime.valueOf(data.get("time").asText()), 
+						entityManager);
 		entityManager.flush();
 		return "{}";
 	}
@@ -223,10 +208,7 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/weekplan/addToCart")
 	public String addMealToCart(Model model, @RequestBody JsonNode data, HttpSession session){
-		User u = (User)session.getAttribute("u");
-		addToCart(model, data,session); // en data pasamos receta: recipeId
-		session.setAttribute("u", u);
-		return "{}";
+		return addToCart(model, data, session); // en data pasamos receta: recipeId;
 	}
 
 	/*--------------------------------------------------------Manejo de Recetas--------------------------------------------------------------------------------*/
@@ -252,6 +234,7 @@ public class UserController {
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
 		JsonNode it = data.get("ingredientNames");
 		JsonNode it2 = data.get("ingredientCant");
+		BigDecimal recipePrice = BigDecimal.ZERO;
 		for(int i = 0; i < it.size(); i++){
 
 
@@ -262,17 +245,20 @@ public class UserController {
 
 			if(is.size() == 0) continue;
 			RecipeIngredient ingredienteCompleto = new RecipeIngredient();
+	
 			ingredienteCompleto.setIngredient(is.get(0));
 			ingredienteCompleto.setQuantity(it2.get(i).asInt());
+			recipePrice = recipePrice.add(is.get(0).getPrice().multiply(new BigDecimal(it2.get(i).asInt()))); 
 			ingredientes.add(ingredienteCompleto);
 		}
 		recipeNew.setIngredients(ingredientes);
-		recipeNew.setSrc(f.getAbsolutePath());
+		recipeNew.setSrc(f.getPath());
 		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
 		recipeNew.setName(data.get("name").textValue());
-		recipeNew.setPrice(BigDecimal.TEN);
+
+		recipeNew.setPrice(recipePrice);
 		recipeNew.setDateRegistered(LocalDateTime.now());
 		entityManager.persist(recipeNew);
 		//entityManager.flush();

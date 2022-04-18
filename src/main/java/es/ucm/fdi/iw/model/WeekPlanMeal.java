@@ -24,14 +24,13 @@ public class WeekPlanMeal{
 
     
     @ManyToOne
-    @NonNull private Recipe recipe; // TODO para obtener el nombre recipe.getName();
-   // @NonNull private String name;
+    @NonNull private Recipe recipe; 
     @NonNull private WeekDay weekday;
     @NonNull private DayTime time;
 
     public String getName(){
         if(recipe != null) return recipe.getName();
-        return "-";
+        return "   -";
     }
 
      
