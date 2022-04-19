@@ -126,7 +126,7 @@
 
             //let imageBlob = toBlob(fileInput.src);
 
-            sendImage()
+            
 
             go("/user/addRecipe", 'POST', {
                 description: document.getElementById("description").value,
@@ -136,7 +136,10 @@
                 ingredientNames: ingNames,
                 ingredientCant: ingCants
             })
-                .then(d => console.log("Happy", d))
+                .then(d => {
+                    sendImage();
+                    console.log("Happy", d)
+                })
                 .catch(e => console.log("sad", e))
         }
 

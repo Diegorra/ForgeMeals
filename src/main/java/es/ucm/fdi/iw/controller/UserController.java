@@ -224,11 +224,10 @@ public class UserController {
 	@Transactional
 	@PostMapping("/addRecipe")
 	public String newRecipe(Model model, @RequestBody JsonNode data, HttpSession session){
-		String id = "pruebaReceta";
 		Recipe recipeNew = new Recipe();
 		User requester = (User)session.getAttribute("u");
 
-		File f = localData.getFile("user", ""+id+".jpg");
+		//File f = localData.getFile("user", ""+id+".jpg");
 
 
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
@@ -252,7 +251,6 @@ public class UserController {
 			ingredientes.add(ingredienteCompleto);
 		}
 		recipeNew.setIngredients(ingredientes);
-		recipeNew.setSrc(f.getPath());
 		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));
@@ -261,10 +259,9 @@ public class UserController {
 		recipeNew.setPrice(recipePrice);
 		recipeNew.setDateRegistered(LocalDateTime.now());
 		entityManager.persist(recipeNew);
-		//entityManager.flush();
-
+		entityManager.flush();
+		session.setAttribute("tmpRecipeId", recipeNew.getId());
 		return "{}";
-
 	}
 
 	@PostMapping("/addRecipeImage")
@@ -272,21 +269,15 @@ public class UserController {
     public String addRecipeImage(@RequestParam("photo") MultipartFile photo,
         HttpServletResponse response, HttpSession session, Model model) throws IOException {
 
-        /*User target = entityManager.find(User.class, id);
-        model.addAttribute("user", target);
+     
 
-		// check permissions
-		User requester = (User)session.getAttribute("u");
-		if (requester.getId() != target.getId() &&
-				! requester.hasRole(Role.ADMIN)) {
-            throw new NoEsTuPerfilException();
-		}*/
-		String id = "pruebaReceta";
+		long id = (long)session.getAttribute("tmpRecipeId");
+
 		log.info("Updating photo for user {}", id);
-		File f = localData.getFile("user", ""+id+".jpg");
-		//File f = new File("user/pruebaReceta.jpg");
+		File f = localData.getFile("recipes", "recipe" + ""+String.valueOf(id) + ".jpg");
+		
 		if (photo.isEmpty()) {
-
+			log.info("----------------------------------------------------------------------------------------------------------------------------------");
 		} else {
 			try (BufferedOutputStream stream =
 					new BufferedOutputStream(new FileOutputStream(f))) {
@@ -298,6 +289,7 @@ public class UserController {
 
 			}
 		}
+		//Recipe newRecipe = entityManager.find(Recipe.class, id);
 		return "{}";
     }
 
