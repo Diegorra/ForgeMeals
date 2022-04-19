@@ -21,4 +21,4 @@ Para el acceso al sistema para pruebas se presentan dos usuarios:
 * En `recipeForm.html`, mejor poner todo el JS al final (o en un fichero aparte). Checkear métodos que no se usan en el JS.
 * Implementar websockets. Propongo que los useis para que los administradores puedan hacer seguimiento de los pedidos: si alguien hace checkout mientras un admin está en la página donde se ven los pedidos, que se le actualice automáticamente, sin tener que recargar página. Creo que sería mejor para los comentarios, o en el carrito en la página de la receta.
 * Implementar pruebas sobre más funcionalidad del sistema.
-
+* Vista de administración.
