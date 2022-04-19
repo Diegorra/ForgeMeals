@@ -78,16 +78,41 @@ public class UserController {
 		return "settings";
 	}
 
-
+	
+	public static class incorrectOldPasswordException extends RuntimeException {}
+	public static class incorrectNewPasswordException extends RuntimeException {}
 
 	@Transactional
 	@ResponseBody
 	@PostMapping("/{id}/settings")
 	public String settings(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
+		
+		User requester = entityManager.find(User.class, id);
+		String sendPassword = data.get("oldPassword").textValue();
+		String newPassword = data.get("newPassword").textValue();
+
+		if(passwordEncoder.matches(sendPassword, requester.getPassword())){
+			if(!passwordEncoder.matches(newPassword, requester.getPassword())){
+				requester.setPassword(passwordEncoder.encode(data.get("newPassword").textValue()));
+				entityManager.persist(requester);
+			}
+			else{
+				throw new incorrectNewPasswordException();
+			}
+		}
+		else{
+			throw new incorrectOldPasswordException();
+		}
+		return "{}";
+	}
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/{id}/datasettings")
+	public String settings1(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
 		User requester = entityManager.find(User.class, id);
 		requester.setUsername(data.get("firstname").textValue());
 		requester.setEmail(data.get("email").textValue());
-		requester.setPassword(passwordEncoder.encode(data.get("password").textValue()));
 		entityManager.persist(requester);
 		return "{}";
 	}
