@@ -43,19 +43,25 @@ Feature: login en servidor
     When submit().click("{button}logout")
     Then waitForUrl(baseUrl + '/login')
 """
+  Scenario: login malo
+    Given driver baseUrl + '/login'
+    And input('#username', 'hello')
+    And input('#password', 'world')
+    When submit().click('{button}Sign in')
+    Then match html('.error') contains 'Error en nombre de usuario o contraseña'
+
   @login_diego
+  Scenario: registro de usuario
+    Given driver baseUrl + '/register'
+    And input('#username', 'diego') 
+    And input('#email', 'diego@ucm.es')
+    And input('#password', '1234')
+    When submit().click('{button}Create Account')
+    Then waitForUrl(baseUrl + '/login')
+
   Scenario: login correcto como diego
     Given driver baseUrl + '/login'
     And input('#username', 'diego')
     And input('#password', '1234')
-    When submit().click(".form-signin button")
-    Then waitForUrl(baseUrl + '/admin')
-
-  Scenario: registro de usuario
-  Given driver baseUrl + '/register'
-  And input('#username', 'diego')
-  And input('#email', 'diego@ucm.es')
-  And input('#password', '1234')
-  When submit().click(".form-signin button")
-  Then waitForUrl(baseUrl + '/login')
-  Then @login_diego
+    When submit().click("{button}Sign in")
+    Then waitForUrl(baseUrl)  
