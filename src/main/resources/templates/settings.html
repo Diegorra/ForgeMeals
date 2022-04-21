@@ -51,8 +51,8 @@
                                 <input type="email" th:value="${user.email}"  class="form-control" id="inputEmail" th:placeholder="${user.email}" />
                             </div>
                             <div class="form-group">
-                                <label for="inputAddress5">Address</label>
-                                <input type="text" class="form-control" id="inputAddress5" placeholder="P.O. Box 464, 5975 Eget Avenue" />
+                                <label for="inputAddress">Address</label>
+                                <input type="text"  th:value="${user.address}" class="form-control" id="inputAddress" th:placeholder="${user.address}"/>
                             </div>
 
                         </div>
@@ -148,7 +148,7 @@
             readImageFileData(fileInput.files[0], img);
         };
 
-        // post Imangen de usuario
+        // post Imagen de usuario
         document.querySelector("#postUserIcon").onclick = e => {
             e.preventDefault();
             let url = document.querySelector("#postUserIcon").parentNode.action;
@@ -165,39 +165,45 @@
         document.querySelector("#passwordButton").onclick = e => {
             e.preventDefault();
             let encuesta = document.querySelector("#formPassword");
+            let pasCof = document.getElementById("inputConfPassword");
+            let pasNew = document.getElementById("inputNewPassword");
+            let pasOld = document.getElementById("inputOldPassword");
+
+            pasOld.setCustomValidity("");
+            pasCof.setCustomValidity("");
+            pasNew.setCustomValidity("");
             if(encuesta.checkValidity()){
                 let url = document.querySelector("#passwordButton").parentNode.action;
                 //Password check- 
                 //https://es.stackoverflow.com/questions/106375/expresion-regular-para-contrase%C3%B1a-javascript
                 //https://es.stackoverflow.com/questions/75907/validar-caracteres-may%C3%BAsculas-min%C3%BAsculas-y-caracteres-num%C3%A9ricos-para-una-contr
                 //https://stackoverflow.com/questions/10557441/regex-to-allow-atleast-one-special-character-one-uppercase-one-lowercasein-an
-                let reg = /^(?=(?=.*[@#$%^&+=]){1})(?=(?:.*\d){1})\S{8,}$/;//Es posible que falta algun caracter especial a considerar
-                let pasCof = document.getElementById("inputConfPassword").value;
-                let pasNew = document.getElementById("inputNewPassword").value;
-                let pasOld = document.getElementById("inputOldPassword").value;
-
-                if( pasNew.match(reg) != null && pasNew != pasOld ){//Si la contraseña es segura.
-                    if(pasNew == pasCof){
+                let reg = /^(?=(?=.*\W){1})(?=(?:.*\d){1})\S{8,}$/;//Es posible que falta algun caracter especial a considerar
+                
+                if( pasNew.value.match(reg) != null && pasNew.value != pasOld.value ){//Si la contraseña es segura.
+                    if(pasNew.value == pasCof.value){
                         go(url, 'POST', {   
-                            newPassword: pasNew,
-                            oldPassword: pasOld
+                            newPassword: pasNew.value,
+                            oldPassword: pasOld.value
                         })
                             .then(() => {
-                                console.log("Good");
+                                alert("Saved");
                                 location.reload();
                             }) 
                             .catch(e => {
-                                console.log("Not good", e)
-                                alert("Saved failed. Check old Password.")
+                                pasOld.setCustomValidity("Contraseña incorrecta");
+                                encuesta.reportValidity();
+                                
                             })
                     }
                     else{
-                        alert("Saved failed. Check Passwords.");
+                        pasCof.setCustomValidity("Error a la hora de confirmar");
+                        encuesta.reportValidity();
                     }
                 }
                 else{
-                    //User
-                    alert("Contraseña insegura");
+                    pasNew.setCustomValidity("Contraseña insegura");
+                    encuesta.reportValidity();
                 }
             }
             else{
@@ -209,18 +215,22 @@
         document.querySelector("#dataButton").onclick = e => {
             e.preventDefault();
             let encuesta = document.querySelector("#formUserData");
+            document.getElementById("firstname").setCustomValidity("");
             if(encuesta.checkValidity()){
                 let url = document.querySelector("#dataButton").parentNode.action;
                 go(url, 'POST', {   
                     firstname: document.getElementById("firstname").value,  
-                    email: document.getElementById("inputEmail").value
+                    email: document.getElementById("inputEmail").value,
+                    address: document.getElementById("inputAddress").value
                 })
                     .then(() => {
-                        console.log("Good");
-                        setTimeout("location.reload();", 2000);
+                        alert("Saved");
+                        location.reload();
                     }) 
                      .catch(e => {
-                        console.log("Not good", e);
+                        //Triple por preventDefault();
+                        document.getElementById("firstname").setCustomValidity("Nombre de usuario existente");
+                        encuesta.reportValidity();
                     })
             }
             else{

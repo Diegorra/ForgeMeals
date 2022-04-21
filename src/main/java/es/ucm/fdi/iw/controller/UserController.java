@@ -99,15 +99,29 @@ public class UserController {
 		return "{}";
 	}
 
+	public static class usernameConflicException extends RuntimeException {}
 	@Transactional
 	@ResponseBody
 	@PostMapping("/{id}/userSettings")
 	public String settingsData(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
 		User requester = entityManager.find(User.class, id);
-		requester.setUsername(data.get("firstname").textValue());
-		requester.setEmail(data.get("email").textValue());
-		//requester.setAddress(data.get("address").textValue());
-		entityManager.persist(requester);
+		String newUserName = data.get("firstname").textValue();
+
+		Long exists =((Number) entityManager
+            .createNamedQuery("User.hasUsername")
+            .setParameter("username", newUserName)
+            .getSingleResult())
+			.longValue();
+		
+		if(exists == 0 || requester.getUsername().equals(newUserName)){//Si no existe ese nombre o es propio del usuario 
+			requester.setUsername(newUserName);
+			requester.setEmail(data.get("email").textValue());
+			requester.setAddress(data.get("address").textValue());
+			entityManager.persist(requester);
+		}
+		else{
+			throw new usernameConflicException();
+		}
 		return "{}";
 	}
 
