@@ -78,7 +78,9 @@ public class UserController {
 		return "settings";
 	}
 
-	
+	@ResponseStatus(
+		value=HttpStatus.BAD_REQUEST,
+		reason="Contraseña incorrecta") 
 	public static class incorrectOldPasswordException extends RuntimeException {}
 
 	@Transactional
@@ -99,7 +101,11 @@ public class UserController {
 		return "{}";
 	}
 
+	@ResponseStatus(
+		value=HttpStatus.BAD_REQUEST,
+		reason="Nombre de usuario existente")
 	public static class usernameConflicException extends RuntimeException {}
+
 	@Transactional
 	@ResponseBody
 	@PostMapping("/{id}/userSettings")
