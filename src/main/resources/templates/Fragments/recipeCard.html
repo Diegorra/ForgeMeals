@@ -69,7 +69,7 @@
         </div>
 
         <a th:href="@{'/recipe/' + ${recipe.id}}">
-            <img class="card-img-top" th:src="${recipe.src}" th:attr="postid=${recipe.id}" alt="..." width="100"
+            <img class="card-img-top" th:src="@{/user/{id}/getRecipeImg(id=${recipe.id})}"  src="https://github.com/mdo.png"  th:attr="postid=${recipe.id}" alt="..." width="100"
                 height="150" />
         </a>
 

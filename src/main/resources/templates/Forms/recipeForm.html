@@ -103,9 +103,9 @@
 
         let fileInput = document.getElementById("src");
         const sub_but = document.getElementById("sub_but");
+        let img = document.getElementById("imag");
         fileInput.onchange = subImg;
         function subImg(e) {
-            let img = document.getElementById("imag");
             if (readImageFileData(fileInput.files[0], img))
                 img.style = "";
         }
@@ -119,26 +119,32 @@
             let ingCants = [];
             let qIngCants = document.querySelectorAll("#cant_ing");
             qIngCants.forEach(e => { ingCants.push(e.value) });
-
+            let noImg = false;
+            let src = img.getAttribute("src");
+            if (!src) {
+                if (!confirm("Está intentando subir una receta sin imagen, se colocará una imagen por defecto en su receta. ¿Quiere continuar?"))
+                    return;
+                noImg = true;
+            }
 
             let fileInput = document.getElementById("src");
             //console.log(img, fileInput);
 
             //let imageBlob = toBlob(fileInput.src);
 
-            
+
 
             go("/user/addRecipe", 'POST', {
                 description: document.getElementById("description").value,
-                image: document.getElementById("src").value,
-                //image: imageBlob,
                 name: document.getElementById("name").value,
                 ingredientNames: ingNames,
                 ingredientCant: ingCants
             })
                 .then(d => {
-                    sendImage();
+                    if(!noImg)
+                        sendImage();
                     console.log("Happy", d)
+                    window.location.href = "/";
                 })
                 .catch(e => console.log("sad", e))
         }

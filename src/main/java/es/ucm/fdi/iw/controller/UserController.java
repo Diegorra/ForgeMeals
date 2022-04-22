@@ -306,9 +306,13 @@ public class UserController {
 
 		long id = (long)session.getAttribute("tmpRecipeId");
 
-		log.info("Updating photo for user {}", id);
-		File f = localData.getFile("recipes", "recipe" + ""+String.valueOf(id) + ".jpg");
-		
+		File f = localData.getFile("recipes", "recipe" + id + ".jpg");
+		log.info("Updating photo for recipe {} at {}", id, f.getAbsolutePath());
+
+		//String id = "pruebaReceta";
+		//log.info("Updating photo for user {}", id);
+		//File f = localData.getFile("user", ""+id+".jpg");
+
 		if (photo.isEmpty()) {
 			log.info("----------------------------------------------------------------------------------------------------------------------------------");
 		} else {
@@ -325,6 +329,17 @@ public class UserController {
 		//Recipe newRecipe = entityManager.find(Recipe.class, id);
 		return "{}";
     }
+
+	@GetMapping("{id}/getRecipeImg")
+    public StreamingResponseBody getRecipeImg(@PathVariable long id) throws IOException {
+        File f = localData.getFile("recipes", "recipe"+id+".jpg");
+		if(!f.exists()){
+			f = localData.getFile("recipes", "default-pic.jpg");
+		}
+        return getImageInternaltmp(f);
+    }
+
+	
 
 	/**
 	 * Remove the recipe con id "id" if the requester is the author or is the admin
@@ -462,13 +477,27 @@ public class UserController {
      *
      * @return
      */
-    private static InputStream defaultPic() {
+    private static InputStream defaultPic(String defaultPicLocation) {
+		log.info("----" + defaultPicLocation);
 	    return new BufferedInputStream(Objects.requireNonNull(
             UserController.class.getClassLoader().getResourceAsStream(
-					"static/img/users/default-pic.jpg")));
+				"/data/recipes/default-pic.jpg")));
     }
 
-    /**
+
+	/*private StreamingResponseBody getImageInternal(File f, String defaultPicLocation) throws IOException {
+		
+		InputStream in = new BufferedInputStream(f.exists() ?
+			new FileInputStream(f) : UserController.defaultPic(defaultPicLocation));
+		return os -> FileCopyUtils.copy(in, os);
+	}*/
+
+	private StreamingResponseBody getImageInternaltmp(File f) throws IOException {
+		
+		InputStream in = new BufferedInputStream(new FileInputStream(f));
+		return os -> FileCopyUtils.copy(in, os);
+	}
+	/*
      * Downloads a profile pic for a user id
      * 
      * @param id
@@ -478,10 +507,16 @@ public class UserController {
     @GetMapping("{id}/pic")
     public StreamingResponseBody getPic(@PathVariable long id) throws IOException {
         File f = localData.getFile("users", ""+id+".jpg");
-        InputStream in = new BufferedInputStream(f.exists() ?
-            new FileInputStream(f) : UserController.defaultPic());
-        return os -> FileCopyUtils.copy(in, os);
+		if(!f.exists()){
+			f = localData.getFile("users", "default-pic.jpg");
+		}
+		//String defaultPicLocation = "users/default-pic.jpg";
+        return getImageInternaltmp(f);
     }
+
+
+	
+
 
     /**
      * Uploads a profile pic for a user id
