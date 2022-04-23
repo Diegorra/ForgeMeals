@@ -157,17 +157,27 @@ public class UserController {
 	@PostMapping("/addToCart")
 	public String addToCart(Model model, @RequestBody JsonNode data, HttpSession session){
 
-
+		Boolean existente = false;
+		
 		Order order = (Order)session.getAttribute("order");
-		Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
-		for (RecipeIngredient ri : receta.getIngredients()) {
-			ri.getIngredient().getAllergen();
+		for(OrderRecipe recipe :order.getRecipes()){
+			if(recipe.getRecipe().getId() ==  data.get("receta").asLong()){
+				existente = true;
+				recipe.setQuantity(recipe.getQuantity()+1);
+				break;
+			}
 		}
-		OrderRecipe orderRecipe = new OrderRecipe();
-		orderRecipe.setId(UserController.nextOrderId(session));
-		orderRecipe.setRecipe(receta);
-		orderRecipe.setQuantity(1);
-		order.addRecipe(orderRecipe);
+		if(!existente){
+			Recipe receta = entityManager.find(Recipe.class, data.get("receta").asLong());
+			for (RecipeIngredient ri : receta.getIngredients()) {
+				ri.getIngredient().getAllergen();
+			}
+			OrderRecipe orderRecipe = new OrderRecipe();
+			orderRecipe.setId(UserController.nextOrderId(session));
+			orderRecipe.setRecipe(receta);
+			orderRecipe.setQuantity(1);
+			order.addRecipe(orderRecipe);
+		}
 		order.actPrecio();
 		session.setAttribute("order", order);
 		return "{}";
