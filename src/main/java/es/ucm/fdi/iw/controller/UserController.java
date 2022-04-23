@@ -345,6 +345,12 @@ public class UserController {
         return getImageInternaltmp(f);
     }
 
+	private void removeRecipeImg(long id){
+		File f = localData.getFile("recipes", "recipe"+id+".jpg");
+		if(f.exists()){
+			f.delete();
+		}
+	}
 	
 
 	/**
@@ -363,6 +369,7 @@ public class UserController {
 		User requester = (User)session.getAttribute("u");
 		if ((requester.getId() == recipe.getAuthor().getId()) || requester.hasRole(Role.ADMIN)) {
 			entityManager.remove(recipe);//borramos la receta
+			this.removeRecipeImg(id);
 		}else{
 			throw new NoEsTuPerfilException();
 		}

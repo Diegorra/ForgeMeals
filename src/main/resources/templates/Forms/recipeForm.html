@@ -106,8 +106,10 @@
         let img = document.getElementById("imag");
         fileInput.onchange = subImg;
         function subImg(e) {
-            if (readImageFileData(fileInput.files[0], img))
-                img.style = "";
+            if (readImageFileData(fileInput.files[0], img)){
+                img.style = "margin-left: 75px; margin-top: 15px; margin-right: 75px; margin-down: 10px;width:-webkit-fill-available";
+            }
+                
         }
         sub_but.onclick = submit_recipe;
         function submit_recipe(e) {
