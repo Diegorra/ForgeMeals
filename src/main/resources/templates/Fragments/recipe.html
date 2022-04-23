@@ -117,7 +117,7 @@
                 <!-- Side widget-->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <button  id="addToCart" class="btn btn-light" th:attr="recipeId=${recipe.id}">
+                        <button  id="addToCart" class="btn btn-light" th:attr="recipeId=${recipe.id}, recipeName=${recipe.name}">
                             <span>Add to my Cart </span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-cart-plus" viewBox="0 0 16 16">
@@ -129,8 +129,10 @@
                         </button>
                     </div>
                     <div class="card-body">
-                        <ul th:each="orderRecipe: ${order.recipes}">
-                            <li th:text="${orderRecipe.recipe.name}">NombreReceta</li>
+                        <ul id="il">
+                            <th:block th:each="orderRecipe: ${order.recipes}">
+                                <li th:text="${orderRecipe.recipe.name}+ ' ' + ${orderRecipe.quantity} + 'x'">NombreReceta</li>
+                            </th:block>
                         </ul>
                     </div>
                 </div>
@@ -141,13 +143,37 @@
 </body>
 <script>
     let addButton = document.getElementById("addToCart");
-    addButton.onclick  = addRecipeToCart;
+    addButton.onclick = addRecipeToCart;
     function addRecipeToCart() {
-        //e.preventDefault();
+        console.log("Botón pulsado");
+        let recipe = this.getAttribute("recipeId");
         go("/user/addToCart", 'POST', {
-            receta: this.getAttribute("recipeId")
+            receta: recipe
         })
-            .then(window.location.href=window.location.href)
+            .then(e=>{
+                let con = document.getElementById("il");
+                const cloned = document.createElement("li");
+                cloned.innerHTML = this.getAttribute("recipeName");
+                i = con.childNodes.length;
+                let found = false;
+                while (i--) {
+                    //Si ya está en checkout actualizamos la cantidad
+                    if(con.childNodes[i].textContent.lastIndexOf(cloned.innerHTML) !== -1){
+                        let pos = con.childNodes[i].textContent.length - 2;
+                        let newValue = parseInt(con.childNodes[i].textContent[pos]) + 1;
+                        con.childNodes[i].textContent[pos] = newValue.toString();
+                        console.log("Already in");
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                        cloned.innerHTML += " 1x";
+                        con.append(cloned)
+                }
+                console.log("happy", e)
+                }
+            )
             .catch(e => console.log("sad", e))
     }
 </script>
