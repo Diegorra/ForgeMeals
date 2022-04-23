@@ -160,8 +160,9 @@
                     //Si ya está en checkout actualizamos la cantidad
                     if(con.childNodes[i].textContent.lastIndexOf(cloned.innerHTML) !== -1){
                         let pos = con.childNodes[i].textContent.length - 2;
-                        let newValue = parseInt(con.childNodes[i].textContent[pos]) + 1;
-                        con.childNodes[i].textContent[pos] = newValue.toString();
+                        const text = con.childNodes[i].textContent;
+                        let newValue = parseInt(text[pos]) + 1;
+                        con.childNodes[i].textContent = text.substring(0,pos) + newValue + text.substring(pos+1,text.length);
                         console.log("Already in");
                         found = true;
                         break;
