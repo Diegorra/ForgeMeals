@@ -24,6 +24,7 @@
             <hr/>
 
             <form method="post" th:action="@{/register}" th:object="${newUser}">
+                <p th:if="${error} != null" th:text = "${error}"> </p>
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -32,7 +33,7 @@
                             </svg>
                         </span>
                     </div>
-                    <input type="text" name="username" class="form-control" placeholder="Username" th:field="*{username}"/>
+                    <input type="text" name="username" class="form-control" placeholder="Username" th:field="*{username}" required="required"/>
                 </div>
 
                 <p></p>
@@ -58,7 +59,7 @@
                             </svg>
                         </span>
                     </div>
-                    <input type="password" name="password" class="form-control" placeholder="Create password" th:field="*{password}"/><!---->
+                    <input type="password" name="password" class="form-control" placeholder="Create password" th:field="*{password}" required="required"/><!---->
                 </div>
 
                 <p></p>

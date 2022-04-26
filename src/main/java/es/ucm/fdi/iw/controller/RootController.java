@@ -51,13 +51,27 @@ public class RootController {
 
     @PostMapping("/register")
     @Transactional
-    public String postRegister(@ModelAttribute("newUser") User newUser){
-	    newUser.setRoles("USER");
-	    newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-	    newUser.setSrc("https://i.pinimg.com/736x/fb/6f/99/fb6f99f760733ce2c47ee8f57668050b.jpg");
-	    newUser.setEnabled(true);
-	    entityManager.persist(newUser);
-	    return "/Forms/login";
+    public String postRegister(Model model,@ModelAttribute("newUser") User newUser){
+
+		String userName = newUser.getUsername();
+
+		Long exists =((Number) entityManager
+            .createNamedQuery("User.hasUsername")
+            .setParameter("username", userName)
+            .getSingleResult())
+			.longValue();
+		
+        if(exists == 0){
+            newUser.setRoles("USER");
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            newUser.setEnabled(true);
+            entityManager.persist(newUser);
+        }
+        else{
+            model.addAttribute("error", "Nombre de usuario existente");
+            return "/Forms/register";
+        }
+	    return "redirect:/login";
     }
 
     @GetMapping("/contact")
@@ -67,7 +81,7 @@ public class RootController {
     public String  search(Model model, @RequestParam String recipeName){
 
         List<Recipe> recipes = entityManager
-            .createNamedQuery("findRecipeWithName")
+            .createNamedQuery("findRecipeWithName", Recipe.class)
             .setParameter("name", recipeName)
             .getResultList();
         

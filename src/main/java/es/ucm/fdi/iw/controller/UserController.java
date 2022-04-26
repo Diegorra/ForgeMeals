@@ -86,7 +86,7 @@ public class UserController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/{id}/passwordSettings")
-	public String settings(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
+	public String settings(@PathVariable long id, @RequestBody JsonNode data){
 		
 		User requester = entityManager.find(User.class, id);
 		String sendPassword = data.get("oldPassword").textValue();
@@ -96,6 +96,7 @@ public class UserController {
 			entityManager.persist(requester);
 		}
 		else{
+			//Ns como controlarlo mejor
 			throw new incorrectOldPasswordException();
 		}
 		return "{}";
@@ -109,7 +110,7 @@ public class UserController {
 	@Transactional
 	@ResponseBody
 	@PostMapping("/{id}/userSettings")
-	public String settingsData(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
+	public String settingsData(@PathVariable long id, @RequestBody JsonNode data){
 		User requester = entityManager.find(User.class, id);
 		String newUserName = data.get("firstname").textValue();
 
@@ -126,6 +127,7 @@ public class UserController {
 			entityManager.persist(requester);
 		}
 		else{
+			//Ns como controlarlo mejor
 			throw new usernameConflicException();
 		}
 		return "{}";
