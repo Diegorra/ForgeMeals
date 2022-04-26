@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -155,18 +156,27 @@ public class UserController {
 		return "checkout";
 	}
 
+	
 	@ResponseBody
 	@PostMapping("/addToCart")
 	public String addToCart(Model model, @RequestBody JsonNode data, HttpSession session){
+		// ahora saa factor comun, lo hizo el profesor
+		session.setAttribute("order", addToOrder(entityManager.find(
+			Recipe.class, data.get("receta").asLong()), data, session));
+		return "{}";
+	}
 
-		Boolean existente = false;
+	private Order addToOrder(Recipe r, JsonNode data, HttpSession session){
 		
 		Order order = (Order)session.getAttribute("order");
-		for(OrderRecipe recipe :order.getRecipes()){
-			if(recipe.getRecipe().getId() ==  data.get("receta").asLong()){
-				existente = true;
-				recipe.setQuantity(recipe.getQuantity()+1);
-				break;
+		Boolean existente = false;
+		if (order !=  null) {
+			for(OrderRecipe recipe :order.getRecipes()){
+				if(recipe.getRecipe().getId() ==  data.get("receta").asLong()){
+					existente = true;
+					recipe.setQuantity(recipe.getQuantity()+1);
+					break;
+				}
 			}
 		}
 		if(!existente){
@@ -181,8 +191,7 @@ public class UserController {
 			order.addRecipe(orderRecipe);
 		}
 		order.actPrecio();
-		session.setAttribute("order", order);
-		return "{}";
+		return order;
 	}
 
 	@Transactional
@@ -260,6 +269,31 @@ public class UserController {
 	@PostMapping("/weekplan/addToCart")
 	public String addMealToCart(Model model, @RequestBody JsonNode data, HttpSession session){
 		return addToCart(model, data, session); // en data pasamos receta: recipeId;
+	}
+
+	@Transactional
+	@ResponseBody
+	@PostMapping("/weekplan/allToCart")
+	public String allToCart(Model model, HttpSession session){
+		User requester = (User)session.getAttribute("u");
+		User u = entityManager.find(User.class, requester.getId());
+		List<WeekPlanMeal> meals = u.getMeals();
+		for(WeekPlanMeal m: meals){
+			Recipe r = m.getRecipe();
+			String json = "{\"receta\":" + r.getId() + "}";
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode node;
+			try {
+				node = mapper.readTree(json);
+				addToCart(model,node,session); // en data pasamos receta: recipeId;
+			} catch (JsonMappingException e) { // excepciones requeridas por readTree()
+				e.printStackTrace();
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			
+		}	
+		return "{}";
 	}
 
 	/*--------------------------------------------------------Manejo de Recetas--------------------------------------------------------------------------------*/
