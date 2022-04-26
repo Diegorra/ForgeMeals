@@ -18,7 +18,7 @@
                 <form method="post" th:action="@{/addRecipe}">
                     <div class="mb-3" style="margin-left: 10px;">
                         <label for="name" class="form-label">Nombre receta:</label>
-                        <input type="text" class="form-control" style="width: auto;" id="name"
+                        <input type="text" class="form-control" style="width: auto;" required id="name"
                             aria-describedby="nameHelp" placeholder="Nombre receta" />
                     </div>
                     <div class="mb-3">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Describe la receta:</label>
-                        <textarea class="container" placeholder="Descripción de la receta" id="description"></textarea>
+                        <textarea class="container" placeholder="Descripción de la receta" required id="description"></textarea>
 
                     </div>
                     <div class="mb-3">
@@ -113,8 +113,13 @@
         }
         sub_but.onclick = submit_recipe;
         function submit_recipe(e) {
-            e.preventDefault();
+            const description = document.getElementById("description").value;
+            const name = document.getElementById("name").value;
 
+            if(description == "" || name == "") return;
+
+            e.preventDefault();
+            
             let ingNames = [];
             let qIngNames = document.querySelectorAll("#ingredient");
             qIngNames.forEach(e => ingNames.push(e.value));
@@ -137,8 +142,8 @@
 
 
             go("/user/addRecipe", 'POST', {
-                description: document.getElementById("description").value,
-                name: document.getElementById("name").value,
+                description: description,
+                name: name,
                 ingredientNames: ingNames,
                 ingredientCant: ingCants
             })

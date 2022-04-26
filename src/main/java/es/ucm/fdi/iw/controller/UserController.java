@@ -384,7 +384,7 @@ public class UserController {
 
 	@GetMapping("{id}/getRecipeImg")
     public StreamingResponseBody getRecipeImg(@PathVariable long id) throws IOException {
-        File f = localData.getFile("recipes", ""+id+".jpg");
+        File f = localData.getFile("recipes", "recipe"+id+".jpg");
 		if(!f.exists()){
 			f = localData.getFile("recipes", "default-pic.jpg");
 		}

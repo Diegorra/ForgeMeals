@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <img th:src="${article.recipe.src}" class="img-fluid rounded-start" style="margin-top: 20px;border-style:solid;">
+                    <img th:src="@{/user/{id}/getRecipeImg(id=${article.recipe.id})}" class="img-fluid rounded-start" style="margin-top: 20px;border-style:solid;">
                         <p th:inline="text" id="ab" style="text-align: right;margin: 10px;">Precio: [[${article.recipe.price}]] €</p>  
                         <p th:text="${article.recipe.price}" style="visibility: hidden;" id="priceRecipe"></p>
                 </div>
