@@ -358,7 +358,7 @@ public class UserController {
 
 		long id = (long)session.getAttribute("tmpRecipeId");
 
-		File f = localData.getFile("recipes", "recipe" + id + ".jpg");
+		File f = localData.getFile("recipes", "" + id + ".jpg");
 		log.info("Updating photo for recipe {} at {}", id, f.getAbsolutePath());
 
 		//String id = "pruebaReceta";
@@ -384,7 +384,7 @@ public class UserController {
 
 	@GetMapping("{id}/getRecipeImg")
     public StreamingResponseBody getRecipeImg(@PathVariable long id) throws IOException {
-        File f = localData.getFile("recipes", "recipe"+id+".jpg");
+        File f = localData.getFile("recipes", ""+id+".jpg");
 		if(!f.exists()){
 			f = localData.getFile("recipes", "default-pic.jpg");
 		}
@@ -392,7 +392,7 @@ public class UserController {
     }
 
 	private void removeRecipeImg(long id){
-		File f = localData.getFile("recipes", "recipe"+id+".jpg");
+		File f = localData.getFile("recipes", ""+id+".jpg");
 		if(f.exists()){
 			f.delete();
 		}
