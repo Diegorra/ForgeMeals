@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<body>
+    <div th:fragment="card" class="card" style="width:100%; height: fit-content;border-style: hidden ;">
+        <div class="card mb-0" style="border-style: hidden; height: fit-content;">
+            <div class="row g-0">
+
+                <div class="col-md-1" style="margin-left: 1cm; margin-right: 1cm; " >
+                    <a th:href="'/user/' + ${user.id}" class="d-block link-dark text-decoration-none">
+                        <img th:src="@{/user/{id}/pic(id=${user.id})}" class="img-fluid rounded-start"
+                            style="margin-top: 20px;border-style:solid;max-width:100px; border-radius: 0.5cm;"></img>
+                    </a>
+
+                </div>
+
+                <div class="col-md-9">
+                    <div class="card-body" style="border-style:hidden;">
+                        <a th:href="'/user/' + ${user.id}" class="d-block link-dark text-decoration-none">
+                            <h5 class="card-title" th:text="${user.username}"></h5>
+                        </a>
+                        <label>Pedidos</label>
+                        <ul>
+                            <!--div th:each="pedido:user.getPedidos()"> 
+                                <li>${pedido}</il>
+                            </div-->
+                            <li>Pedido 1</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <button type="button" id="elimButton" th:attr="userId=${user.id}"
+                        class="btn btn-danger">Elim.</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>

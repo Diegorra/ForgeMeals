@@ -423,6 +423,16 @@ public class UserController {
 		return "redirect:/";
 	}
 
+
+	/*----------------------------------------------------------------------Manejo admin------------------------------------------------------------------------------*/
+
+	
+	@GetMapping("/ad")
+    public String admin(Model model){
+		List<User> users = entityManager.createQuery("select i from User i", User.class).getResultList();
+		model.addAttribute("users",users);
+		return "ad";
+	}
 	/*--------------------------------------------------------Manejo del Comentarios--------------------------------------------------------------------------------*/
 
 	@Transactional
