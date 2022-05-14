@@ -45,6 +45,10 @@ public class Recipe {
     @JoinColumn(name="recipe_id")
     private List<WeekPlanMeal> weekPlans = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name="recipe_id")
+    private List<OrderRecipe> orderRecipes = new ArrayList<>();
+
     private String description;
     @NonNull private BigDecimal price;
     private String dateRegistered;

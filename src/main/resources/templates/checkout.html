@@ -45,13 +45,14 @@
                         <div class="payment-info" id="payment">
                             <h1 id="precioTotal"> </h1>
                             <div style="margin-left: 10%;">
-                                <a href="/user/payment"> <button type="button" id="RealPedido" class="btn btn-primary"
-                                        style="font-size: 0.7cm;margin-top: 20px;width: 7cm;">Realizar
-                                        Pedido</button></a>
+                                <th:block th:if="${!session.order.getRecipes().isEmpty()}">
+                                    <a href="/user/payment">
+                                        <button type="button" id="RealPedido" class="btn btn-primary" style="font-size: 0.7cm;margin-top: 20px;width: 7cm;">Realizar Pedido</button>
+                                    </a>
+                                </th:block>
                                 <p></p>
                                 <a href="/"> <button type="button" onclick="" id="SegComp" class="btn btn-primary"
-                                        style="background-color:white;color:black;border-color: black;font-size: 0.7cm; width: 7cm;">Seguir
-                                        comprando</button> </a>
+                                        style="background-color:white;color:black;border-color: black;font-size: 0.7cm; width: 7cm;">Seguir comprando</button> </a>
                             </div>
 
                         </div>

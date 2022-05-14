@@ -151,7 +151,7 @@ public class UserController {
 
 	@GetMapping("/checkout")
 	public String checkout(Model model, HttpSession session) {
-		Order order = (Order)session.getAttribute("order");
+		Orders order = (Orders)session.getAttribute("order");
 		model.addAttribute("order", order);
 		return "checkout";
 	}
@@ -166,9 +166,9 @@ public class UserController {
 		return "{}";
 	}
 
-	private Order addToOrder(Recipe r, JsonNode data, HttpSession session){
+	private Orders addToOrder(Recipe r, JsonNode data, HttpSession session){
 		
-		Order order = (Order)session.getAttribute("order");
+		Orders order = (Orders)session.getAttribute("order");
 		Boolean existente = false;
 		if (order !=  null) {
 			for(OrderRecipe recipe :order.getRecipes()){
@@ -199,7 +199,7 @@ public class UserController {
 	@PostMapping("/removeFromCart")
 	public String removeFromCard(Model model, @RequestBody JsonNode data, HttpSession session){
 
-		Order order = (Order)session.getAttribute("order");
+		Orders order = (Orders)session.getAttribute("order");
 		order.removeRecipe(data.get("receta").asLong());
 		session.setAttribute("order", order);
 		return "{}";
@@ -209,7 +209,7 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/changequantCart")
 	public String changequantCart(Model model, @RequestBody JsonNode data, HttpSession session){
-		Order order = (Order)session.getAttribute("order");
+		Orders order = (Orders)session.getAttribute("order");
 		order.changeQuant(data.get("receta").asLong(), data.get("quantity").asInt());
 		session.setAttribute("order", order);
 
@@ -222,8 +222,31 @@ public class UserController {
 		return next;
 	}
 
+	@Transactional
 	@GetMapping("/payment")
-	public String payment(Model model){return "/Forms/payment";}
+	public String placeOrder(Model model, HttpSession session){
+		Orders order = (Orders)session.getAttribute("order");
+
+		if(order.getRecipes().isEmpty()){
+			return "redirect:/";
+		}
+
+		List<OrderRecipe> recipes = new ArrayList<>();
+		order.setState(Orders.State.RECEIVED);
+
+		for(OrderRecipe recipe : order.getRecipes()){
+			OrderRecipe newrecipe = new OrderRecipe();
+			newrecipe.setRecipe(recipe.getRecipe());
+			newrecipe.setQuantity(recipe.getQuantity());
+			entityManager.persist(newrecipe);
+			recipes.add(newrecipe);
+		}
+
+		order.setRecipes(recipes);
+		model.addAttribute("order", order);
+		entityManager.persist(order);
+		return "/Forms/payment";
+	}
 
 	/*--------------------------------------------------------Manejo del WeekPlan--------------------------------------------------------------------------------*/
 
@@ -256,9 +279,9 @@ public class UserController {
 	public String addMeal(Model model,  @RequestBody JsonNode data, HttpSession session){
 		User requester = (User)session.getAttribute("u");
 		User u = entityManager.find(User.class, requester.getId());
-		u.assignMeal( entityManager.find(Recipe.class, data.get("recipe").asLong()), 
-						WeekDay.valueOf(data.get("day").asText()), 
-						DayTime.valueOf(data.get("time").asText()), 
+		u.assignMeal( entityManager.find(Recipe.class, data.get("recipe").asLong()),
+						WeekDay.valueOf(data.get("day").asText()),
+						DayTime.valueOf(data.get("time").asText()),
 						entityManager);
 		entityManager.flush();
 		return "{}";
@@ -291,8 +314,8 @@ public class UserController {
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
-			
-		}	
+
+		}
 		return "{}";
 	}
 
@@ -329,10 +352,10 @@ public class UserController {
 
 			if(is.size() == 0) continue;
 			RecipeIngredient ingredienteCompleto = new RecipeIngredient();
-	
+
 			ingredienteCompleto.setIngredient(is.get(0));
 			ingredienteCompleto.setQuantity(it2.get(i).asInt());
-			recipePrice = recipePrice.add(is.get(0).getPrice().multiply(new BigDecimal(it2.get(i).asInt()))); 
+			recipePrice = recipePrice.add(is.get(0).getPrice().multiply(new BigDecimal(it2.get(i).asInt())));
 			ingredientes.add(ingredienteCompleto);
 		}
 		recipeNew.setIngredients(ingredientes);
@@ -354,7 +377,7 @@ public class UserController {
     public String addRecipeImage(@RequestParam("photo") MultipartFile photo,
         HttpServletResponse response, HttpSession session, Model model) throws IOException {
 
-     
+
 
 		long id = (long)session.getAttribute("tmpRecipeId");
 
@@ -397,7 +420,7 @@ public class UserController {
 			f.delete();
 		}
 	}
-	
+
 
 	/**
 	 * Remove the recipe con id "id" if the requester is the author or is the admin
@@ -447,10 +470,6 @@ public class UserController {
 		entityManager.persist(comment);
 		return "redirect:/recipe/" + id;
 	}
-
-
-
-
 	/*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 	/**

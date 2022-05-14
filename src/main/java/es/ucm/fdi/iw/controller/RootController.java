@@ -1,6 +1,6 @@
 package es.ucm.fdi.iw.controller;
 
-import es.ucm.fdi.iw.model.Order;
+import es.ucm.fdi.iw.model.Orders;
 import es.ucm.fdi.iw.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -102,7 +102,7 @@ public class RootController {
 	    Recipe recipe1 = entityManager.find(Recipe.class, id);
 	    model.addAttribute("recipe", recipe1);
 	    model.addAttribute("order", session.getAttribute("order"));
-	    return "/fragments/recipe";
+	    return "/Fragments/recipe";
     }
 
 }

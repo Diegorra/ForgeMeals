@@ -21,7 +21,7 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
-import es.ucm.fdi.iw.model.Order;
+import es.ucm.fdi.iw.model.Orders;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.User.Role;
 import org.springframework.util.StringUtils;
@@ -73,7 +73,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		        .getSingleResult();		
 		session.setAttribute("u", u);
 
-		Order order = new Order();
+		Orders order = new Orders();
+		order.setUser(u);
 		session.setAttribute("order", order);
 		session.setAttribute("orderId", 1);
 
