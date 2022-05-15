@@ -64,4 +64,12 @@ Feature: login en servidor
     And input('#username', 'diego')
     And input('#password', '1234')
     When submit().click("{button}Sign in")
-    Then waitForUrl(baseUrl)  
+    Then waitForUrl(baseUrl)
+  
+  Scenario: registrar con un nombre de usuario existente
+    Given driver baseUrl + '/register'
+    And input('#username', 'diego')
+    And input('#password', '54321')
+    And input('#email', 'diego@ucm.es')
+    When submit().click('{button}Create Account')
+    Then waitForText('body','usuario existente')

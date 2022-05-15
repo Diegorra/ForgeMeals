@@ -24,7 +24,7 @@
             <hr/>
 
             <form method="post" th:action="@{/register}" th:object="${newUser}">
-                <p th:if="${error} != null" th:text = "${error}"> </p>
+                <p th:if="${error} != null" th:text = "${error}" Class = "error"> </p>
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">

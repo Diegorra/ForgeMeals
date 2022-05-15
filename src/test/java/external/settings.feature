@@ -1,5 +1,5 @@
 Feature: Configuraciones de usuario
-    #Pruebas para settings. Parece mas de estilo prueba que de test teniendo mente contagiada. !!Revise
+    #Pruebas para settings: Casos errorneos.
     Scenario: Cambiar a un usernanme existente
         #Login.DRY
         Given driver baseUrl + '/login'
@@ -30,3 +30,4 @@ Feature: Configuraciones de usuario
         And waitForEnabled('#passwordButton').click()
         #Buscando el patron por toda la pagina.
         Then waitForText('body','insegura')
+

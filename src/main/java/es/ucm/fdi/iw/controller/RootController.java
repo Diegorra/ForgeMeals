@@ -105,4 +105,11 @@ public class RootController {
 	    return "/Fragments/recipe";
     }
 
+    @GetMapping("/confirm")
+    public String recipeInfo(Model model){
+	    return "confirm";
+    }
+
+
+
 }

@@ -139,7 +139,7 @@
             pasCof.setCustomValidity("");
             pasNew.setCustomValidity("");
             if(encuesta.checkValidity()){
-                let url = document.querySelector("#passwordButton").parentNode.action;
+                let url = "./passwordSettings";
                 //Password check- 
                 //https://es.stackoverflow.com/questions/106375/expresion-regular-para-contrase%C3%B1a-javascript
                 //https://es.stackoverflow.com/questions/75907/validar-caracteres-may%C3%BAsculas-min%C3%BAsculas-y-caracteres-num%C3%A9ricos-para-una-contr
@@ -153,8 +153,7 @@
                             oldPassword: pasOld.value
                         })
                             .then(() => {
-                                alert("Saved");//Seria mejor usar una pagina de aviso
-                                location.reload();
+                                window.location = "/confirm" ;
                             }) 
                             .catch(e => {
                                 pasOld.setCustomValidity("Contraseña incorrecta");
@@ -190,8 +189,7 @@
                     address: document.getElementById("inputAddress").value
                 })
                     .then(() => {
-                        alert("Saved");
-                        location.reload();
+                        window.location = "/confirm" ;
                     }) 
                      .catch(e => {
                         //Triple por preventDefault();
