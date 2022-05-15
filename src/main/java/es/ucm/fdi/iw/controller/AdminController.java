@@ -1,5 +1,6 @@
 package es.ucm.fdi.iw.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Comment;
 import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.User;
@@ -35,6 +37,9 @@ public class AdminController {
     @Autowired
 	private EntityManager entityManager;
     
+    @Autowired
+    private LocalData localData;
+
 	private static final Logger log = LogManager.getLogger(AdminController.class);
 
 	@GetMapping("/")
@@ -59,10 +64,8 @@ public String admin(Model model, HttpSession session){
 public String removeUser(Model model,  @RequestBody JsonNode data){
     Long id = data.get("user").asLong();
     User user = entityManager.find(User.class, id);
-    
-    List<Comment> authorComments =  entityManager.createNamedQuery("Comment.byAuthor", Comment.class).setParameter("iId", user.getId()).getResultList();
-    for(Comment c: authorComments){
-        entityManager.remove(c);
+    for(Recipe r: user.getRecipes()){
+        removeRecipeImg(r.getId());
     }
     entityManager.flush();
     entityManager.remove(user);
@@ -81,6 +84,13 @@ public String convertAdmin(Model model,  @RequestBody JsonNode data){
     }
     entityManager.flush();
     return "{}";
+}
+
+private void removeRecipeImg(long id){
+    File f = localData.getFile("recipes", ""+id+".jpg");
+    if(f.exists()){
+        f.delete();
+    }
 }
 
 }

@@ -37,7 +37,7 @@ public class Recipe {
     @JoinColumn(name="RecipeIngredient_id")
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name="recipe_id")
     private List<Comment> comments = new ArrayList<>();
 

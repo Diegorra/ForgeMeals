@@ -60,8 +60,13 @@ public class User implements Transferable<User.Transfer> {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name="author_id")
     private List<Recipe> recipes = new ArrayList<>();
+    
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<WeekPlanMeal> meals = new ArrayList<>();
+
+    @JoinColumn(name="author_id")
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
 
     
  
