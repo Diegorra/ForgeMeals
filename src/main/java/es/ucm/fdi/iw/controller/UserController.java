@@ -153,6 +153,9 @@ public class UserController {
 	public String deleteUser(Model model, HttpSession session){
 		User u = (User)session.getAttribute("u");
 		User ud = entityManager.find(User.class, u.getId());
+		for(Recipe r: ud.getRecipes()){
+			removeRecipeImg(r.getId());
+		}
 		entityManager.remove(ud);
 		session.invalidate();
 		entityManager.flush();

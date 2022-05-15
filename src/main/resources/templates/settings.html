@@ -205,8 +205,8 @@
                 
         };
         document.getElementById("elimButton").onclick = e => {
-            go("/user/deleteUser", "POST");
-            window.location.href = "/";
+            go("/user/deleteUser", "POST").then(() => window.location.href = "/");
+           
         }
     </script>
 
