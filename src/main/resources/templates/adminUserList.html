@@ -31,11 +31,24 @@
 
 <script>
     let elimButton = document.querySelectorAll("#elimButton");
+    let adminButton =  document.querySelectorAll("#adminButton");
     elimButton.forEach(e => e.onclick = () => {
         //removeUser(e.getAttribute("userId"));
         e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
         elimButton = document.querySelectorAll("#elimButton");
+        go("/admin/removeUser", "POST", {
+            user: e.getAttribute("userId")
+        })
     });
+
+    adminButton.forEach(e => e.onclick = () => {
+
+        e.disabled = true;
+        e.textContent = "Ya es administrador";
+        go("/admin/convertAdmin", "POST", {
+            user: e.getAttribute("userId")
+        })
+    })
     
 </script>
 

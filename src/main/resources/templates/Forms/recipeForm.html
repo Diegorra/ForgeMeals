@@ -106,10 +106,7 @@
                 but1.disabled = true;
 
         }
-    </script>
-
-
-    <script>
+    
 
         let fileInput = document.getElementById("src");
         const sub_but = document.getElementById("sub_but");
@@ -242,6 +239,7 @@
             return go(endpoint, "POST", fd, {})
         }
     </script>
+
     <div id="ingred" th:attr="ingredientes=${ingredients}"></div>
     <div id="ing_orig" style="visibility: hidden;">
         <input list="ingredients" class="form-control" id="ingredient" placeholder="Introducir Ingredientes" />

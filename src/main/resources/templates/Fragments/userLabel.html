@@ -8,7 +8,7 @@
         <div class="card mb-0" style="border-style: hidden; height: fit-content;">
             <div class="row g-0">
 
-                <div class="col-md-1" style="margin-left: 1cm; margin-right: 1cm; " >
+                <div class="col-md-1" style="margin-left: 1cm; margin-right: 1cm; ">
                     <a th:href="'/user/' + ${user.id}" class="d-block link-dark text-decoration-none">
                         <img th:src="@{/user/{id}/pic(id=${user.id})}" class="img-fluid rounded-start"
                             style="margin-top: 20px;border-style:solid;max-width:100px; border-radius: 0.5cm;"></img>
@@ -16,7 +16,7 @@
 
                 </div>
 
-                <div class="col-md-9">
+                <div class="col-md-7">
                     <div class="card-body" style="border-style:hidden;">
                         <a th:href="'/user/' + ${user.id}" class="d-block link-dark text-decoration-none">
                             <h5 class="card-title" th:text="${user.username}"></h5>
@@ -31,9 +31,21 @@
                     </div>
                 </div>
 
-                <div class="col-md-1">
-                    <button type="button" id="elimButton" th:attr="userId=${user.id}"
+                <div class="col-md-3">
+                    <div th:unless="${user.isAdmin()}">
+                        <button type="button" id="adminButton" th:attr="userId=${user.id}"
+                            class="btn btn-primary">Convertir en admin
+                        </button> 
+
+                        <button type="button" id="elimButton" th:attr="userId=${user.id}"
                         class="btn btn-danger">Elim.</button>
+                    </div>
+                    <div th:if="${user.isAdmin()}">
+                        <button id="adminText" class="btn btn-primary" th:attr="userId=${user.id}" disabled="true" > Ya es administrador </button>
+                        <button type="button" id="elimButton" th:attr="userId=${user.id}"
+                        class="btn btn-danger">Elim.</button>
+                    </div>
+                   
                 </div>
 
             </div>

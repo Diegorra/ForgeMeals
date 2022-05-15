@@ -27,7 +27,10 @@ import java.util.List;
         @NamedQuery(name="User.hasUsername",
                 query="SELECT COUNT(u) "
                         + "FROM User u "
-                        + "WHERE u.username = :username")
+                        + "WHERE u.username = :username"),
+        @NamedQuery(name="User.excludeUser",
+                query = "SELECT u FROM User u")
+                        //+ "WHERE u.id  = :id")
 })
 @Table(name="IWUser")
 public class User implements Transferable<User.Transfer> {
@@ -130,5 +133,9 @@ public class User implements Transferable<User.Transfer> {
 	public String toString() {
 		return toTransfer().toString();
 	}
+
+    public Boolean isAdmin(){
+        return hasRole(Role.ADMIN);
+    }
 }
 

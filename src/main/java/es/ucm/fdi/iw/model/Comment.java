@@ -10,6 +10,13 @@ import javax.persistence.*;
 @Entity
 @Data
 @RequiredArgsConstructor
+
+@NamedQueries({
+    @NamedQuery(name="Comment.byAuthor",
+            query="SELECT i FROM Comment i "
+                    + "WHERE i.author.id = :iId")
+})
+
 public class Comment {
 
     @Id

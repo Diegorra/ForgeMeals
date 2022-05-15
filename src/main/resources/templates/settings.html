@@ -87,7 +87,15 @@
                                 </ul>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary"  id="passwordButton">Save Change</button>
+                        <div class="row mb-4">
+                            <div class="col-md-9">
+                                <button type="submit" class="btn btn-primary"  id="passwordButton">Save Change</button>
+                            </div>
+                        
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-danger" id="elimButton"> Delete account </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -196,6 +204,10 @@
             }
                 
         };
+        document.getElementById("elimButton").onclick = e => {
+            go("/user/deleteUser", "POST");
+            window.location.href = "/";
+        }
     </script>
 
 </body>

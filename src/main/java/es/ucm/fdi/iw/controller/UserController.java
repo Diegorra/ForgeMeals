@@ -147,6 +147,19 @@ public class UserController {
 		return "redirect:/";
 	}
 
+	@Transactional
+	@ResponseBody
+	@PostMapping("/deleteUser")
+	public String deleteUser(Model model, HttpSession session){
+		User u = (User)session.getAttribute("u");
+		User ud = entityManager.find(User.class, u.getId());
+		entityManager.remove(ud);
+		session.invalidate();
+		entityManager.flush();
+		return "{}";
+	}
+	
+
 	/*--------------------------------------------------------Manejo del Checkout--------------------------------------------------------------------------------*/
 
 	@GetMapping("/checkout")
@@ -447,16 +460,9 @@ public class UserController {
 	}
 
 
-	/*----------------------------------------------------------------------Manejo admin------------------------------------------------------------------------------*/
-
 	
-	@GetMapping("/ad")
-    public String admin(Model model){
-		List<User> users = entityManager.createQuery("select i from User i", User.class).getResultList();
-		model.addAttribute("users",users);
-		return "ad";
-	}
 	/*--------------------------------------------------------Manejo del Comentarios--------------------------------------------------------------------------------*/
+
 
 	@Transactional
 	@PostMapping("newComment/{id}")
