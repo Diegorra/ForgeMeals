@@ -48,9 +48,7 @@ public class AdminController {
 @GetMapping("/ad")
 public String admin(Model model, HttpSession session){
     User requester = (User)session.getAttribute("u");
-    //List<User> users = entityManager.createNamedQuery("User.excludeUser", User.class).setParameter("id", requester.getId()).getResultList();
-    List<User> users = entityManager.createNamedQuery("User.excludeUser", User.class).getResultList();
-    users.removeIf(e -> e.getId() == requester.getId());
+    List<User> users = entityManager.createNamedQuery("User.excludeUser", User.class).setParameter("id", requester.getId()).getResultList();
     model.addAttribute("users",users);
     return "adminUserList";
 }
@@ -61,9 +59,7 @@ public String admin(Model model, HttpSession session){
 public String removeUser(Model model,  @RequestBody JsonNode data){
     Long id = data.get("user").asLong();
     User user = entityManager.find(User.class, id);
-    for(Recipe r: user.getRecipes()){
-        entityManager.remove(r);
-    }
+    
     List<Comment> authorComments =  entityManager.createNamedQuery("Comment.byAuthor", Comment.class).setParameter("iId", user.getId()).getResultList();
     for(Comment c: authorComments){
         entityManager.remove(c);

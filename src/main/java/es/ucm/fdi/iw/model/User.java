@@ -29,8 +29,8 @@ import java.util.List;
                         + "FROM User u "
                         + "WHERE u.username = :username"),
         @NamedQuery(name="User.excludeUser",
-                query = "SELECT u FROM User u")
-                        //+ "WHERE u.id  = :id")
+                query = "SELECT u FROM User u"
+                        + " WHERE u.id != :id")
 })
 @Table(name="IWUser")
 public class User implements Transferable<User.Transfer> {
@@ -57,10 +57,10 @@ public class User implements Transferable<User.Transfer> {
     private boolean enabled;
     private String roles; // split by ',' to separate roles
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name="author_id")
     private List<Recipe> recipes = new ArrayList<>();
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<WeekPlanMeal> meals = new ArrayList<>();
 
     

@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+
 @Entity
 @Data
 @RequiredArgsConstructor
@@ -17,8 +20,8 @@ import javax.persistence.*;
                     + "WHERE i.author.id = :iId")
 })
 
-public class Comment {
-
+public class Comment{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
     @SequenceGenerator(name = "gen", sequenceName = "gen")
