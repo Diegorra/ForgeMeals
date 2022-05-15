@@ -1,8 +1,5 @@
 package es.ucm.fdi.iw.model;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,7 +11,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Orders{
+public class Orders implements Transferable<Orders.Transfer>{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
     @SequenceGenerator(name = "gen", sequenceName = "gen")
@@ -51,12 +48,33 @@ public class Orders{
 
         this.price = precio;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Transfer {
+        private long id;
+        //private List<OrderRecipe> recipes;
+        private BigDecimal price;
+    }
+
+    @Override
+    public Transfer toTransfer() {
+        return new Transfer(id, price);
+    }
+
+    @Override
+    public String toString() {
+        return toTransfer().toString();
+    }
+
     public void addRecipe(OrderRecipe recipe){
         this.recipes.add(recipe);
     }
+
     public void removeRecipe(long id){
         this.recipes.removeIf(x -> x.getId() == id);
     }
+
     public void changeQuant(long id, int quant){
         recipes.forEach(e -> {
             if( e.getId() == id){

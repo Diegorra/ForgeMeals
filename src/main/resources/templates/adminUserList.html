@@ -26,6 +26,16 @@
                 </div>
                 <hr class="my-4" style="width: 95%;">
             </div>
+            <div class="d-flex flex-row align-items-center" style="font-size: 30px;"><i
+                    class="fa fa-long-arrow-left"></i><span class="ml-2">Pedidos</span></div>
+            <hr>
+            <table>
+                <thead>
+                    <th>Order ID</th>
+                    <th>Price</th>
+                </thead>
+                <tbody id="pedidos"></tbody>
+            </table>
         </div>
     </div>
 
@@ -40,6 +50,22 @@
             user: e.getAttribute("userId")
         })
     });
+
+    //Gestionando ws según llegan pedidos
+    let pedidos = document.getElementById("pedidos");
+    if (ws.receive) {
+        const oldFn = ws.receive; // guarda referencia a manejador anterior
+        ws.receive = (m) => {
+            oldFn(m); // llama al manejador anterior
+            pedidos.insertAdjacentHTML("beforeend", renderMsg(m));
+        }
+    }
+
+    // cómo pintar 1 pedido (devuelve html)
+    function renderMsg(msg) {
+        console.log("rendering: ", msg);
+        return `<tr><td>${msg.id}</td></tr>`;
+    }
 
     adminButton.forEach(e => e.onclick = () => {
 

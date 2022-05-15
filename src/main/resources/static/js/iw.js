@@ -13,12 +13,8 @@ const ws = {
     /**
      * Default action when message is received. 
      */
-    receive: (text) => {
-        console.log(text);
-        let p = document.querySelector("#nav-unread");
-        if (p) {
-            p.textContent = +p.textContent + 1;
-        }
+    receive: () => {
+        console.log("Pedido recibido");
     },
 
     headers: { 'X-CSRF-TOKEN': config.csrf.value },

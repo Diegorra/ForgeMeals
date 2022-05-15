@@ -89,7 +89,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
 
 		log.info("LOG IN: {} (id {}) -- session is {}, websocket is {} -- redirected to {}",
-			u.getUsername(), u.getId(), session.getId(), ws);
+			u.getUsername(), u.getId(), session.getId(), ws, url);
 
 		SavedRequest savedRequest = this.requestCache.getRequest(request, response);
 		if (savedRequest == null) {
