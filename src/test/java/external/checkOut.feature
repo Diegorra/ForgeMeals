@@ -19,13 +19,14 @@ Feature: Manejo de carrito
         When submit().click("{button}Sign in")
         #Desde index. Primera receta
         Then waitForUrl(baseUrl)
+        Given driver baseUrl + '/recipe/1'
         And waitForEnabled('#addToCart').click()
         #Desde una receta concreta
-        Given driver baseUrl + '/recipe/3'
+        Given driver baseUrl + '/recipe/2'
         And waitForEnabled('#addToCart').click()
-        #CheckOut . Podria pasar casos de que no hemos seleccinado dos recetas distintas y por lo cual no funcionaria el test. 
+        #CheckOut . Podria pasar casos de que no hemos tenido receta 1-2 y por lo cual no funcionaria el test. 
         Given driver baseUrl + '/user/checkout'
-        #Tambien podriamos comprobar si la receta-3 ha añadido correctamente al carrito. Pero esa comprobacion puede depende de BD(receta-3-nombre??).
+        #Tambien podriamos comprobar si la receta-1-2 ha añadido correctamente al carrito. Pero esa comprobacion puede depende de BD(receta-1-2-nombre??).
         Then waitForText('body','2 articulos')
         And  waitForEnabled('#elimButton').click()
         Then waitForText('body','1 articulo')
