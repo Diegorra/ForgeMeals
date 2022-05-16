@@ -255,14 +255,19 @@ public class UserController {
 			entityManager.persist(newrecipe);
 			recipes.add(newrecipe);
 		}
-
+		//Subimos el pedido a la bd
 		order.setRecipes(recipes);
 		model.addAttribute("order", order);
 		entityManager.persist(order);
 		entityManager.flush();
 
+		//Restauramos el order en la session para que pueda realizar nuevos pedidos
+		Orders o = new Orders();
+		o.setUser(order.getUser());
+		session.setAttribute("order", o);
+		session.setAttribute("orderId", 1);
+
 		//enviando por ws el order a la página de admin
-		// construye json
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(order.toTransfer());
 
