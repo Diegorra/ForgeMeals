@@ -16,7 +16,7 @@ class ExternalRunner {
     Karate testLogin() {
         return Karate.run("login").relativeTo(getClass());
     }
-
+    
     @Karate.Test
     Karate testSettings() {
         return Karate.run("settings").relativeTo(getClass());
@@ -35,5 +35,10 @@ class ExternalRunner {
     @Karate.Test
     Karate testCommits() {
         return Karate.run("commits").relativeTo(getClass());
+    }
+    
+    @Karate.Test
+    Karate testWeekPlan() {
+        return Karate.run("weekPlan").relativeTo(getClass());
     }
 }

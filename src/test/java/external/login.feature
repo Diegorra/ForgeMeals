@@ -72,4 +72,4 @@ Feature: login en servidor
     And input('#password', '54321')
     And input('#email', 'diego@ucm.es')
     When submit().click('{button}Create Account')
-    Then waitForText('body','usuario existente')
+    Then match html('.error') contains 'Nombre de usuario existente'
