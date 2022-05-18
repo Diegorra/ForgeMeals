@@ -27,7 +27,6 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     private User author;
 
     @NonNull private String name;
-    @NonNull private String src;
 
     @NonNull
     @OneToMany(cascade=CascadeType.ALL)
@@ -55,7 +54,6 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     public Recipe(Recipe anotherRecipe){
         this.name = anotherRecipe.name;
         this.author = anotherRecipe.author;
-        this.src = anotherRecipe.src;
         for (RecipeIngredient ingredient : anotherRecipe.ingredients) {
             this.ingredients.add(ingredient);
         }

@@ -50,7 +50,6 @@ public class User implements Transferable<User.Transfer> {
     @Column(nullable = false)
     private String password;
 
-    private String src;
     private String email;
     private String address;
     
@@ -60,7 +59,7 @@ public class User implements Transferable<User.Transfer> {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name="author_id")
     private List<Recipe> recipes = new ArrayList<>();
-    
+
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<WeekPlanMeal> meals = new ArrayList<>();
 
