@@ -27,14 +27,30 @@
                 <hr class="my-4" style="width: 95%;">
             </div>
             <div class="d-flex flex-row align-items-center" style="font-size: 30px;"><i
-                    class="fa fa-long-arrow-left"></i><span class="ml-2">Pedidos</span></div>
+                    class="fa fa-long-arrow-left"></i><span class="ml-2">Pedidos</span>
+            </div>
             <hr>
-            <table>
+            <table class="table">
                 <thead>
-                    <th>Order ID</th>
-                    <th>Price</th>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Recipes</th>
+                    <th scope="col">Action</th>
                 </thead>
-                <tbody id="pedidos"></tbody>
+                <tbody id="pedidos">
+                    <th:block th:each="order: ${orders}">
+                        <tr>
+                            <td th:text="${order.id}"></td>
+                            <td th:text="${order.price}"></td>
+                            <td>
+                                <ul th:each="recipe: ${order.recipes}">
+                                    <li th:text="${recipe.recipe.name}"></li>
+                                </ul>
+                            </td>
+                            <td><button type="button" class="enviar btn btn-primary" th:attr="id=${order.id}">Enviar</button></td>
+                        </tr>
+                    </th:block>
+                </tbody>
             </table>
         </div>
     </div>
@@ -42,6 +58,8 @@
 <script>
     let elimButton = document.querySelectorAll("#elimButton");
     let adminButton =  document.querySelectorAll("#adminButton");
+    let enviar = document.getElementsByClassName("enviar");
+
     elimButton.forEach(e => e.onclick = () => {
         //removeUser(e.getAttribute("userId"));
         e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
@@ -51,22 +69,6 @@
         })
     });
 
-    //Gestionando ws según llegan pedidos
-    let pedidos = document.getElementById("pedidos");
-    if (ws.receive) {
-        const oldFn = ws.receive; // guarda referencia a manejador anterior
-        ws.receive = (m) => {
-            oldFn(m); // llama al manejador anterior
-            pedidos.insertAdjacentHTML("beforeend", renderMsg(m));
-        }
-    }
-
-    // cómo pintar 1 pedido (devuelve html)
-    function renderMsg(msg) {
-        console.log("rendering: ", msg);
-        return `<tr><td>${msg.id}</td></tr>`;
-    }
-
     adminButton.forEach(e => e.onclick = () => {
 
         e.disabled = true;
@@ -75,7 +77,48 @@
             user: e.getAttribute("userId")
         })
     })
-    
+
+    //Gestionando ws según llegan pedidos
+    let pedidos = document.getElementById("pedidos");
+    if (ws.receive) {
+        console.log("Recibido");
+        //const oldFn = ws.receive; // guarda referencia a manejador anterior
+        ws.receive = (m) => {
+            //oldFn(m); // llama al manejador anterior
+            console.log(m);
+            pedidos.insertAdjacentHTML("beforeend", renderMsg(m));
+        }
+    }
+
+    // cómo pintar 1 pedido (devuelve html)
+    function renderMsg(msg) {
+        console.log("rendering: ", msg);
+        return `<tr><td>${msg.id}</td><td>${msg.price}</td><td>${list(msg.recipes)}</td><td><button type='button' class='enviar btn btn-primary' th:attr='id=${msg.id}'>Enviar</button></td></tr>`;
+    }
+
+    function list(l){
+        var ul = document.createElement('ul');
+        var li;
+
+        l.forEach(function(item) {
+            li = document.createElement('li');
+            li.appendChild(document.createTextNode(item.recipe.name));
+            ul.appendChild(li);
+        });
+        return ul.innerHTML;
+    }
+
+    for (var i=0; i < enviar.length; i++) {
+        enviar[i].onclick = function(){
+            console.log("boton pulsado");
+            go("/admin/send", "POST", {
+                id: this.getAttribute("id")
+            })
+            this.parentElement.parentElement.remove();
+        }
+    }
+
+
 </script>
 
 </body>

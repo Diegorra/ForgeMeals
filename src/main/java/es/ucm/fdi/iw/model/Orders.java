@@ -12,6 +12,10 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@NamedQueries({
+    @NamedQuery(name="Orders.Received",
+    query = "SELECT o FROM Orders o WHERE o.state = 1")
+})
 public class Orders implements Transferable<Orders.Transfer>{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")

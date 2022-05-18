@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import es.ucm.fdi.iw.model.Orders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,9 @@ public class AdminController {
 public String admin(Model model, HttpSession session){
     User requester = (User)session.getAttribute("u");
     List<User> users = entityManager.createNamedQuery("User.excludeUser", User.class).setParameter("id", requester.getId()).getResultList();
+    List<Orders> orders = entityManager.createNamedQuery("Orders.Received", Orders.class).getResultList();
     model.addAttribute("users",users);
+    model.addAttribute("orders", orders);
     return "adminUserList";
 }
 
@@ -91,6 +94,17 @@ private void removeRecipeImg(long id){
     if(f.exists()){
         f.delete();
     }
+}
+
+@Transactional
+@ResponseBody
+@PostMapping("/send")
+public String sendOrder(@RequestBody JsonNode data){
+    Long id = data.get("id").asLong();
+    Orders order = entityManager.find(Orders.class, id);
+    order.setState(Orders.State.SEND);
+    entityManager.persist(order);
+    return "{}";
 }
 
 }
