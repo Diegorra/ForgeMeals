@@ -16,17 +16,17 @@ class ExternalRunner {
     Karate testLogin() {
         return Karate.run("login").relativeTo(getClass());
     }
-    
+   
     @Karate.Test
     Karate testSettings() {
         return Karate.run("settings").relativeTo(getClass());
     }
-
+ 
     @Karate.Test
     Karate testAddRecipe() {
         return Karate.run("addRecipe").relativeTo(getClass());
     }
-    
+   
     @Karate.Test
     Karate testCheckOut() {
         return Karate.run("checkOut").relativeTo(getClass());
