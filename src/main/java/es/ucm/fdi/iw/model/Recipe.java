@@ -1,9 +1,6 @@
 package es.ucm.fdi.iw.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,7 +17,7 @@ import java.util.*;
         name="findRecipeWithName",
         query="SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE CONCAT('%', LOWER(:name), '%')")
 })
-public class Recipe {
+public class Recipe implements Transferable<Recipe.Transfer> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
     @SequenceGenerator(name = "gen", sequenceName = "gen")
@@ -75,4 +72,16 @@ public class Recipe {
     public void setAverageRating(Integer rating){
         this.averageRating = (this.averageRating + rating)/2;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Transfer {
+        private String name;
+    }
+
+    @Override
+    public Transfer toTransfer() {
+        return new Recipe.Transfer(name);
+    }
+
 }
