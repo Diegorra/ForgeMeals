@@ -9,6 +9,7 @@ ForgeMeals es una aplicación web que como idea básica presenta un blog de rece
 *  [Búsqueda de recetas](http://localhost:8080/search?recipeName=pizza)->En la barra de navegación hay una barra de búsqueda. Esta barra permite buscar recetas y consultarlas.
 *  [Profile](http://localhost:8080/user/1)-> Página personal de un usuario, en ella se muestran sus recetas, en caso de ser el propio usuario o un administrador puede gestionarlas. Necesario estar logueado.
 *  [Settings](http://localhost:8080/user/1/settings)-> Página de ajustes del usuario, en esta pagina el usuario puede ver su información personal y cambiarla si así lo desea. Necesario estar logueado.
+*  [Administración](http://localhost:8080/admin/ad)-> Página de administración. Incluye la administración de usuarios y pédidos, los usuario pueden ser eliminados o que se cambie su rol a administrador. Los pedidos pueden confirmarse para se enviados. La administración de recetas se lleva a cabo a través de la pagina de Index, donde los usuarios administradores tienen la opción de borrar recetas. Necesario estar logueado y tener perfil de administrador.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Import
 Para el acceso al sistema para pruebas se presentan dos usuarios:
@@ -16,10 +17,7 @@ Para el acceso al sistema para pruebas se presentan dos usuarios:
 - b: Usuario corriente. Contraseña: "aa".
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Cosas a Mejorar
-* En `recipeForm.html`, mejor poner todo el JS al final (o en un fichero aparte). Checkear métodos que no se usan en el JS.
-* Implementar websockets. Propongo que los useis para que los administradores puedan hacer seguimiento de los pedidos: si alguien hace checkout mientras un admin está en la página donde se ven los pedidos, que se le actualice automáticamente, sin tener que recargar página. Creo que sería mejor para los comentarios, o en el carrito en la página de la receta.
-* Implementar pruebas sobre más funcionalidad del sistema.
+* Implementar comentarios via ajax.
+* Conseguir establecer la conexión con STOMP para poder gestionar los web sockets.
 ### Cosas por hacer
-* Implementar más tests
-* Poder realizar pedido
-* Vista de administración.
+* 
