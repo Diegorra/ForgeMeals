@@ -14,6 +14,6 @@ Scenario: Comentar una receta
     #4Estrella
     And elements[1].click();
     #And mouse('{}★').click()
-    And waitForEnabled('#comment').click()
+    When submit().click('#comment')
     Then waitForText('body','Esto es un comentario')
     

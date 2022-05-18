@@ -20,10 +20,12 @@ Feature: Manejo de carrito
         #Desde index. Primera receta
         Then waitForUrl(baseUrl)
         Given driver baseUrl + '/recipe/1'
-        And waitForEnabled('#addToCart').click()
+        When submit().click('#addToCart')
+        Then delay(1000)
         #Desde una receta concreta
         Given driver baseUrl + '/recipe/2'
-        And waitForEnabled('#addToCart').click()
+        When submit().click('#addToCart')
+        Then delay(1000)
         #CheckOut . Podria pasar casos de que no hemos tenido receta 1-2 y por lo cual no funcionaria el test. 
         Given driver baseUrl + '/user/checkout'
         #Tambien podriamos comprobar si la receta-1-2 ha añadido correctamente al carrito. Pero esa comprobacion puede depende de BD(receta-1-2-nombre??).

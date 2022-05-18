@@ -10,7 +10,7 @@ Feature: Añadiendo recetas
         #Info de receta
         And input('#name', 'Tomate con tomate')
         #Ingredientes: Lista de instancia de elementos
-         And waitForEnabled('{button}+ Añadir Ingrediente').click()
+        And waitForEnabled('{button}+ Añadir Ingrediente').click()
         * def ingredientNames = locateAll('#ingredient')
         * def ingredientCant = locateAll('#cant_ing')
         #Estaria bien si funciona .select() para dataList.
