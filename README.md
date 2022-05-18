@@ -21,3 +21,5 @@ Para el acceso al sistema para pruebas se presentan dos usuarios:
 * Conseguir establecer la conexión con STOMP para poder gestionar los web sockets.
 ### Cosas por hacer
 * 
+### Instrucciones pruebas websockets
+- Escribir ws.receive({"id":1025,"recipes":[{"quantity":1,"recipe":{"name":"Pizza"}}],"price":3.00}) en consola desde el navegador en la pantalla de administracion para añadir order
