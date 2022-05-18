@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -53,13 +54,13 @@ public class Orders implements Transferable<Orders.Transfer>{
     @AllArgsConstructor
     public static class Transfer {
         private long id;
-        //private List<OrderRecipe> recipes;
+        private List<OrderRecipe.Transfer> recipes;
         private BigDecimal price;
     }
 
     @Override
     public Transfer toTransfer() {
-        return new Transfer(id, price);
+        return new Transfer(id, recipes.stream().map(Transferable::toTransfer).collect(Collectors.toList()), price);
     }
 
     @Override

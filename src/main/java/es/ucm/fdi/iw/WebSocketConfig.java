@@ -7,7 +7,7 @@ import org.springframework.web.socket.config.annotation.*;
 /**
  * Basic STOMP-powered websocket support
  * 
- * @see https://docs.spring.io/spring-framework/docs/5.3.x/reference/html/web.html#websocket
+ * @see //https://docs.spring.io/spring-framework/docs/5.3.x/reference/html/web.html#websocket
  */
 @Configuration
 @EnableWebSocketMessageBroker
