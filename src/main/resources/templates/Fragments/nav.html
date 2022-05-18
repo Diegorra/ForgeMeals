@@ -37,7 +37,7 @@
                             <li><a class="dropdown-item" th:href="'/user/__${session.u.id}__/settings'">Settings</a></li>
                             <li><a class="dropdown-item" th:href="'/user/' + ${session.u.id}">Profile</a></li>
                             <li><a class="dropdown-item" href="#">Favorite recipes</a></li>
-                            <li th:if="${session.u.isAdmin()}"> <a class="dropdown-item" href="/admin/ad"> UserList </a> </li> 
+                            <li th:if="${session.u.isAdmin()}"> <a class="dropdown-item" href="/admin/ad"> Administración </a> </li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/user/logout">Sign out</a></li>
                         </ul>
