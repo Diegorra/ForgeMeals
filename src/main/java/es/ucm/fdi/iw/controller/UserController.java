@@ -174,7 +174,6 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/addToCart")
 	public String addToCart(Model model, @RequestBody JsonNode data, HttpSession session){
-		// ahora saa factor comun, lo hizo el profesor
 		session.setAttribute("order", addToOrder(entityManager.find(
 			Recipe.class, data.get("receta").asLong()), data, session));
 		return "{}";

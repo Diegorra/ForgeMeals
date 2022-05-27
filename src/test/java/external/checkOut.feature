@@ -34,3 +34,18 @@ Feature: Manejo de carrito
         Then waitForText('body','1 articulo')
         And waitForEnabled('#RealPedido').click()
         Then waitForUrl(baseUrl + '/user/payment')
+
+    Scenario: Realizar pedido sin dirección configurada
+        Given driver baseUrl + '/login'
+        And input('#username', 'a')
+        And input('#password', 'aa')
+        When submit().click("{button}Sign in")
+        #Desde index. Añadimos al carrito la primera receta
+        Then waitForUrl(baseUrl)
+        Given driver baseUrl + '/recipe/1'
+        When submit().click('#addToCart')
+        Then delay(1000)
+        #CheckOut. Tratamos de realizar el  pedido
+        Given driver baseUrl + '/user/checkout'
+        And waitForEnabled('#RealPedido').click()
+        Then waitForUrl(baseUrl + '/error')

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+  <th:block th:replace="Fragments/head :: header" />
+  <title>Administrator</title>
+</head>
+
+
+<body>
+  <header th:replace="Fragments/nav.html :: nav"></header>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="/admin/">Users</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Orders</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/ingredients">Ingredients</a>
+    </li>
+  </ul>
+  <div class="product-details mr-2" style="border-style: solid; border-radius: 1cm; background-color: white; margin: 2cm;">
+    <div style="margin: 1cm;">
+      <div class="d-flex flex-row align-items-center" style="font-size: 30px;"><i
+              class="fa fa-long-arrow-left"></i><span class="ml-2">Pedidos</span>
+      </div>
+      <hr>
+      <table class="table">
+        <thead>
+        <th scope="col">Order ID</th>
+        <th scope="col">Price</th>
+        <th scope="col">Recipes</th>
+        <th scope="col">Action</th>
+        </thead>
+        <tbody id="pedidos">
+        <th:block th:each="order: ${orders}">
+          <tr>
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.price}"></td>
+            <td>
+              <ul th:each="recipe: ${order.recipes}">
+                <li th:text="${recipe.recipe.name}"></li>
+              </ul>
+            </td>
+            <td><button type="button" class="enviar btn btn-primary" th:attr="id=${order.id}">Enviar</button></td>
+          </tr>
+        </th:block>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let enviar = document.getElementsByClassName("enviar");
+
+    //Gestionando ws según llegan pedidos
+    let pedidos = document.getElementById("pedidos");
+    if (ws.receive) {
+      console.log("Recibido");
+      //const oldFn = ws.receive; // guarda referencia a manejador anterior
+      ws.receive = (m) => {
+        //oldFn(m); // llama al manejador anterior
+        console.log(m);
+        pedidos.insertAdjacentHTML("beforeend", renderMsg(m));
+      }
+    }
+
+    // cómo pintar 1 pedido (devuelve html)
+    function renderMsg(msg) {
+      console.log("rendering: ", msg);
+      return `<tr><td>${msg.id}</td><td>${msg.price}</td><td>${list(msg.recipes)}</td><td><button type='button' class='enviar btn btn-primary' th:attr='id=${msg.id}'>Enviar</button></td></tr>`;
+    }
+
+    function list(l){
+      var ul = document.createElement('ul');
+      var li;
+
+      l.forEach(function(item) {
+        li = document.createElement('li');
+        li.appendChild(document.createTextNode(item.recipe.name));
+        ul.appendChild(li);
+      });
+      return ul.innerHTML;
+    }
+
+    for (var i=0; i < enviar.length; i++) {
+      enviar[i].onclick = function(){
+        console.log("boton pulsado");
+        go("/admin/send", "POST", {
+          id: this.getAttribute("id")
+        })
+        this.parentElement.parentElement.remove();
+      }
+    }
+
+
+  </script>
+  <th:block th:replace="Fragments/footer.html :: footer" style="margin-top: 2cm;"></th:block>
+
+</body>
+
+</body>
+</html>

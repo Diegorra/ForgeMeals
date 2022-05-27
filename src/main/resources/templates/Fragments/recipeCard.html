@@ -81,7 +81,7 @@
                         <div class="stars-inner" th:style="'width:' +  ${recipe.averageRating} + '%'"></div>
                     </div>
                 </div>
-                <a href="#" class="card-link link-dark"><svg
+                <a th:href="@{'/recipe/' + ${recipe.id}}" class="card-link link-dark"><svg
                         xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-chat-left-text" viewBox="0 0 16 16">
                         <path
@@ -91,8 +91,7 @@
                     </svg></a>
             </div>
         </div>
-        
-        
+
     </div>
 </body>
 

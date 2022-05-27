@@ -110,6 +110,10 @@ public class RootController {
 	    return "confirm";
     }
 
+    @GetMapping("/error")
+    public String errorPage(){
+        return "error";
+    }
 
 
 }

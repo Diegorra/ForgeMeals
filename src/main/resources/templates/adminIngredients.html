@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+  <th:block th:replace="Fragments/head :: header" />
+  <title>Administrator</title>
+</head>
+
+
+<body>
+  <header th:replace="Fragments/nav.html :: nav"></header>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="/admin/">Users</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/orders">Orders</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Ingredients</a>
+    </li>
+  </ul>
+  <div class="product-details mr-2" style="border-style: solid; border-radius: 1cm; background-color: white; margin: 2cm;">
+    <div style="margin: 1cm;">
+      <div class="container">
+        <div class="row justify-content-md-center" >
+          <div class="col col-lg-2 align-items-center" style="font-size: 30px;">
+            <span class="ml-2">Ingredientes</span>
+          </div>
+          <div class="col col-lg-2">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Añadir Ingrediente</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">New Ingredient</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="ingredient" class="col-form-label">New Ingredient:</label>
+                  <input type="text" class="form-control" id="ingredient"/>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="save" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <hr>
+
+      <div id="list" class="container">
+        <th:block th:each="ingredient: ${ingredients}">
+        <div class="row">
+          <div class="col">
+            <p th:text="${ingredient.name}"></p>
+          </div>
+          <div class="col">
+            <button type="button" class="delete btn btn-danger" th:attr="ing_id=${ingredient.id}">Eliminar</button>
+          </div>
+        </div>
+        </th:block>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let deleteI = document.getElementsByClassName("delete");
+    let save = document.getElementById("save");
+    let ingredients = document.getElementById("list");
+
+    save.onclick = function (){
+      console.log("save clicked")
+      go("/admin/addIngredient", "POST", {
+        ingredient : document.getElementById("ingredient").value
+      });
+      print(document.getElementById("ingredient").value, id);
+    }
+
+    function print(value, id){
+      html = `<div class="row">
+          <div class="col">
+            <p>${value}</p>
+          </div>
+          <div class="col">
+            <button type="button" class="delete btn btn-danger" th:attr="ing_id=${id}">Eliminar</button>
+          </div>
+        </div>`;
+      ingredients.insertAdjacentHTML("beforeend", html);
+    }
+
+    for (var i=0; i < deleteI.length; i++) {
+      deleteI[i].onclick = function(){
+        console.log("botton pulsado")
+        go("/admin/removeIngredient", "POST", {
+          ingredient: this.getAttribute("ing_id")
+        })
+        this.parentElement.parentElement.remove();
+      }
+    }
+  </script>
+  <th:block th:replace="Fragments/footer.html :: footer" style="margin-top: 2cm;"></th:block>
+
+</body>
+</html>
