@@ -52,7 +52,8 @@ public class AdminController {
 
     @GetMapping("/orders")
     public String adminOrders(Model model){
-        List<Orders> orders = entityManager.createNamedQuery("Orders.Received", Orders.class).getResultList();
+        List<Orders> orders = entityManager.createQuery("Select i from Orders i", Orders.class).getResultList();
+        //List<Orders> orders = entityManager.createNamedQuery("Orders.Received", Orders.class).getResultList();
         model.addAttribute("orders", orders);
         return "adminOrders";
     }

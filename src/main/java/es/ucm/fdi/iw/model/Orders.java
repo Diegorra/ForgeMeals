@@ -23,7 +23,7 @@ public class Orders implements Transferable<Orders.Transfer>{
     private long id;
 
 
-    public enum State{CHECKOUT, RECEIVED, PROCESSED,SEND}
+    public enum State{CHECKOUT, RECEIVED, PROCESSED, SEND}
 
     @ManyToOne
     @NonNull
@@ -86,5 +86,13 @@ public class Orders implements Transferable<Orders.Transfer>{
                 e.setQuantity(quant);
             }
         });
+    }
+
+    public boolean isSent(){
+        return this.state.equals(State.SEND);
+    }
+
+    public boolean isReceived(){
+        return this.state.equals(State.RECEIVED);
     }
 }
