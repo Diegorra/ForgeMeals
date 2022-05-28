@@ -17,12 +17,12 @@ INSERT INTO "PUBLIC"."RECIPE" VALUES
 
 INSERT INTO "PUBLIC"."INGREDIENT" VALUES
 (1, NULL, NULL, 'Tomate', 3.99, 500, 'ml'),
-(2, NULL, NULL, 'Queso Mozarella Rayado', 2.50, 100, 'gr'),
-(3, NULL, NULL, 'Harina', 1.99, 500, 'gr'),
-(4, NULL, NULL, 'Maiz', 2.33, 150, 'gr'),
-(5, NULL, NULL, 'Melon', 3.74, 1, 'ud'),
-(6, NULL, NULL, 'Caviar', 99.99 , 100, 'gr'),
-(7, NULL, NULL, 'Arroz', 1.90, 1, 'kg');
+(2, NULL, NULL, 'Queso Mozarella Rayado', 2.50, 100, 'g'),
+(3, NULL, NULL, 'Harina', 1.99, 500, 'g'),
+(4, NULL, NULL, 'Maiz', 2.33, 150, 'g'),
+(5, NULL, NULL, 'Melon', 3.74, 1, 'Kg'),
+(6, NULL, NULL, 'Caviar', 99.99 , 100, 'g'),
+(7, NULL, NULL, 'Arroz', 1.90, 1, 'Kg');
 
 INSERT INTO "PUBLIC"."COMMENT" VALUES
 (1, 80, 'Me gusta mucho', 1, 1),
