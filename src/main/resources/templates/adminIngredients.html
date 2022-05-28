@@ -104,7 +104,7 @@
 
     save.onclick = function (){
       console.log("save clicked")
-      var selected = document.querySelector('input[type=radio][name=measure]:checked');
+      let selected = document.querySelector('input[type=radio][name=measure]:checked');
       go("/admin/addIngredient", "POST", {
         ingredient: document.getElementById("ingredient").value,
         quantity: document.getElementById("quantity").value,
