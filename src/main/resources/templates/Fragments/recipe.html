@@ -33,7 +33,7 @@
                     <section class="mb-5">
                         <h2 class="fw-bolder mb-4 mt-5">Ingredientes</h2>
                         <div th:each="ingredient: ${recipe.ingredients}">
-                            <li class="fs-5 mb-4" th:text="${ingredient.ingredient.name}">Ingredients <em th:text="${ingredient.quantity}">Quantity</em></li>
+                            <li class="fs-5 mb-4" th:text="${ingredient.ingredient.name} + ' ' + ${ingredient.quantity}">Ingredients</li>
                         </div>
                         <hr>
                         <h2 class="fw-bolder mb-4 mt-5">Preparación</h2>

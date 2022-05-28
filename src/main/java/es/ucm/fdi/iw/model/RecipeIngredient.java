@@ -1,15 +1,12 @@
 package es.ucm.fdi.iw.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 @RequiredArgsConstructor
 public class RecipeIngredient {
     @Id
@@ -18,7 +15,6 @@ public class RecipeIngredient {
     private Long id;
 
     @ManyToOne
-    @NonNull
     private Ingredient ingredient;
     private Integer quantity;
 

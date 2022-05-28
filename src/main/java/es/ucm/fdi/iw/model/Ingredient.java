@@ -37,8 +37,6 @@ public class Ingredient {
         MOLUSCOS
     };
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
     @SequenceGenerator(name = "gen", sequenceName = "gen")
@@ -48,9 +46,9 @@ public class Ingredient {
 
     private String info;
 
-    @NonNull Integer units;
+    @NonNull private Integer units;
 
-    @NonNull String unitsMeasure;
+    private String unitsMeasure;
 
     private BigDecimal price;
 

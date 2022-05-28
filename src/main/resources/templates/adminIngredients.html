@@ -86,7 +86,7 @@
         <th:block th:each="ingredient: ${ingredients}">
         <div class="row">
           <div class="col">
-            <p th:text="${ingredient.name}"></p>
+            <p th:text="${ingredient.name} + ' ' + ${ingredient.units} + ${ingredient.unitsMeasure}"></p>
           </div>
           <div class="col">
             <button type="button" class="delete btn btn-danger" th:attr="ing_id=${ingredient.id}">Eliminar</button>
@@ -111,7 +111,8 @@
         measure: selected.value,
         price: document.getElementById("price").value
       }).then(d => {
-        print(document.getElementById("ingredient").value, d.id);
+        let value = `${document.getElementById("ingredient").value} ${document.getElementById("quantity").value}${selected.value}`
+        print(value, d.id);
       });
     }
 
