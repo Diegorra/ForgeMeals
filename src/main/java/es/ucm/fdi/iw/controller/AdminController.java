@@ -1,6 +1,7 @@
 package es.ucm.fdi.iw.controller;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -103,10 +104,10 @@ public class AdminController {
     @ResponseBody
     @PostMapping("/addIngredient")
     public String newIngredient(@RequestBody JsonNode data){
-        Ingredient ingredient = new Ingredient(data.get("ingredient").asText());
+        Ingredient ingredient = new Ingredient(data.get("ingredient").asText(), data.get("quantity").asInt(), data.get("measure").asText(), new BigDecimal(data.get("price").asInt()));
         entityManager.persist(ingredient);
         entityManager.flush();
-        return "{ingredient.getId()}";
+        return "{\"id\":\"" + ingredient.getId() + "\"}";
     }
 
     @Transactional

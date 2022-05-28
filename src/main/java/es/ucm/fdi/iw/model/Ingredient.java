@@ -48,12 +48,19 @@ public class Ingredient {
 
     private String info;
 
-    private Integer units;
+    @NonNull Integer units;
 
-    private String unitsMeasure;
+    @NonNull String unitsMeasure;
 
     private BigDecimal price;
 
     private Allergen allergen;
+
+    public Ingredient(String name, int quantity, String measure, BigDecimal price){
+        this.name = name;
+        this.units = quantity;
+        this.unitsMeasure = measure;
+        this.price = price;
+    }
 
 }

@@ -47,8 +47,27 @@
             <div class="modal-body">
               <form>
                 <div class="mb-3">
-                  <label for="ingredient" class="col-form-label">New Ingredient:</label>
-                  <input type="text" class="form-control" id="ingredient"/>
+                  <label for="ingredient" class="col-form-label">Name</label>
+                  <input type="text" class="form-control" id="ingredient" placeholder="Introducir nombre"/>
+                </div>
+                <div class="mb-3">
+                  <label for="quantity" class="col-form-label">Quantity</label>
+                  <input type="number" min="0" max="5000" id="quantity" class="form-control" placeholder="Introducir Cantidad" />
+                </div>
+                  <div class="mb-3">
+                    <p>Measure</p>
+                    <input type="radio" class="form-check-input" name="measure" id="L" value="L" />
+                    <label class="form-check-label" for="L">L</label>
+                    <input type="radio" class="form-check-input" name="measure" id="mL" value="mL" />
+                    <label class="form-check-label" for="mL">mL</label>
+                    <input type="radio" class="form-check-input" name="measure" id="g" value="g" />
+                    <label class="form-check-label" for="g">g</label>
+                    <input type="radio" class="form-check-input" name="measure" id="Kg" value="Kg" />
+                    <label class="form-check-label" for="Kg">Kg</label>
+                  </div>
+                <div class="mb-3">
+                  <label for="price" class="col-form-label">Price</label>
+                  <input type="number" min="0" max="5000" id="price" class="form-control"/>
                 </div>
               </form>
             </div>
@@ -85,10 +104,15 @@
 
     save.onclick = function (){
       console.log("save clicked")
+      var selected = document.querySelector('input[type=radio][name=measure]:checked');
       go("/admin/addIngredient", "POST", {
-        ingredient : document.getElementById("ingredient").value
+        ingredient: document.getElementById("ingredient").value,
+        quantity: document.getElementById("quantity").value,
+        measure: selected.value,
+        price: document.getElementById("price").value
+      }).then(d => {
+        print(document.getElementById("ingredient").value, d.id);
       });
-      print(document.getElementById("ingredient").value, id);
     }
 
     function print(value, id){
