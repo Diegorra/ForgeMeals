@@ -15,6 +15,17 @@
     display: none;
     overflow: hidden;
   }
+
+  .element {
+    transition: max-height 0.2s ease-out;
+    max-height: 5px;
+  }
+
+  .smallButt {
+    --bs-btn-padding-y: 10px;
+    --bs-btn-padding-x: 15px;
+    --bs-btn-font-size: 0.75rem;
+  }
 </style>
 
 
@@ -38,25 +49,43 @@
           class="fa fa-long-arrow-left"></i><span class="ml-2">Pedidos</span>
       </div>
       <hr>
-      <button class="collapsible" id="NoEnv">+ No Enviados</button>
+      <button class="collapsible btn" id="NoEnv">+ No Enviados</button>
       <div class="content">
         <table class="table">
           <thead>
             <th scope="col">Order ID</th>
             <th scope="col">Price</th>
             <th scope="col">Recipes</th>
+            <th scope="col">User</th>
+            <th scope="col">Adress</th>
             <th scope="col">Action</th>
           </thead>
           <tbody id="pedidos">
             <th:block th:each="order: ${orders}">
-              <tr th:if="${order.isReceived()}">
+              <tr th:if="${order.isReceived()}" class="element">
                 <td th:text="${order.id}"></td>
                 <td th:text="${order.price}"></td>
                 <td>
                   <ul th:each="recipe: ${order.recipes}">
-                    <li th:text="${recipe.recipe.name}"></li>
+                    <li>
+                      <a th:href="'/recipe/' + ${recipe.recipe.id}" th:text="${recipe.recipe.name}"
+                        class="d-block link-dark text-decoration-none"></a>
+                    </li>
+                    <div class="content">
+                      <div th:each="ingredient: ${recipe.recipe.ingredients}">
+                        <li th:text="${ingredient.ingredient.name}"></li>
+                      </div>
+                    </div>
+                    <button id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar ingredientes </button>
                   </ul>
                 </td>
+
+                <td>
+                  <a th:href="'/user/' + ${order.user.id}" th:text="${order.user.username}"
+                    class="d-block link-dark text-decoration-none"></a>
+                </td>
+
+                <td th:text="${order.direction}"></td>
                 <td><button type="button" class="enviar btn btn-primary" th:attr="id=${order.id}">Enviar</button></td>
               </tr>
             </th:block>
@@ -64,25 +93,44 @@
         </table>
       </div>
       <hr>
-      <button id="Env" class="collapsible">+ Enviados</button>
+      <button id="Env" class="collapsible btn">+ Enviados</button>
       <div class="content">
         <table class="table">
           <thead>
             <th scope="col">Order ID</th>
             <th scope="col">Price</th>
             <th scope="col">Recipes</th>
+            <th scope="col">User</th>
+            <th scope="col">Adress</th>
             <th scope="col">Action</th>
           </thead>
           <tbody id="sent">
             <th:block th:each="order: ${orders}">
-              <tr th:if="${order.isSent()}">
+              <tr th:if="${order.isSent()}" class="element">
                 <td th:text="${order.id}"></td>
                 <td th:text="${order.price}"></td>
                 <td>
                   <ul th:each="recipe: ${order.recipes}">
-                    <li th:text="${recipe.recipe.name}"></li>
+
+                    <li>
+                      <a th:href="'/recipe/' + ${recipe.id}" th:text="${recipe.recipe.name}"
+                        class="d-block link-dark text-decoration-none"></a>
+                    </li>
+
+                    <button type="button" id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar
+                      ingredientes </button>
+                    <div class="content">
+                      <div th:each="ingredient: ${recipe.recipe.ingredients}">
+                        <li th:text="${ingredient.name}"></li>
+                      </div>
+                    </div>
                   </ul>
                 </td>
+                <td>
+                  <a th:href="'/user/' + ${order.user.id}" th:text="${order.user.username}"
+                    class="d-block link-dark text-decoration-none"></a>
+                </td>
+                <td th:text="${order.direction}"></td>
               </tr>
             </th:block>
           </tbody>
@@ -140,30 +188,51 @@
         }
       }
 
-      let noE = document.getElementById("NoEnv");
 
-      noE.onclick = () => {
-        console.log("pulsado");
-        noE.classList.toggle("active");
-        let content = noE.nextElementSibling;
-        if (content.style.display == "block") {
-          content.style.display = "none";
-        } else {
-          content.style.display = "block";
-        }
-      };
+      let collapsible = document.getElementsByClassName("collapsible");
 
-      let env = document.getElementById("Env");
-      env.onclick = () => {
-        console.log("pulsado");
-        env.classList.toggle("active");
-        let content = env.nextElementSibling;
-        if (content.style.display == "block") {
-          content.style.display = "none";
-        } else {
-          content.style.display = "block";
+      for (let i = 0; i < collapsible.length; i++) {
+        let e = collapsible[i]
+        e.onclick = () => {
+          console.log("Pulsado")
+          let content
+          if (e.id == "colIng") {
+            content = e.previousElementSibling;
+            if (content.classList.contains("content")) {
+              if (content.style.display == "block") {
+                e.textContent = "Mostrar ingredientes"
+                content.style.display = "none";
+              }
+              else {
+
+                content.style.display = "block";
+                e.textContent = "Ocultar ingredientes"
+
+              }
+            }
+
+            else {
+              if (e.textContent == "Ocultar ingredientes") {
+                e.textContent = "Mostrar ingredientes"
+              }
+              else {
+                e.textContent = "Ocultar ingredientes"
+              }
+            }
+          }
+          else {
+            content = e.nextElementSibling;
+            if (content.style.display == "block") {
+              e.textContent = "+" + e.textContent.substring(1, e.textContent.length)
+              content.style.display = "none";
+            } else {
+              e.textContent = "-" + e.textContent.substring(1, e.textContent.length)
+              content.style.display = "block";
+            }
+          }
+
         }
-      };
+      }
 
 
     </script>
