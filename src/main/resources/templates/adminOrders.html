@@ -102,7 +102,6 @@
             <th scope="col">Recipes</th>
             <th scope="col">User</th>
             <th scope="col">Adress</th>
-            <th scope="col">Action</th>
           </thead>
           <tbody id="sent">
             <th:block th:each="order: ${orders}">
@@ -116,14 +115,14 @@
                       <a th:href="'/recipe/' + ${recipe.id}" th:text="${recipe.recipe.name}"
                         class="d-block link-dark text-decoration-none"></a>
                     </li>
-
-                    <button type="button" id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar
-                      ingredientes </button>
                     <div class="content">
                       <div th:each="ingredient: ${recipe.recipe.ingredients}">
-                        <li th:text="${ingredient.name}"></li>
+                        <li th:text="${ingredient.ingredient.name}"></li>
                       </div>
                     </div>
+                    <button type="button" id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar
+                      ingredientes </button>
+
                   </ul>
                 </td>
                 <td>
@@ -156,7 +155,31 @@
       // cómo pintar 1 pedido (devuelve html)
       function renderMsg(msg) {
         console.log("rendering: ", msg);
-        return `<tr><td>${msg.id}</td><td>${msg.price}</td><td>${list(msg.recipes)}</td><td><button type='button' class='enviar btn btn-primary' th:attr='id=${msg.id}'>Enviar</button></td></tr>`;
+        //return `<tr><td>${msg.id}</td><td>${msg.price}</td><td>${list(msg.recipes)}</td><td><button type='button' class='enviar btn btn-primary' th:attr='id=${msg.id}'>Enviar</button></td></tr>`;
+        return `<td th:text="${msg.id}"></td>
+                <td th:text="${msg.price}"></td>
+                <td>
+                  <ul th:each="recipe: ${msg.recipes}">
+                    <li>
+                      <a th:href="'/recipe/' + ${recipe.recipe.id}" th:text="${recipe.recipe.name}"
+                        class="d-block link-dark text-decoration-none"></a>
+                    </li>
+                    <div class="content">
+                      <div th:each="ingredient: ${recipe.recipe.ingredients}">
+                        <li th:text="${ingredient.ingredient.name}"></li>
+                      </div>
+                    </div>
+                    <button id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar ingredientes </button>
+                  </ul>
+                </td>
+
+                <td>
+                  <a th:href="'/user/' + ${msg.user.id}" th:text="${order.user.username}"
+                    class="d-block link-dark text-decoration-none"></a>
+                </td>
+
+                <td th:text="${msg.direction}"></td>
+                <td><button type="button" class="enviar btn btn-primary" th:attr="id=${msg.id}">Enviar</button></td>`
       }
 
       function list(l) {
@@ -185,52 +208,55 @@
           e.remove();
           sent.append(parent.cloneNode(true));
           parent.remove();
+          actCollapsibleButton();
         }
       }
 
+      actCollapsibleButton();
 
-      let collapsible = document.getElementsByClassName("collapsible");
+      function actCollapsibleButton() {
+        let collapsible = document.getElementsByClassName("collapsible");
+        for (let i = 0; i < collapsible.length; i++) {
+          let e = collapsible[i]
+          e.onclick = () => {
+            console.log("Pulsado")
+            let content
+            if (e.id == "colIng") {
+              content = e.previousElementSibling;
+              if (content.classList.contains("content")) {
+                if (content.style.display == "block") {
+                  e.textContent = "Mostrar ingredientes"
+                  content.style.display = "none";
+                }
+                else {
 
-      for (let i = 0; i < collapsible.length; i++) {
-        let e = collapsible[i]
-        e.onclick = () => {
-          console.log("Pulsado")
-          let content
-          if (e.id == "colIng") {
-            content = e.previousElementSibling;
-            if (content.classList.contains("content")) {
-              if (content.style.display == "block") {
-                e.textContent = "Mostrar ingredientes"
-                content.style.display = "none";
+                  content.style.display = "block";
+                  e.textContent = "Ocultar ingredientes"
+
+                }
               }
+
               else {
-
-                content.style.display = "block";
-                e.textContent = "Ocultar ingredientes"
-
+                if (e.textContent == "Ocultar ingredientes") {
+                  e.textContent = "Mostrar ingredientes"
+                }
+                else {
+                  e.textContent = "Ocultar ingredientes"
+                }
               }
             }
-
             else {
-              if (e.textContent == "Ocultar ingredientes") {
-                e.textContent = "Mostrar ingredientes"
-              }
-              else {
-                e.textContent = "Ocultar ingredientes"
+              content = e.nextElementSibling;
+              if (content.style.display == "block") {
+                e.textContent = "+" + e.textContent.substring(1, e.textContent.length)
+                content.style.display = "none";
+              } else {
+                e.textContent = "-" + e.textContent.substring(1, e.textContent.length)
+                content.style.display = "block";
               }
             }
-          }
-          else {
-            content = e.nextElementSibling;
-            if (content.style.display == "block") {
-              e.textContent = "+" + e.textContent.substring(1, e.textContent.length)
-              content.style.display = "none";
-            } else {
-              e.textContent = "-" + e.textContent.substring(1, e.textContent.length)
-              content.style.display = "block";
-            }
-          }
 
+          }
         }
       }
 

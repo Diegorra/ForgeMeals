@@ -3,7 +3,7 @@
 
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
 
   <th:block th:replace="Fragments/head :: header" />
   <title>Administrator</title>
@@ -23,15 +23,17 @@
       <a class="nav-link active" href="#">Ingredients</a>
     </li>
   </ul>
-  <div class="product-details mr-2" style="border-style: solid; border-radius: 1cm; background-color: white; margin: 2cm;">
+  <div class="product-details mr-2"
+    style="border-style: solid; border-radius: 1cm; background-color: white; margin: 2cm;">
     <div style="margin: 1cm;">
       <div class="container">
-        <div class="row justify-content-md-center" >
+        <div class="row justify-content-md-center">
           <div class="col col-lg-2 align-items-center" style="font-size: 30px;">
             <span class="ml-2">Ingredientes</span>
           </div>
           <div class="col col-lg-2">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Añadir Ingrediente</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Añadir
+              Ingrediente</button>
           </div>
         </div>
       </div>
@@ -48,26 +50,27 @@
               <form>
                 <div class="mb-3">
                   <label for="ingredient" class="col-form-label">Name</label>
-                  <input type="text" class="form-control" id="ingredient" placeholder="Introducir nombre"/>
+                  <input type="text" class="form-control" id="ingredient" placeholder="Introducir nombre" />
                 </div>
                 <div class="mb-3">
                   <label for="quantity" class="col-form-label">Quantity</label>
-                  <input type="number" min="0" max="5000" id="quantity" class="form-control" placeholder="Introducir Cantidad" />
+                  <input type="number" min="0" max="5000" id="quantity" class="form-control"
+                    placeholder="Introducir Cantidad" />
                 </div>
-                  <div class="mb-3">
-                    <p>Measure</p>
-                    <input type="radio" class="form-check-input" name="measure" id="L" value="L" />
-                    <label class="form-check-label" for="L">L</label>
-                    <input type="radio" class="form-check-input" name="measure" id="mL" value="mL" />
-                    <label class="form-check-label" for="mL">mL</label>
-                    <input type="radio" class="form-check-input" name="measure" id="g" value="g" />
-                    <label class="form-check-label" for="g">g</label>
-                    <input type="radio" class="form-check-input" name="measure" id="Kg" value="Kg" />
-                    <label class="form-check-label" for="Kg">Kg</label>
-                  </div>
+                <div class="mb-3">
+                  <p>Measure</p>
+                  <input type="radio" class="form-check-input" name="measure" id="L" value="L" />
+                  <label class="form-check-label" for="L">L</label>
+                  <input type="radio" class="form-check-input" name="measure" id="mL" value="mL" />
+                  <label class="form-check-label" for="mL">mL</label>
+                  <input type="radio" class="form-check-input" name="measure" id="g" value="g" />
+                  <label class="form-check-label" for="g">g</label>
+                  <input type="radio" class="form-check-input" name="measure" id="Kg" value="Kg" />
+                  <label class="form-check-label" for="Kg">Kg</label>
+                </div>
                 <div class="mb-3">
                   <label for="price" class="col-form-label">Price</label>
-                  <input type="number" min="0" max="5000" id="price" class="form-control"/>
+                  <input type="number" min="0" max="5000" id="price" class="form-control" />
                 </div>
               </form>
             </div>
@@ -84,14 +87,14 @@
 
       <div id="list" class="container">
         <th:block th:each="ingredient: ${ingredients}">
-        <div class="row">
-          <div class="col">
-            <p th:text="${ingredient.name} + ' ' + ${ingredient.units} + ${ingredient.unitsMeasure}"></p>
+          <div class="row">
+            <div class="col">
+              <p th:text="${ingredient.name} + ' ' + ${ingredient.units} + ${ingredient.unitsMeasure}"></p>
+            </div>
+            <div class="col">
+              <button type="button" class="delete btn btn-danger" th:attr="ing_id=${ingredient.id}">Eliminar</button>
+            </div>
           </div>
-          <div class="col">
-            <button type="button" class="delete btn btn-danger" th:attr="ing_id=${ingredient.id}">Eliminar</button>
-          </div>
-        </div>
         </th:block>
       </div>
     </div>
@@ -102,7 +105,7 @@
     let save = document.getElementById("save");
     let ingredients = document.getElementById("list");
 
-    save.onclick = function (){
+    save.onclick = function () {
       console.log("save clicked")
       let selected = document.querySelector('input[type=radio][name=measure]:checked');
       go("/admin/addIngredient", "POST", {
@@ -116,7 +119,7 @@
       });
     }
 
-    function print(value, id){
+    function print(value, id) {
       html = `<div class="row">
           <div class="col">
             <p>${value}</p>
@@ -126,19 +129,25 @@
           </div>
         </div>`;
       ingredients.insertAdjacentHTML("beforeend", html);
+      actElimButtons();
     }
-
-    for (var i=0; i < deleteI.length; i++) {
-      deleteI[i].onclick = function(){
-        console.log("botton pulsado")
-        go("/admin/removeIngredient", "POST", {
-          ingredient: this.getAttribute("ing_id")
-        })
-        this.parentElement.parentElement.remove();
+    function actElimButtons() {
+      deleteI = document.getElementsByClassName("delete");
+      for (var i = 0; i < deleteI.length; i++) {
+        deleteI[i].onclick = function () {
+          console.log("botton pulsado")
+          go("/admin/removeIngredient", "POST", {
+            ingredient: this.getAttribute("ing_id")
+          })
+          this.parentElement.parentElement.remove();
+        }
       }
     }
+    actElimButtons();
+
   </script>
   <th:block th:replace="Fragments/footer.html :: footer" style="margin-top: 2cm;"></th:block>
 
 </body>
+
 </html>

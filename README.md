@@ -22,4 +22,7 @@ Para el acceso al sistema para pruebas se presentan dos usuarios:
 ### Cosas por hacer
 * 
 ### Instrucciones pruebas websockets
-- Escribir ws.receive({"id":1025,"recipes":[{"quantity":1,"recipe":{"name":"Pizza"}}],"price":3.00}) en consola desde el navegador en la pantalla de administracion para añadir order
+- Escribir
+ ws.receive({"id":1025,"recipes":[{"quantity":1,"recipe":{"id":1, "name":"Pizza", "ingredients": [{"ingredient":{"name":"Lechuga"}, "quantity":2},{"ingredient":{"name":"Tomate"}, "quantity":1}]}}],"price":3.00, "user":{"username": "Pepe", "id":1}, "direction": "Leones 13"}) 
+
+en consola desde el navegador en la pantalla de administracion para añadir order

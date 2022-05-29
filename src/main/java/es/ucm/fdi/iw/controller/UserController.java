@@ -240,6 +240,8 @@ public class UserController {
 	public String placeOrder(Model model, HttpSession session) throws JsonProcessingException {
 		Orders order = (Orders)session.getAttribute("order");
 
+
+
 		if(order.getRecipes().isEmpty()){
 			return "redirect:/";
 		}
@@ -254,7 +256,12 @@ public class UserController {
 			entityManager.persist(newrecipe);
 			recipes.add(newrecipe);
 		}
+
+		Long userId = ((User)session.getAttribute("u")).getId();
+		User requester = entityManager.find(User.class, userId);
+
 		//Subimos el pedido a la bd
+		order.setDirection(requester.getAddress());
 		order.setRecipes(recipes);
 		model.addAttribute("order", order);
 		entityManager.persist(order);
