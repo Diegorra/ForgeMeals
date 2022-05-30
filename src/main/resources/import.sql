@@ -1,9 +1,9 @@
 -- insert admin (username a, password aa)
-INSERT INTO IWUser (id, enabled, roles, username, password)
-VALUES (1, TRUE, 'ADMIN,USER', 'a',
+INSERT INTO IWUser (id, address, enabled, roles, username, password)
+VALUES (1, 'Castellana 51, 280041, Madrid,  Spain', TRUE, 'ADMIN,USER', 'a',
     '{bcrypt}$2a$10$2BpNTbrsarbHjNsUWgzfNubJqBRf.0Vz9924nRSHBqlbPKerkgX.W');
-INSERT INTO IWUser (id, enabled, roles, username, password)
-VALUES (2, TRUE, 'USER', 'b',
+INSERT INTO IWUser (id, address, enabled, roles, username, password)
+VALUES (2, 'Diagonal 86, 45003, Barcelona, Spain', TRUE, 'USER', 'b',
     '{bcrypt}$2a$10$2BpNTbrsarbHjNsUWgzfNubJqBRf.0Vz9924nRSHBqlbPKerkgX.W');
 -- start id numbering from a value that is larger than any assigned above
 ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 1024;

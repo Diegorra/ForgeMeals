@@ -60,11 +60,13 @@ public class Orders implements Transferable<Orders.Transfer>{
         private long id;
         private List<OrderRecipe.Transfer> recipes;
         private BigDecimal price;
+        private User.Transfer user;
+        private String direction;
     }
 
     @Override
     public Transfer toTransfer() {
-        return new Transfer(id, recipes.stream().map(Transferable::toTransfer).collect(Collectors.toList()), price);
+        return new Transfer(id, recipes.stream().map(Transferable::toTransfer).collect(Collectors.toList()), price, user.toTransfer(), direction);
     }
 
     @Override

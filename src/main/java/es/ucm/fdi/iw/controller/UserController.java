@@ -279,7 +279,7 @@ public class UserController {
 
 		log.info("User {} order: '{}'", order.getUser().getId(), json);
 
-		messagingTemplate.convertAndSend("/topic/orders", json);
+		messagingTemplate.convertAndSend("/topic/admin", json);
 
 		return "/payment";
 	}

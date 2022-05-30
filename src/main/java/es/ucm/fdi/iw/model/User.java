@@ -122,15 +122,13 @@ public class User implements Transferable<User.Transfer> {
     @Getter
     @AllArgsConstructor
     public static class Transfer {
-		private long id;
         private String username;
-		private int totalReceived;
-		private int totalSent;
+		private long id;
     }
 
 	@Override
     public Transfer toTransfer() {
-		return new Transfer(id,	username, received.size(), sent.size());
+		return new Transfer(username, id);
 	}
 	
 	@Override
