@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head style="background-color:white ;">
+    <th:block th:replace="Fragments/head :: header" />
+    <title>ForgeMeals-Editar tu receta</title>
+
+</head>
+
+
+<body class="d-flex flex-column h-100 bg">
+
+    <div style="background-color: white;">
+        <header th:replace="Fragments/nav.html :: nav" style="color: white;"></header>
+    </div>
+
+    <h1 style="align-self: center; margin-top: 20px; color:white;">Editar tu receta</h1>
+    <div class="container" style="display: flex; justify-content: center; left: 0; right:0; top: 10vh; bottom:0">
+
+        <div class="card bg-light" style="border-radius: 15px; height: fit-content; width:800px;">
+
+            <div style="margin:20px">
+                <form method="post" th:action="@{/editRecipe/__${recipe.id}__}">
+                    <div class="mb-3" style="margin-left: 10px;">
+                        <label for="name" class="form-label">Nombre receta:</label>
+                        <input type="text" class="form-control" style="width: auto;" required id="name"
+                            aria-describedby="nameHelp" placeholder="Nombre receta" th:value="${recipe.name}" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ingredientes:</label>
+                        <ul id="il">
+                            <!--Lista Ingredientes de receta sin editar-->
+                            <tr th:each="recipeIngredient: ${recipe.ingredients}">
+                                <div id="ing" style="visibility: visible;">
+                                    <input list="ingredients" class="form-control" id="ingredient"
+                                        th:value="${recipeIngredient.ingredient.name}" placeholder="Introducir Ingredientes" />
+                                    <!--Posibles Ingredientes-->
+                                    <datalist id="ingredients">
+                                        <div th:each="ingredienteIndividual: ${ingredients}">
+                                            <option th:value="${ingredienteIndividual.name}"
+                                                th:text="${ingredienteIndividual.units} + ${ingredienteIndividual.unitsMeasure}">
+                                            </option>
+                                        </div>
+                                    </datalist>
+                                    <span class="input-group-addon"></span>
+                                    <input type="number" min="0" max="5000" id="cant_ing" class="form-control"
+                                        th:value="${recipeIngredient.quantity}" placeholder="Introducir Cantidad" />
+                                    <hr class="my-4" style="width: 95%;">
+                                </div>
+                            </tr>
+
+                            <div th:if="${#lists.isEmpty(recipe.ingredients)}">
+                                <div id="ing">
+                                    <input list="ingredients" class="form-control" id="ingredient"
+                                        placeholder="Introducir Ingredientes" />
+                                    <datalist id="ingredients">
+                                        <div th:each="ingredienteIndividual: ${ingredients}">
+                                            <option th:value="${ingredienteIndividual.name}"
+                                                th:text="${ingredienteIndividual.units} + ${ingredienteIndividual.unitsMeasure}">
+                                            </option>
+                                        </div>
+                                    </datalist>
+                                    <span class="input-group-addon"></span>
+                                    <input type="number" min="0" max="5000" id="cant_ing" class="form-control" placeholder="Introducir Cantidad" />
+                                    <hr class="my-4" style="width: 95%;">
+                                </div>
+                            </div>
+
+
+                        </ul>
+                        <div>
+                            <button type="button" class="btn btn-primary" id="ai">+ Añadir Ingrediente</button>
+                            <button type="button" class="btn btn-primary" id="ei">- EliminarIngrediente</button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Describe la receta:</label>
+                        <textarea class="container" th:text=${recipe.description}  placeholder="Descripción de la receta" required id="description">
+
+                        </textarea>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="src" class="form-label">Sube la imagen de la receta:</label>
+                        <input type="file" accept="image/png, image/jpeg" class="form-control" id="src">
+                        <img id="imag" style="visibility: hidden;" alt="Imagen a subir" />
+                        <!--input type="text" class="form-control" id="src"-->
+                    </div>
+                    <button type="submit" id="sub_but" class="btn btn-primary">Editar</button>
+                    <a href="/"> <button type="button" onclick="" class="btn btn-primary"
+                            style="background-color:white;color:black;border-color: black;">Cancelar</button> </a>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="ingred" th:attr="ingredientes=${ingredients}"></div>
+    <div id="ing_orig" style="visibility: hidden;">
+        <input list="ingredients" class="form-control" id="ingredient" placeholder="Introducir Ingredientes" />
+        <datalist id="ingredients">
+            <div th:each="ingredienteIndividual: ${ingredients}">
+                <option th:value="${ingredienteIndividual.name}"
+                    th:text="${ingredienteIndividual.units} + ${ingredienteIndividual.unitsMeasure}"> </option>
+            </div>
+        </datalist>
+        <span class="input-group-addon"></span>
+        <input type="number" min="0" max="5000" id="cant_ing" class="form-control" placeholder="Introducir Cantidad" />
+        <hr class="my-4" style="width: 95%;">
+    </div>
+
+
+    <!-- Bootstrap -->
+    <script th:src="@{/js/bootstrap.bundle-5.1.3.js}" src="js/bootstrap.bundle-5.1.3.js"></script>
+
+    <!-- Websockets -->
+    <script th:src="@{/js/stomp.js}" src="js/stomp.js"></script>
+
+    <script th:inline="javascript">
+
+        let con = document.getElementById("il");
+        let but = document.getElementById("ai");
+        let but1 = document.getElementById("ei");
+        but.onclick = a_ing;
+        but1.onclick = e_ing;
+        function a_ing() {
+            but1.disabled = false;
+            const cloned = document.getElementById("ing_orig").cloneNode(true)
+            cloned.id = "ing";
+            cloned.style.visibility = "visible";
+            con.append(cloned);
+
+        }
+        function e_ing() {
+
+            con.removeChild(con.lastElementChild);
+
+            if (document.querySelectorAll("#ing").length < 1)
+                but1.disabled = true;
+
+        }
+
+
+        let fileInput = document.getElementById("src");
+        const sub_but = document.getElementById("sub_but");
+        let img = document.getElementById("imag");
+        fileInput.onchange = subImg;
+        function subImg(e) {
+            if (readImageFileData(fileInput.files[0], img)) {
+                img.style = "margin-left: 75px; margin-top: 15px; margin-right: 75px; margin-down: 10px;width:-webkit-fill-available";
+            }
+
+        }
+        sub_but.onclick = submit_recipe;
+        function submit_recipe(e) {
+            const description = document.getElementById("description").value;
+            const name = document.getElementById("name").value;
+
+            if (description == "" || name == "") return;
+
+            e.preventDefault();
+
+            let ingNames = [];
+            let qIngNames = document.querySelectorAll("#ingredient");
+            qIngNames.forEach(e => ingNames.push(e.value));
+            let ingCants = [];
+            let qIngCants = document.querySelectorAll("#cant_ing");
+            qIngCants.forEach(e => { ingCants.push(e.value) });
+            let noImg = false;
+            let src = img.getAttribute("src");
+            if (!src) {
+                if (!confirm("Está intentando subir una receta sin imagen, se colocará una imagen por defecto en su receta. ¿Quiere continuar?"))
+                    return;
+                noImg = true;
+            }
+
+            let fileInput = document.getElementById("src");
+
+
+            go("/user/editRecipe/[(${recipe.id})]", 'POST', {
+                description: description,
+                name: name,
+                ingredientNames: ingNames,
+                ingredientCant: ingCants
+            })
+                .then(d => {
+                    if (!noImg)
+                        sendImage();
+                    console.log("Happy", d)
+                    window.location.href = "/";
+                })
+                .catch(e => console.log("sad", e))
+        }
+
+
+
+        function readImageFileData(file, targetImg) {
+
+            // see https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
+            if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                let reader = new FileReader();
+                reader.addEventListener("load", e => {
+                    console.log(e);
+                    targetImg.src = reader.result
+                }, false);
+                reader.readAsDataURL(file);
+                return true;
+            } else {
+                console.log("Not a good format: ", file.name);
+                return false;
+            }
+        }
+
+
+        function sendImage() {
+            let url = document.querySelector("#sub_but").parentNode.action;
+            let img = document.querySelector("#imag");
+            let file = document.querySelector("#src");
+            postImage(img, "/user/editRecipeImage/[(${recipe.id})]", "photo").then(() => {
+                let cacheBuster = "?" + new Date().getTime();
+                //document.querySelector("a.nav-link>img.iwthumb").src = url + cacheBuster;
+            });
+        }
+
+        function postImage(img, endpoint, name, filename) {
+            // from https://stackoverflow.com/a/30470303/15472
+            function toBlob(dataurl) {
+                let arr = dataurl.split(','),
+                    mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]),
+                    n = bstr.length,
+                    u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {
+                    type: mime
+                });
+            }
+            let imageBlob = toBlob(img.src);
+            let fd = new FormData();
+            fd.append(name, imageBlob, filename);
+            return go(endpoint, "POST", fd, {})
+        }
+    </script>
+
+</body>
+
+
+
+</html>

@@ -482,6 +482,84 @@ public class UserController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/editRecipe/{id}")
+	public String editRecipe(@PathVariable long id, Model model, HttpSession session){
+		Recipe recipe = entityManager.find(Recipe.class, id);
+		User requester = (User)session.getAttribute("u");
+		if ((requester.getId() == recipe.getAuthor().getId())) {
+			List<Ingredient> ingredients = entityManager.createQuery("select i from Ingredient i", Ingredient.class).getResultList();
+			model.addAttribute("ingredients",ingredients);
+			model.addAttribute("recipe", recipe);
+			
+		}else{
+			throw new NoEsTuPerfilException();
+		}
+		return "/Forms/editRecipeForm";
+	}
+
+	@PostMapping("/editRecipeImage/{id}")
+	@ResponseBody
+    public String editRecipeImage(@PathVariable long id, @RequestParam("photo") MultipartFile photo,
+        HttpServletResponse response, HttpSession session, Model model) throws IOException {
+
+		File f = localData.getFile("recipes", "" + id + ".jpg");
+		log.info("Updating photo for recipe {} at {}", id, f.getAbsolutePath());
+
+		if (photo.isEmpty()) {
+			log.info("----------------------------------------------------------------------------------------------------------------------------------");
+		} else {
+			try (BufferedOutputStream stream =
+					new BufferedOutputStream(new FileOutputStream(f))) {
+				byte[] bytes = photo.getBytes();
+				stream.write(bytes);
+
+			} catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			}
+		}
+		return "{}";
+    }
+
+	@ResponseBody
+	@Transactional
+	@PostMapping("/editRecipe/{id}")
+	public String editRecipeInfo(@PathVariable long id, Model model, @RequestBody JsonNode data, HttpSession session){
+		Recipe recipe = entityManager.find(Recipe.class, id);;
+		User requester = (User)session.getAttribute("u");
+		//Se puede refactorizar utlizando funcion
+		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
+		JsonNode it = data.get("ingredientNames");
+		JsonNode it2 = data.get("ingredientCant");
+		BigDecimal recipePrice = BigDecimal.ZERO;
+		for(int i = 0; i < it.size(); i++){
+			List<Ingredient> is = entityManager.createNamedQuery("Ingredient.byName", Ingredient.class)
+				.setParameter("iname", it.get(i).asText())
+				.getResultList();
+
+
+			if(is.size() == 0) continue;
+			RecipeIngredient ingredienteCompleto = new RecipeIngredient();
+
+			ingredienteCompleto.setIngredient(is.get(0));
+			ingredienteCompleto.setQuantity(it2.get(i).asInt());
+			recipePrice = recipePrice.add(is.get(0).getPrice().multiply(new BigDecimal(it2.get(i).asInt())));
+			ingredientes.add(ingredienteCompleto);
+		}
+
+		recipe.setIngredients(ingredientes);
+		recipe.setDescription(data.get("description").textValue());
+		//recipe.setAuthor(entityManager.find(User.class, requester.getId()));
+		//recipeNew.setAuthor((User)session.getAttribute("u"));
+		recipe.setName(data.get("name").textValue());
+		recipe.setPrice(recipePrice);
+		recipe.setDateRegistered(LocalDateTime.now());
+		entityManager.persist(recipe);
+		entityManager.flush();
+		//session.setAttribute("tmpRecipeId", recipe.getId());
+		return "{}";
+	}
+
 
 	
 	/*--------------------------------------------------------Manejo del Comentarios--------------------------------------------------------------------------------*/
