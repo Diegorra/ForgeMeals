@@ -1,9 +1,6 @@
 package es.ucm.fdi.iw.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -17,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Ingredient {
+public class Ingredient implements Transferable<Ingredient.Transfer> {
 
     public enum Allergen{
         Null,
@@ -60,5 +57,22 @@ public class Ingredient {
         this.unitsMeasure = measure;
         this.price = price;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Transfer {
+        private String name;
+    }
+
+    @Override
+    public Transfer toTransfer() {
+        return new Transfer(name);
+    }
+
+    @Override
+    public String toString() {
+        return toTransfer().toString();
+    }
+
 
 }

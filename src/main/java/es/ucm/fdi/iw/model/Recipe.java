@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -74,12 +75,14 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     @Getter
     @AllArgsConstructor
     public static class Transfer {
+        private long id;
         private String name;
+        private List<RecipeIngredient.Transfer> ingredients;
     }
 
     @Override
     public Transfer toTransfer() {
-        return new Recipe.Transfer(name);
+        return new Transfer(id, name, ingredients.stream().map(Transferable::toTransfer).collect(Collectors.toList()));
     }
 
 }
