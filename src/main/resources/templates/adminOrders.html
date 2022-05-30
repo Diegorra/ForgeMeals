@@ -138,8 +138,8 @@
     </div>
 
     <script>
+      
       let enviar = document.getElementsByClassName("enviar");
-
       //Gestionando ws según llegan pedidos
       let pedidos = document.getElementById("pedidos");
       if (ws.receive) {
@@ -149,69 +149,71 @@
           //oldFn(m); // llama al manejador anterior
           console.log(m);
           pedidos.insertAdjacentHTML("beforeend", renderMsg(m));
+          actCollapsibleButton();
+          actEnviarButton();
+
         }
       }
 
       // cómo pintar 1 pedido (devuelve html)
       function renderMsg(msg) {
         console.log("rendering: ", msg);
-        //return `<tr><td>${msg.id}</td><td>${msg.price}</td><td>${list(msg.recipes)}</td><td><button type='button' class='enviar btn btn-primary' th:attr='id=${msg.id}'>Enviar</button></td></tr>`;
-        return `<td th:text="${msg.id}"></td>
-                <td th:text="${msg.price}"></td>
-                <td>
-                  <ul th:each="recipe: ${msg.recipes}">
-                    <li>
-                      <a th:href="'/recipe/' + ${recipe.recipe.id}" th:text="${recipe.recipe.name}"
-                        class="d-block link-dark text-decoration-none"></a>
-                    </li>
-                    <div class="content">
-                      <div th:each="ingredient: ${recipe.recipe.ingredients}">
-                        <li th:text="${ingredient.ingredient.name}"></li>
-                      </div>
-                    </div>
-                    <button id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar ingredientes </button>
-                  </ul>
-                </td>
+        
+        let htmlRecipes = `<td>${msg.id}</td>
+                <td>${msg.price}</td>
+                <td>`;
 
-                <td>
-                  <a th:href="'/user/' + ${msg.user.id}" th:text="${order.user.username}"
-                    class="d-block link-dark text-decoration-none"></a>
-                </td>
+        msg.recipes.forEach(recipe => {
+          console.log(recipe);
+          htmlRecipes +=
+            `<li>
+            <a href="'/recipe/' + ${recipe.recipe.id}" 
+              class="d-block link-dark text-decoration-none"> ${recipe.recipe.name} </a>
+          </li>
+          <div class="content">`;
 
-                <td th:text="${msg.direction}"></td>
-                <td><button type="button" class="enviar btn btn-primary" th:attr="id=${msg.id}">Enviar</button></td>`
-      }
+          recipe.recipe.ingredients.forEach(ingredient => {
+            console.log("a");
+            htmlRecipes +=
+              `<li> ${ingredient.ingredient.name} </li>`;
+          });
+          htmlRecipes +=
+            `</div>
+          <button id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar ingredientes </button> `;
+        })
 
-      function list(l) {
-        var ul = document.createElement('ul');
-        var li;
-
-        l.forEach(function (item) {
-          li = document.createElement('li');
-          li.appendChild(document.createTextNode(item.recipe.name));
-          ul.appendChild(li);
-        });
-        return ul.innerHTML;
+        htmlRecipes +=
+          `</td>
+            <td>
+              <a href="'/user/' + ${msg.user.id}"
+                class="d-block link-dark text-decoration-none">${msg.user.username}</a>
+            </td>
+            <td>${msg.direction}</td>
+            <td><button type="button" class="enviar btn btn-primary" id= "${msg.id}">Enviar</button></td>`;
+        return htmlRecipes;
       }
 
       let sent = document.getElementById("sent");
 
-      for (let i = 0; i < enviar.length; i++) {
-        let e = enviar[i]
-        e.onclick = () => {
+      function actEnviarButton() {
+        for (let i = 0; i < enviar.length; i++) {
+          let e = enviar[i]
+          e.onclick = () => {
 
-          console.log("boton pulsado");
-          go("/admin/send", "POST", {
-            id: e.getAttribute("id")
-          });
-          let parent = e.parentElement.parentElement;
-          e.remove();
-          sent.append(parent.cloneNode(true));
-          parent.remove();
-          actCollapsibleButton();
+            console.log("boton pulsado");
+            go("/admin/send", "POST", {
+              id: e.getAttribute("id")
+            });
+            let parent = e.parentElement.parentElement;
+            e.remove();
+            sent.append(parent.cloneNode(true));
+            parent.remove();
+            actCollapsibleButton();
+          }
         }
       }
 
+      actEnviarButton();
       actCollapsibleButton();
 
       function actCollapsibleButton() {
