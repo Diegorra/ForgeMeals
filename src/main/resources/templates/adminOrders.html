@@ -65,12 +65,12 @@
                 <td>
                   <ul th:each="recipe: ${order.recipes}">
                     <li>
-                      <a th:href="'/recipe/' + ${recipe.recipe.id}" th:text="${recipe.recipe.name}"
+                      <a th:href="'/recipe/' + ${recipe.recipe.id}" th:text="${recipe.recipe.name} + ' x ' + ${recipe.quantity}"
                         class="d-block link-dark text-decoration-none"></a>
                     </li>
                     <div class="content">
                       <div th:each="ingredient: ${recipe.recipe.ingredients}">
-                        <li th:text="${ingredient.ingredient.name}"></li>
+                        <li th:text="${ingredient.ingredient.name} + ' x ' + ${ingredient.quantity}"></li>
                       </div>
                     </div>
                     <button id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar ingredientes </button>
@@ -109,12 +109,12 @@
                   <ul th:each="recipe: ${order.recipes}">
 
                     <li>
-                      <a th:href="'/recipe/' + ${recipe.id}" th:text="${recipe.recipe.name}"
+                      <a th:href="'/recipe/' + ${recipe.id}"  th:text="${recipe.recipe.name} + ' x ' + ${recipe.quantity}"
                         class="d-block link-dark text-decoration-none"></a>
                     </li>
                     <div class="content">
                       <div th:each="ingredient: ${recipe.recipe.ingredients}">
-                        <li th:text="${ingredient.ingredient.name}"></li>
+                        <li th:text="${ingredient.ingredient.name} + ' x ' + ${ingredient.quantity}"></li>
                       </div>
                     </div>
                     <button type="button" id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar
@@ -165,15 +165,15 @@
           console.log(recipe);
           htmlRecipes +=
             `<li>
-            <a href="'/recipe/' + ${recipe.recipe.id}"
-              class="d-block link-dark text-decoration-none"> ${recipe.recipe.name} </a>
+            <a href="/recipe/ + ${recipe.recipe.id}"
+              class="d-block link-dark text-decoration-none"> ${recipe.recipe.name} x ${recipe.quantity} </a>
           </li>
           <div class="content">`;
 
           recipe.recipe.ingredients.forEach(ingredient => {
             console.log("a");
             htmlRecipes +=
-              `<li> ${ingredient.ingredient.name} </li>`;
+              `<li> ${ingredient.ingredient.name} x ${ingredient.quantity} </li>`;
           });
           htmlRecipes +=
             `</div>
