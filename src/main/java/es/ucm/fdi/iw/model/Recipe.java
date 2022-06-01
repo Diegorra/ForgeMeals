@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
     @NamedQuery(
         name="findRecipeWithName",
         query="SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE CONCAT('%', LOWER(:name), '%')")
+    
 })
 public class Recipe implements Transferable<Recipe.Transfer> {
     @Id
@@ -88,6 +89,14 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     @Override
     public Transfer toTransfer() {
         return new Transfer(id, name, ingredients.stream().map(Transferable::toTransfer).collect(Collectors.toList()));
+    }
+
+    public void actPrecio(){
+        BigDecimal precio = BigDecimal.valueOf(0);
+        for(RecipeIngredient r:ingredients){
+            precio = precio.add(r.getIngredient().getPrice().multiply(BigDecimal.valueOf(r.getQuantity())));
+        }
+        this.price = precio;
     }
 
 }

@@ -2,6 +2,7 @@ package es.ucm.fdi.iw.controller;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -117,6 +118,21 @@ public class AdminController {
     public String removeIngredient(Model model,  @RequestBody JsonNode data){
         Long id = data.get("ingredient").asLong();
         Ingredient ingredient = entityManager.find(Ingredient.class, id);
+        List<Recipe> recipes = entityManager.createQuery("Select i from Recipe i", Recipe.class).getResultList();
+
+        for(Recipe recipe:recipes){
+            for (RecipeIngredient ri:recipe.getIngredients()){
+                if(ri.getIngredient().getId() == id){
+                    recipe.getNoOfficialIngredients().add(ri.getIngredient().getName() + " " + ri.getIngredient().getUnits() + ri.getIngredient().getUnitsMeasure() + " x " + ri.getQuantity());
+                    recipe.getIngredients().remove(ri);
+                    entityManager.remove(ri);
+                    recipe.actPrecio();
+                    entityManager.flush();
+                    break;
+                }
+            }
+        }
+        
         entityManager.remove(ingredient);
         return "{}";
     }

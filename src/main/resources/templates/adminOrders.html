@@ -70,7 +70,7 @@
                     </li>
                     <div class="content">
                       <div th:each="ingredient: ${recipe.recipe.ingredients}">
-                        <li th:text="${ingredient.ingredient.name} + ' x ' + ${ingredient.quantity}"></li>
+                        <li th:text="${ingredient.ingredient.name} + ' ' + ${ingredient.ingredient.units} + ${ingredient.ingredient.unitsMeasure} + ' x ' + ${ingredient.quantity}"></li>
                       </div>
                     </div>
                     <button id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar ingredientes </button>
@@ -114,7 +114,7 @@
                     </li>
                     <div class="content">
                       <div th:each="ingredient: ${recipe.recipe.ingredients}">
-                        <li th:text="${ingredient.ingredient.name} + ' x ' + ${ingredient.quantity}"></li>
+                        <li th:text="${ingredient.ingredient.name} + ' ' + ${ingredient.ingredient.units} + ${ingredient.ingredient.unitsMeasure} + ' x ' + ${ingredient.quantity}"></li>
                       </div>
                     </div>
                     <button type="button" id="colIng" class="btn btn-dark btn-sm collapsible"> mostrar
@@ -173,7 +173,7 @@
           recipe.recipe.ingredients.forEach(ingredient => {
             console.log("a");
             htmlRecipes +=
-              `<li> ${ingredient.ingredient.name} x ${ingredient.quantity} </li>`;
+              `<li> ${ingredient.ingredient.name} ${ingredient.ingredient.units}${ingredient.ingredient.unitsMeasure} x ${ingredient.quantity} </li>`;
           });
           htmlRecipes +=
             `</div>
