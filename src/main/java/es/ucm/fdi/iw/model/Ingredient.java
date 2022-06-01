@@ -62,11 +62,13 @@ public class Ingredient implements Transferable<Ingredient.Transfer> {
     @AllArgsConstructor
     public static class Transfer {
         private String name;
+        private int units;
+        private String unitsMeasure;
     }
 
     @Override
     public Transfer toTransfer() {
-        return new Transfer(name);
+        return new Transfer(name, units, unitsMeasure);
     }
 
     @Override
