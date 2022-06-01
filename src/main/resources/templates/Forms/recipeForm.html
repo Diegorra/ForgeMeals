@@ -31,6 +31,7 @@
                         <label class="form-label">Ingredientes:</label>
                         <ul id="il">
                             <div id="ing">
+
                                 <input list="ingredients" class="form-control" id="ingredient"
                                     placeholder="Introducir Ingredientes" />
                                 <datalist id="ingredients">
@@ -46,6 +47,14 @@
                                 <hr class="my-4" style="width: 95%;">
                             </div>
                         </ul>
+                        <p style="margin-left:10%; margin-bottom: 0%; font:100; font-size: smaller; color: gray;"> * Unicamente los ingredientes presentes en la lista de eleccion se considerarán a la hora de la comprar y calcular el precio de la receta </p>
+                        <a href="#" style="margin-left:10%; margin-top: -2%; font:100; font-size: smaller; color: gray;" id="info"> Mas informacion </a>
+                        <div class="container" id="infoContent" style="max-width: 500px; margin-left: 10%; visibility: hidden; border: solid; border-width: 2px; border-color: black; border-radius: 0.2cm; position:absolute ; z-index:1; background-color:white ;">
+                            <p> *Los ingredientes que aparecen en la lista de seleccion son los unicos administrados y manejados por nuestra compañia, y por tanto serán los unicos que estarán disponibles a la hora de comprar la receta. </p>
+                            <p> *Es posible introducir ingredientes que no se encuentren en esta lista y se considerarán ingredientes no oficiales, es decir, no se venderán con la receta, y no se tendrán en cuenta en el precio final. </p>
+                            <p>  *Estos ingredientes tendrán un fin informativo, y estarán separados de los ingredientes administrados por nosotros en la pagina de la receta, es decir no se podrán adquirir a traves de nuestra pagina, y tendrán que ser adquiridos mediante otros medios. </p>
+                            <p>  *Si va a introducir ingredientes no soportados es recomendable introducir el tipo de medida y la cantidad por unidad del ingrediente, en el campo del nombre del ingrediente junto al mismo (solo en ingredientes no oficiales) p. ej. Salsa de Soja 100ml.</p>
+                        </div>
                         <div>
                             <button type="button" class="btn btn-primary" id="ai">+ Añadir Ingrediente</button>
                             <button type="button" class="btn btn-primary" id="ei" disabled>- Eliminar
@@ -220,6 +229,27 @@
             fd.append(name, imageBlob, filename);
             return go(endpoint, "POST", fd, {})
         }
+
+        let info = document.getElementById("info");
+        let infoContent = document.getElementById("infoContent");
+        info.onclick = () => {
+            if(infoContent.style.visibility == "visible"){
+                infoContent.style.visibility = "hidden";
+            }
+            else{
+                infoContent.style.visibility = "visible";
+            }
+            
+        }
+
+
+
+    </script>
+
+    <script>
+        var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+            trigger: 'focus'
+        })
     </script>
 
 </body>

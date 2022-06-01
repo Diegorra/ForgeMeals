@@ -46,10 +46,15 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     @JoinColumn(name="recipe_id")
     private List<OrderRecipe> orderRecipes = new ArrayList<>();
 
+    @ElementCollection
+    private List<String> noOfficialIngredients = new ArrayList<>();
+
+
     private String description;
     @NonNull private BigDecimal price;
     private String dateRegistered;
     private Integer averageRating;
+    
 
 
     public Recipe(Recipe anotherRecipe){

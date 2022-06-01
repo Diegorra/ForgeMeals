@@ -375,6 +375,7 @@ public class UserController {
 
 
 		ArrayList<RecipeIngredient> ingredientes = new ArrayList<RecipeIngredient>();
+		ArrayList<String> noOfficialIngredients  = new ArrayList<String>();
 		JsonNode it = data.get("ingredientNames");
 		JsonNode it2 = data.get("ingredientCant");
 		BigDecimal recipePrice = BigDecimal.ZERO;
@@ -386,7 +387,14 @@ public class UserController {
 				.getResultList();
 
 
-			if(is.size() == 0) continue;
+			if(is.size() == 0) {
+				if(it.get(i).asText() != ""){
+					String ing = it.get(i).asText() + " x " + it2.get(i).asInt();
+					noOfficialIngredients.add(ing);
+				}
+				
+				continue;
+			}
 			RecipeIngredient ingredienteCompleto = new RecipeIngredient();
 
 			ingredienteCompleto.setIngredient(is.get(0));
@@ -395,6 +403,7 @@ public class UserController {
 			ingredientes.add(ingredienteCompleto);
 		}
 		recipeNew.setIngredients(ingredientes);
+		recipeNew.setNoOfficialIngredients(noOfficialIngredients);
 		recipeNew.setDescription(data.get("description").textValue());
 		recipeNew.setAuthor(entityManager.find(User.class, requester.getId()));
 		//recipeNew.setAuthor((User)session.getAttribute("u"));

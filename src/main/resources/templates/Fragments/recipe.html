@@ -54,7 +54,12 @@
                     <section class="mb-5">
                         <h2 class="fw-bolder mb-4 mt-5">Ingredientes</h2>
                         <div th:each="ingredient: ${recipe.ingredients}">
-                            <li class="fs-5 mb-4" th:text="${ingredient.ingredient.name} + ' ' + ${ingredient.quantity}">Ingredients</li>
+                            <li class="fs-5 mb-4" th:text="${ingredient.ingredient.name} + ${ingredient.ingredient.units} + ${ingredient.ingredient.unitsMeasure} + ' x ' + ${ingredient.quantity}">Ingredients</li>
+                        </div>
+                        <hr>
+                        <h2 class="fw-bolder mb-4 mt-5">Ingredientes no oficiales</h2>
+                        <div th:each="ingredient: ${recipe.noOfficialIngredients}">
+                            <li class="fs-5 mb-4" th:text="${ingredient}"></li>
                         </div>
                         <hr>
                         <h2 class="fw-bolder mb-4 mt-5">Preparación</h2>
