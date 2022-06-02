@@ -24,3 +24,5 @@ Para el acceso al sistema para pruebas se presentan dos usuarios:
 - a: Usuario administrador. Contraseña: "aa".
 - b: Usuario corriente. Contraseña: "aa".
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### Nota
+Hay algunos recursos que se entregan junto al código que pueden no ser usados ya que han sido valorados como útiles para futuras iteraciones del proyecto y por ende no han sido eliminados.
