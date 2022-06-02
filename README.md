@@ -2,7 +2,7 @@
 ForgeMeals es una aplicación web que como idea básica presenta un blog de recetas que permite adquirir sus ingredientes para realizarlas en casa de forma fácil, no solo esto, permite definir un menú semanal y adquirirlo de igual manera, otras cosas que permite hacer son valorar mediantes estrellas las recetas y añadir comentarios a las mismas, así como la gestión de la cuenta del usuario.
 
 ### Mejoras Introducidas
-En la mejoras han participado: Jun Qiu, Félix Rodolfo Díaz Lorente y Diego Andrés Ramón Sanchis
+En la mejoras han participado: Jun Qiu, Félix Rodolfo Díaz Lorente y Diego Andrés Ramón Sanchis.
 Las mejoras recogidas son: 
 * Administración de ingredientes, ahora en la página de administración se pueden consultar todos los ingredientes, eliminarlos o añadir nuevos(unicamente los administradores pueden realizar estas acciones). Los usuarios, a la hora de subir una receta pueden coger de los ingredientes oficiales, que serán tenidos en cuenta en el checkout y a la hora de calcular el precio, o meter ingredientes propios que no esten recogidos en la lista de ingredientes oficiales, que no serán tenidos en cuenta en el checkout ni a la hora de calcular el precio del pedido.
 * Administración de pedidos, ahora en la página de administración no ves unicamente los pedidos entrantes pendientes de enviar sino también aquellos pedidos que ya han sido enviados. Se ha corregido algunos aspectos a la hora de mostrar los pedidos como mostrar la dirección a la que son enviados, la lista de ingredientes asociados y la correcta actualización via websockets.
